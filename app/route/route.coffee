@@ -18,7 +18,7 @@ class este.app.Route extends este.Base
 
   ###*
     Path has to start with '/' prefix. If HTML5 pustState is not supported,
-    then url will prefixed with with hash ('#/').
+    then url will be prefixed with hash ('#/').
     Various url definitions: este/router/route_test.coffee
     @type {string}
   ###

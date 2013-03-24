@@ -1,5 +1,5 @@
 ###*
-  @fileoverview este.app.View.
+  @fileoverview este.App sets createUrl and redirect methods automatically.
 ###
 goog.provide 'este.app.View'
 

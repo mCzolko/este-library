@@ -1,5 +1,6 @@
 ###*
-  @fileoverview este.ui.View.
+  @fileoverview Adds useful autobinding bindModel method. Uses data-cid
+  attribute to pass model into listener.
 ###
 goog.provide 'este.ui.View'
 

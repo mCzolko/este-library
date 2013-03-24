@@ -12,6 +12,8 @@
       tap
       submit
 
+  TODO: off does not work for delegated listeners
+
 ###
 goog.provide 'este.ui.Component'
 

@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Validate string digits format.
+  @fileoverview Digits validator.
 ###
 goog.provide 'este.validators.Digits'
 goog.provide 'este.validators.digits'
@@ -21,7 +21,6 @@ class este.validators.Digits extends este.validators.Base
   ###
   validate: ->
     goog.asserts.assertString @value
-    return true unless @value
     /^\d+$/.test @value
 
   ###*

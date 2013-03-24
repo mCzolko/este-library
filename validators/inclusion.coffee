@@ -27,7 +27,6 @@ class este.validators.Inclusion extends este.validators.Base
     @override
   ###
   validate: ->
-    return true unless @value
     @value in @inclusion
 
   ###*

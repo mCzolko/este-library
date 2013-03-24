@@ -2,6 +2,8 @@ trimSetter = (value) ->
   goog.string.trim value || ''
 
 RequiredValidator = ->
+RequiredValidator::isValidable = ->
+  true
 RequiredValidator::validate = ->
   switch goog.typeOf @value
     when 'string'
@@ -11,7 +13,7 @@ RequiredValidator::validate = ->
     else
       @value?
 
-requiredValidator = (value) ->
+requiredValidator = ->
   new RequiredValidator
 
 class Person extends este.Model

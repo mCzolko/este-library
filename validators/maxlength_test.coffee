@@ -6,17 +6,15 @@ suite 'este.validators.maxLength', ->
     maxLength = este.validators.maxLength(3)()
 
   suite 'validate', ->
-    test 'should return false for abcd', ->
-      maxLength.value = 'abcd'
-      assert.isFalse maxLength.validate()
+    suite 'should be valid:', ->
+      test 'abc', ->
+        maxLength.value = 'abc'
+        assert.isTrue maxLength.validate()
 
-    test 'should return true for abc', ->
-      maxLength.value = 'abc'
-      assert.isTrue maxLength.validate()
-
-    test 'should return true for ""', ->
-      maxLength.value = ''
-      assert.isTrue maxLength.validate()
+    suite 'should be invalid:', ->
+      test 'abcd', ->
+        maxLength.value = 'abcd'
+        assert.isFalse maxLength.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

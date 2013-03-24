@@ -5,6 +5,23 @@ suite 'este.validators.required', ->
   setup ->
     required = este.validators.required()()
 
+  suite 'isValidable', ->
+    test 'should return true for *', ->
+      required.value = ' '
+      assert.isTrue required.isValidable()
+      required.value = 0
+      assert.isTrue required.isValidable()
+      required.value = '123'
+      assert.isTrue required.isValidable()
+      required.value = {}
+      assert.isTrue required.isValidable()
+      required.value = ''
+      assert.isTrue required.isValidable()
+      required.value = null
+      assert.isTrue required.isValidable()
+      required.value = undefined
+      assert.isTrue required.isValidable()
+
   suite 'validate', ->
     suite 'should return false for', ->
       test 'empty string', ->

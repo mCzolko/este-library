@@ -28,7 +28,6 @@ class este.validators.Format extends este.validators.Base
   ###
   validate: ->
     goog.asserts.assertString @value
-    return true unless @value
     @regexp.test @value
 
   ###*

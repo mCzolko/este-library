@@ -21,6 +21,12 @@ class este.validators.Required extends este.validators.Base
   ###*
     @override
   ###
+  isValidable: ->
+    true
+
+  ###*
+    @override
+  ###
   validate: ->
     switch goog.typeOf @value
       when 'string'

@@ -6,17 +6,19 @@ suite 'este.validators.minLength', ->
     minLength = este.validators.minLength(3)()
 
   suite 'validate', ->
-    test 'should return false for ab', ->
-      minLength.value = 'ab'
-      assert.isFalse minLength.validate()
+    suite 'should be valid:', ->
+      test 'should return true for abc', ->
+        minLength.value = 'abc'
+        assert.isTrue minLength.validate()
 
-    test 'should return false for ""', ->
-      minLength.value = ''
-      assert.isFalse minLength.validate()
+    suite 'should be invalid:', ->
+      test 'should return false for ab', ->
+        minLength.value = 'ab'
+        assert.isFalse minLength.validate()
 
-    test 'should return true for abc', ->
-      minLength.value = 'abc'
-      assert.isTrue minLength.validate()
+      test 'should return false for ""', ->
+        minLength.value = ''
+        assert.isFalse minLength.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

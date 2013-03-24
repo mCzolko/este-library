@@ -6,25 +6,19 @@ suite 'este.validators.inclusion', ->
     inclusion = este.validators.inclusion(['Foo', 'Bla'])()
 
   suite 'validate', ->
-    test 'should return true for falsy', ->
-      inclusion.value = undefined
-      assert.isTrue inclusion.validate()
-      inclusion.value = null
-      assert.isTrue inclusion.validate()
-      inclusion.value = ''
-      assert.isTrue inclusion.validate()
+    suite 'should be valid:', ->
+      test '"Foo"', ->
+        inclusion.value = 'Foo'
+        assert.isTrue inclusion.validate()
 
-    test 'should return false for "a"', ->
-      inclusion.value = 'a'
-      assert.isFalse inclusion.validate()
+      test '"Bla"', ->
+        inclusion.value = 'Bla'
+        assert.isTrue inclusion.validate()
 
-    test 'should return true for "Foo"', ->
-      inclusion.value = 'Foo'
-      assert.isTrue inclusion.validate()
-
-    test 'should return true for "Bla"', ->
-      inclusion.value = 'Bla'
-      assert.isTrue inclusion.validate()
+    suite 'should be invalid:', ->
+      test '"a"', ->
+        inclusion.value = 'a'
+        assert.isFalse inclusion.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

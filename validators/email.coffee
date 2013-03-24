@@ -22,7 +22,6 @@ class este.validators.Email extends este.validators.Base
   ###
   validate: ->
     goog.asserts.assertString @value
-    return true unless @value
     goog.format.EmailAddress.isValidAddress @value
 
   ###*

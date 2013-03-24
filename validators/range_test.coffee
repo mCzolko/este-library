@@ -6,24 +6,7 @@ suite 'este.validators.range', ->
     range = este.validators.range(1, 3)()
 
   suite 'validate', ->
-    suite 'should return false for', ->
-      test '4', ->
-        range.value = 4
-        assert.isFalse range.validate()
-
-      test '"4"', ->
-        range.value = '4'
-        assert.isFalse range.validate()
-
-      test '0', ->
-        range.value = 0
-        assert.isFalse range.validate()
-
-      test '"0"', ->
-        range.value = '0'
-        assert.isFalse range.validate()
-
-    suite 'should return true for', ->
+    suite 'should be valid:', ->
       test '3', ->
         range.value = 3
         assert.isTrue range.validate()
@@ -40,9 +23,22 @@ suite 'este.validators.range', ->
         range.value = '1'
         assert.isTrue range.validate()
 
-      test '""', ->
-        range.value = ''
-        assert.isTrue range.validate()
+    suite 'should be invalid:', ->
+      test '4', ->
+        range.value = 4
+        assert.isFalse range.validate()
+
+      test '"4"', ->
+        range.value = '4'
+        assert.isFalse range.validate()
+
+      test '0', ->
+        range.value = 0
+        assert.isFalse range.validate()
+
+      test '"0"', ->
+        range.value = '0'
+        assert.isFalse range.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

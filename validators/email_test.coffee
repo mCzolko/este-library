@@ -6,17 +6,19 @@ suite 'este.validators.email', ->
     email = este.validators.email()()
 
   suite 'validate', ->
-    test 'foo@bla.com should be valid', ->
-      email.value = 'foo@bla.com'
-      assert.isTrue email.validate()
+    suite 'should be valid:', ->
+      test 'foo@bla.com', ->
+        email.value = 'foo@bla.com'
+        assert.isTrue email.validate()
 
-    test '""should be valid', ->
-      email.value = ''
-      assert.isTrue email.validate()
+    suite 'should be invalid:', ->
+      test 'foo@@bla.com', ->
+        email.value = 'foo@@bla.com'
+        assert.isFalse email.validate()
 
-    test 'foo@@bla.com should not be valid', ->
-      email.value = 'foo@@bla.com'
-      assert.isFalse email.validate()
+      test '""', ->
+        email.value = ''
+        assert.isFalse email.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

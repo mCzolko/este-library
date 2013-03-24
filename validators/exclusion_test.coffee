@@ -6,25 +6,19 @@ suite 'este.validators.exclusion', ->
     exclusion = este.validators.exclusion(['Foo', 'Bla'])()
 
   suite 'validate', ->
-    test 'should return true for falsy', ->
-      exclusion.value = undefined
-      assert.isTrue exclusion.validate()
-      exclusion.value = null
-      assert.isTrue exclusion.validate()
-      exclusion.value = ''
-      assert.isTrue exclusion.validate()
+    suite 'should be valid:', ->
+      test '"a"', ->
+        exclusion.value = 'a'
+        assert.isTrue exclusion.validate()
 
-    test 'should return false for "Foo"', ->
-      exclusion.value = 'Foo'
-      assert.isFalse exclusion.validate()
+    suite 'should be invalid:', ->
+      test '"Foo"', ->
+        exclusion.value = 'Foo'
+        assert.isFalse exclusion.validate()
 
-    test 'should return false for "Bla"', ->
-      exclusion.value = 'Bla'
-      assert.isFalse exclusion.validate()
-
-    test 'should return true for "a"', ->
-      exclusion.value = 'a'
-      assert.isTrue exclusion.validate()
+      test '"Bla"', ->
+        exclusion.value = 'Bla'
+        assert.isFalse exclusion.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

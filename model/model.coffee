@@ -361,6 +361,7 @@ class este.Model extends este.Base
         validator.model = @
         validator.key = key
         validator.value = value
+        continue if not validator.isValidable()
         errors.push validator if not validator.validate value
     return errors if errors.length
     null

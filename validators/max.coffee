@@ -32,9 +32,7 @@ class este.validators.Max extends este.validators.Base
     isStringOrNumber = typeof @value in ['string', 'number']
     goog.asserts.assert isStringOrNumber, 'Expected string or number.'
     value = @value
-    if typeof value == 'string'
-      return true if value == ''
-      value = goog.string.toNumber value
+    value = goog.string.toNumber value if goog.isString value
     `value = /** @type {number} */(value)`
     return false unless goog.math.isFiniteNumber value
     value <= @max

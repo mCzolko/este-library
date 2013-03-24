@@ -6,21 +6,19 @@ suite 'este.validators.min', ->
     min = este.validators.min(3)()
 
   suite 'validate', ->
-    test 'should return false for 2', ->
-      min.value = 2
-      assert.isFalse min.validate()
+    suite 'should be valid:', ->
+      test '3', ->
+        min.value = 3
+        assert.isTrue min.validate()
 
-    test 'should return false for "2"', ->
-      min.value = '2'
-      assert.isFalse min.validate()
+    suite 'should be invalid:', ->
+      test '2', ->
+        min.value = 2
+        assert.isFalse min.validate()
 
-    test 'should return true for 3', ->
-      min.value = 3
-      assert.isTrue min.validate()
-
-    test 'should return true for empty string', ->
-      min.value = ''
-      assert.isTrue min.validate()
+      test '"2"', ->
+        min.value = '2'
+        assert.isFalse min.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

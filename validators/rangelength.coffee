@@ -37,7 +37,6 @@ class este.validators.RangeLength extends este.validators.Base
   ###
   validate: ->
     goog.asserts.assertString @value
-    return true unless @value
     @min <= @value.length <= @max
 
   ###*

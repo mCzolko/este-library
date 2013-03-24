@@ -1,6 +1,5 @@
 ###*
-  @fileoverview Abstract base class for validators. To allow optionable values,
-  each validator, except Required, has to return true if value does not exists.
+  @fileoverview Abstract base class for validators.
 
   @see ../demos/validators.html
 
@@ -53,19 +52,29 @@ class este.validators.Base
     @getMsg = getMsg if getMsg
 
   ###*
+    Model to be validated.
     @type {este.Model}
   ###
   model: null
 
   ###*
+    Model's property.
     @type {string}
   ###
   key: ''
 
   ###*
+    Model's property value.
     @type {*}
   ###
   value: undefined
+
+  ###*
+    Returns true for truthy values except empty string.
+    @return {boolean}
+  ###
+  isValidable: ->
+    @value? && @value != ''
 
   ###*
     @return {boolean} True, if value is valid.

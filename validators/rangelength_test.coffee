@@ -6,16 +6,7 @@ suite 'este.validators.rangeLength', ->
     rangeLength = este.validators.rangeLength(2, 3)()
 
   suite 'validate', ->
-    suite 'should return false for', ->
-      test 'abcd', ->
-        rangeLength.value = 'abcd'
-        assert.isFalse rangeLength.validate()
-
-      test 'a', ->
-        rangeLength.value = 'a'
-        assert.isFalse rangeLength.validate()
-
-    suite 'should return true for', ->
+    suite 'should be valid:', ->
       test 'abc', ->
         rangeLength.value = 'abc'
         assert.isTrue rangeLength.validate()
@@ -24,9 +15,14 @@ suite 'este.validators.rangeLength', ->
         rangeLength.value = 'ab'
         assert.isTrue rangeLength.validate()
 
-      test 'empty string', ->
-        rangeLength.value = ''
-        assert.isTrue rangeLength.validate()
+    suite 'should be invalid:', ->
+      test 'abcd', ->
+        rangeLength.value = 'abcd'
+        assert.isFalse rangeLength.validate()
+
+      test 'a', ->
+        rangeLength.value = 'a'
+        assert.isFalse rangeLength.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

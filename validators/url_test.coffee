@@ -10,10 +10,6 @@ suite 'este.validators.url', ->
       url.value = 'http://github.com/steida/este'
       assert.isTrue url.validate()
 
-    test 'should return true for empty string', ->
-      url.value = ''
-      assert.isTrue url.validate()
-
     test 'should return false for invalid url', ->
       url.value = 'http:///foo'
       assert.isFalse url.validate()

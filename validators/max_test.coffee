@@ -6,21 +6,19 @@ suite 'este.validators.max', ->
     max = este.validators.max(3)()
 
   suite 'validate', ->
-    test 'should return false for 4', ->
-      max.value = 4
-      assert.isFalse max.validate()
+    suite 'should be valid:', ->
+      test '3', ->
+        max.value = 3
+        assert.isTrue max.validate()
 
-    test 'should return false for "4"', ->
-      max.value = '4'
-      assert.isFalse max.validate()
+    suite 'should be invalid:', ->
+      test '4', ->
+        max.value = 4
+        assert.isFalse max.validate()
 
-    test 'should return true for 3', ->
-      max.value = 3
-      assert.isTrue max.validate()
-
-    test 'should return true for empty string', ->
-      max.value = ''
-      assert.isTrue max.validate()
+      test '"4"', ->
+        max.value = '4'
+        assert.isFalse max.validate()
 
   suite 'getMsg', ->
     test 'should return message', ->

@@ -519,4 +519,17 @@ goog.scope ->
   _.lockForm = (form, lock) ->
     field.disabled = lock for field in form.elements
 
+  ###*
+    @param {Element|Node} form
+    @param {este.Model} model
+    @return {boolean} true if model is valid
+  ###
+  _.validateForm = (form, model) ->
+    errors = model.validate()
+    return true if not errors
+    error = errors[0]
+    alert error.getMsg()
+    este.dom.focus form.elements[error.key]
+    false
+
   return

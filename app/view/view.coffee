@@ -15,11 +15,11 @@ class este.app.View extends este.ui.View
     super()
 
   ###*
-    @type {?function(function(new:este.app.Presenter), Object=): string}
+    @type {Function}
   ###
   createUrl: null
 
   ###*
-    @type {?function(function(new:este.app.Presenter), Object=): string}
+    @type {Function}
   ###
   redirect: null

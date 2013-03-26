@@ -78,6 +78,9 @@ class este.app.Presenter extends este.Base
     @view.createUrl = @createUrl
     @view.redirect = @redirect
     if @view.getElement()
+      # view el have to be in screen element, to ensure the same behaviour as
+      # in view render. Then, css computations will return same results.
+      @screen.getElement().appendChild @view.getElement()
       @view.enterDocument()
     else
       @view.render @screen.getElement()

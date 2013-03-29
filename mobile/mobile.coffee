@@ -1,14 +1,27 @@
 goog.provide 'este.mobile'
 
+goog.require 'goog.dom'
 goog.require 'goog.userAgent'
-goog.require 'goog.userAgent.product.isVersion'
 goog.require 'goog.userAgent.platform'
+goog.require 'goog.userAgent.product.isVersion'
 
 goog.scope ->
   `var _ = este.mobile`
 
+  ###*
+    @type {number}
+  ###
+  _.defaultHomeScroll = 1
+
   _.hideAddressBar = ->
+    # from jQuery Mobile jquery.mobile.init.js
     window.scrollTo 0, 1
+    if goog.dom.getDocumentScroll().y == 1
+      _.defaultHomeScroll = 0
+
+    setTimeout ->
+      window.scrollTo 0, 1
+    , 0
 
   # search source code to see usefullness :)
   if goog.userAgent.MOBILE

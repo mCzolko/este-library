@@ -521,15 +521,12 @@ goog.scope ->
 
   ###*
     @param {Element|Node} form
-    @param {este.Model} model
-    @return {boolean} true if model is valid
+    @param {Object} errors
   ###
-  _.validateForm = (form, model) ->
-    errors = model.validate()
-    return true if not errors
+  _.showErrorsOnForm = (form, errors) ->
+    return if not errors
     error = errors[0]
     alert error.getMsg()
     este.dom.focus form.elements[error.key]
-    false
 
   return

@@ -26,7 +26,7 @@ class este.Router extends este.Base
     @extends {este.Base}
   ###
   constructor: (@history, @tapHandler) ->
-    super
+    super()
     @routes = []
 
   ###*
@@ -195,5 +195,5 @@ class este.Router extends este.Base
   disposeInternal: ->
     @history.dispose()
     @tapHandler.dispose()
-    super
+    super()
     return

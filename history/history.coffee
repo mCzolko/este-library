@@ -163,5 +163,5 @@ class este.History extends este.Base
   ###
   disposeInternal: ->
     @history.dispose()
-    super
+    super()
     return

@@ -23,7 +23,7 @@ class este.events.TapHandler extends este.Base
     @extends {este.Base}
   ###
   constructor: (@element, touchSupported) ->
-    super
+    super()
     @touchSupported = touchSupported ? TapHandler.touchSupported()
     @registerEvents()
 

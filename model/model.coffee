@@ -182,7 +182,7 @@ class este.Model extends este.Base
     Set model attribute(s).
     model.set 'foo', 1
     model set 'foo': 1, 'bla': 2
-    Invalid values are ignored.
+    Don't set any value on validation error.
     Dispatch change event with changed property, if any.
     Returns errors.
     @param {Object|string} json Object of key value pairs or string key.

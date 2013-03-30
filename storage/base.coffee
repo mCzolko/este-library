@@ -123,8 +123,6 @@ class este.storage.Base
       when 'change'
         result = @save e.model
         results.push result if result
-      else
-        goog.asserts.fail "Unsupported event type: #{e.type}."
     if results.length
       return goog.result.combineOnSuccess.apply @, results
     este.result.ok()

@@ -97,7 +97,8 @@ class este.Base extends goog.events.EventTarget
     @protected
   ###
   getParents: ->
-    @parents_.slice 0
+    return @parents_.slice 0 if @parents_
+    []
 
   ###*
     @override

@@ -45,7 +45,7 @@ class este.demos.app.todomvc.todos.View extends este.app.View
       '.edit': [goog.events.KeyCodes.ENTER, @bindModel @onEditEnd]
 
   ###*
-    @param {goog.events.BrowserEvent} e
+    @param {este.events.SubmitEvent} e
     @protected
   ###
   onNewTodoSubmit: (e) ->

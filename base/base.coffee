@@ -104,12 +104,12 @@ class este.Base extends goog.events.EventTarget
     @override
   ###
   dispatchEvent: (e) ->
-    result = goog.events.dispatchEvent @, e
-    return false if !result
+    result = super e
+    return result if !@parents_
     for parent in @getParents()
-      result = goog.events.dispatchEvent parent, e
-      return false if !result
-    true
+      parentResult = parent.dispatchEvent e
+      result = false if parentResult == false
+    result
 
   ###*
     @override

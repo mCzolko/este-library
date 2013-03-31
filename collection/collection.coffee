@@ -195,12 +195,17 @@ class este.Collection extends este.Base
       id == item.get '_cid'
 
   ###*
-    @param {{by: Function, compare: Function, reversed: boolean}=} options
+    @param {{
+      by: (Function|undefined),
+      compare: (Function|undefined),
+      reversed: (boolean|undefined)
+    }=} options
   ###
   sort: (options) ->
-    @sortBy = options.by if options?.by?
-    @sortCompare = options.compare if options?.compare?
-    @sortReversed = options.reversed if options?.reversed?
+    if options
+      @sortBy = options.by if options.by?
+      @sortCompare = options.compare if options.compare?
+      @sortReversed = options.reversed if options.reversed?
     @sortInternal()
     @dispatchSortEvent()
     return

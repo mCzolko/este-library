@@ -486,11 +486,9 @@ goog.scope ->
     @param {Element} el
   ###
   _.focus = (el) ->
-    setTimeout ->
-      try
-        el.focus()
-      catch e
-    , 0
+    try
+      el.focus()
+    catch e
 
   ###*
     Hack to force blur.

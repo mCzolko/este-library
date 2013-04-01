@@ -7,6 +7,7 @@ goog.provide 'este.dom'
 goog.require 'este.object'
 goog.require 'goog.array'
 goog.require 'goog.dom'
+goog.require 'goog.dom.classes'
 goog.require 'goog.dom.forms'
 goog.require 'goog.string'
 
@@ -522,9 +523,13 @@ goog.scope ->
     @param {Object} errors
   ###
   _.showErrorsOnForm = (form, errors) ->
+    for name, field of form.elements
+      goog.dom.classes.remove field, 'este-invalid'
     return if not errors
     error = errors[0]
     alert error.getMsg()
-    este.dom.focus form.elements[error.key]
+    invalidField = form.elements[error.key]
+    goog.dom.classes.add invalidField, 'este-invalid'
+    este.dom.focus invalidField
 
   return

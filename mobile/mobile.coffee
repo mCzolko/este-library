@@ -1,6 +1,8 @@
 goog.provide 'este.mobile'
 
 goog.require 'goog.dom'
+goog.require 'goog.events.FocusHandler'
+goog.require 'goog.style'
 goog.require 'goog.userAgent'
 goog.require 'goog.userAgent.platform'
 goog.require 'goog.userAgent.product.isVersion'
@@ -76,5 +78,37 @@ goog.scope ->
     link.rel = 'apple-touch-icon'
     link.href = url
     document.head.appendChild link
+
+  ###*
+    Based on jQuery Mobile fix for fixed headers. Refactored to fix all fixed
+    positioned elements.
+  ###
+  _.hideFixedPositionedOnFocus = ->
+    showTimer = undefined
+    hideTimer = undefined
+    isVisible = true
+    handler = new goog.events.FocusHandler document.body
+
+    toggleFixedDisplay = (shown) ->
+      for el in document.body.getElementsByTagName '*'
+        continue if goog.style.getComputedPosition(el) != 'fixed'
+        goog.style.setElementShown el, shown
+      return
+
+    goog.events.listen handler, ['focusin', 'focusout'], (e) ->
+      return if e.target.tagName not in ['INPUT', 'TEXTAREA', 'SELECT']
+      if e.type == 'focusout' && !isVisible
+        isVisible = true
+        clearTimeout hideTimer
+        showTimer = setTimeout ->
+          toggleFixedDisplay true
+        , 0
+      else if e.type == 'focusin' && !!isVisible
+        clearTimeout showTimer
+        isVisible = false
+        hideTimer = setTimeout ->
+          toggleFixedDisplay false
+        , 0
+      return
 
   return

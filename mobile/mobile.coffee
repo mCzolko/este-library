@@ -25,7 +25,6 @@ goog.scope ->
       window.scrollTo 0, 1
     , 0
 
-  # search source code to see usefullness :)
   if goog.userAgent.MOBILE
     _.tapEvent = 'touchstart'
   else

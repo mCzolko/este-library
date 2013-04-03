@@ -20,9 +20,8 @@ goog.scope ->
     window.scrollTo 0, 1
     if goog.dom.getDocumentScroll().y == 1
       _.defaultHomeScroll = 0
-
     setTimeout ->
-      window.scrollTo 0, 1
+      window.scrollTo 0, _.defaultHomeScroll
     , 0
 
   if goog.userAgent.MOBILE

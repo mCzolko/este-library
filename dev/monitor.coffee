@@ -2,8 +2,8 @@
   @fileoverview Dev monitor. Small console output at right bottom of screen.
   Useful for mobile development. It also shows total count of registered
   listeners. It's useful to see it and be sure, that app does not leak.
-  ex.
-    mlog 'foo'
+  Example (devlog element id, which is global as any other id)
+    devlog.innerHTML += '.'
 ###
 goog.provide 'este.dev.Monitor'
 goog.provide 'este.dev.Monitor.create'

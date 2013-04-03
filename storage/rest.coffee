@@ -102,3 +102,15 @@ class este.storage.Rest extends este.storage.Base
     goog.result.waitOnSuccess result, (array) ->
       collection.reset array
     result
+
+  ###*
+    @param {goog.result.Result} result
+    @return {XMLHttpRequest}
+  ###
+  getXhrFromResult: (result) ->
+    loop
+      results = result.getParentResults()
+      return null if !results || !results.length
+      result = results[0]
+      value = result.getValue()
+      return value if value instanceof XMLHttpRequest

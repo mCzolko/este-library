@@ -7,7 +7,7 @@ suite 'este.router.Route', ->
 
   setup ->
     setupTestData()
-    route = new Route '', (->), {}
+    route = new Route '/', (->), {}
 
   setupTestData = ->
     testData =
@@ -66,6 +66,10 @@ suite 'este.router.Route', ->
       'user/12.json':
         path: 'user/:id.:format?'
         params: id: '12', format: 'json'
+
+      '/':
+        path: '/'
+        params: null
 
   suite 'constructor', ->
     test 'should work', ->

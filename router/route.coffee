@@ -32,9 +32,10 @@ class este.router.Route
         value = '' if value == undefined
         regex = new RegExp "\\:#{key}"
         path = path.replace regex, value
-    path = path.slice 0, -1 if path.charAt(path.length - 1) == '?'
-    path = path.slice 0, -1 if path.charAt(path.length - 1) in ['/', '.']
-    # este.string.stripSlashHashPrefixes path
+    if path.charAt(path.length - 1) == '?'
+      path = path.slice 0, -1
+    if path.length > 1 && path.charAt(path.length - 1) in ['/', '.']
+      path = path.slice 0, -1
     path
 
   ###*

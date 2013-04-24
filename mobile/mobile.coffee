@@ -1,6 +1,7 @@
 goog.provide 'este.mobile'
 
 goog.require 'goog.dom'
+goog.require 'goog.dom.classes'
 goog.require 'goog.events.FocusHandler'
 goog.require 'goog.style'
 goog.require 'goog.userAgent'
@@ -91,5 +92,13 @@ goog.scope ->
           toggleFixedDisplay false
         , 0
       return
+
+  ###*
+    Propagate various useful features for mobile development.
+  ###
+  _.propagateFeatures = ->
+    html = document.documentElement
+    goog.dom.classes.enable html, 'este-device-mobile', goog.userAgent.MOBILE
+    goog.dom.classes.enable html, 'este-device-desktop', !goog.userAgent.MOBILE
 
   return

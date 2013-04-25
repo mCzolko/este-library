@@ -15,7 +15,7 @@ class este.app.screen.OneView extends este.app.screen.Base
     super()
 
   ###*
-    @type {Element}
+    @type {este.app.View}
     @protected
   ###
   previous: null
@@ -23,8 +23,20 @@ class este.app.screen.OneView extends este.app.screen.Base
   ###*
     @override
   ###
-  show: (el) ->
-    @getElement().removeChild @previous if @previous
-    @previous = el
-    @getElement().appendChild el
+  show: (view) ->
+    if view.getElement()
+      # view el have to be in screen element, to ensure the same behaviour as
+      # in view render. Then, css computations will return same results.
+      @getElement().appendChild view.getElement()
+      view.enterDocument()
+    else
+      view.render @getElement()
+    if @previous
+      @dom_.removeNode @previous.getElement()
+    @previous = view
 
+  ###*
+    @override
+  ###
+  hide: (view) ->
+    view.exitDocument()

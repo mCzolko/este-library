@@ -15,6 +15,11 @@ class este.app.screen.Base extends este.ui.Component
     super()
 
   ###*
-    @param {Element} el
+    @param {este.app.View} view
   ###
   show: goog.abstractMethod
+
+  ###*
+    @param {este.app.View} view
+  ###
+  hide: goog.abstractMethod

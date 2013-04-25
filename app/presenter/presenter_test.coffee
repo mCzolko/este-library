@@ -5,7 +5,6 @@ suite 'este.app.Presenter', ->
   presenter = null
   createUrl = null
   redirect = null
-  screenEl = null
   screen = null
   view = null
   storage = null
@@ -16,10 +15,9 @@ suite 'este.app.Presenter', ->
     redirect = ->
     presenter.createUrl = createUrl
     presenter.redirect = redirect
-    screenEl = document.createElement 'div'
     screen =
-      getElement: -> screenEl
       show: ->
+      hide: ->
       dispose: ->
     view =
       element: null
@@ -46,37 +44,17 @@ suite 'este.app.Presenter', ->
       assert.equal result.getState(), goog.result.Result.State.SUCCESS
 
   suite 'show', ->
-    suite 'first call', ->
-      test 'should call view.render then screen.show etc.', ->
-        calls = ''
-        view.render = (parentElement) ->
-          assert.equal view.createUrl, createUrl
-          assert.equal view.redirect, redirect
-          assert.equal parentElement, screenEl
-          calls += 'r'
-        screen.show = (el) ->
-          assert.equal el, view.getElement()
-          calls += 's'
-        presenter.show()
-        assert.equal calls, 'rs'
-
-    suite 'second call', ->
-      test 'should call view.enterDocument then screen.show etc.', ->
-        calls = ''
-        presenter.show()
-        view.enterDocument = ->
-          assert.equal view.createUrl, createUrl
-          assert.equal view.redirect, redirect
-          calls += 'e'
-        screen.show = (el) ->
-          assert.equal el, view.getElement()
-          calls += 's'
-        presenter.show()
-        assert.equal calls, 'es'
+    test 'should call screen show', (done) ->
+      screen.show = (view) ->
+        assert.equal view, presenter.view
+        done()
+      presenter.show()
 
   suite 'hide', ->
-    test 'should call view exitDocument', (done) ->
-      view.exitDocument = -> done()
+    test 'should call screen hide', (done) ->
+      screen.hide = (view) ->
+        assert.equal view, presenter.view
+        done()
       presenter.hide()
 
   suite 'dispose', ->

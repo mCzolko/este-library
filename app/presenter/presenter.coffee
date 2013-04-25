@@ -77,20 +77,13 @@ class este.app.Presenter extends este.Base
     return if !@view
     @view.createUrl = @createUrl
     @view.redirect = @redirect
-    if @view.getElement()
-      # view el have to be in screen element, to ensure the same behaviour as
-      # in view render. Then, css computations will return same results.
-      @screen.getElement().appendChild @view.getElement()
-      @view.enterDocument()
-    else
-      @view.render @screen.getElement()
-    @screen.show @view.getElement()
+    @screen.show @view
 
   ###*
-    Called by este.App when another presenter is shown.
+    Called by este.App when next presenter is going to be shown.
   ###
   hide: ->
-    @view.exitDocument()
+    @screen.hide @view
 
   ###*
     @override

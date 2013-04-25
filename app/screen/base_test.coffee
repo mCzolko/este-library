@@ -12,8 +12,15 @@ suite 'este.app.screen.Base', ->
       assert.instanceOf base, Base
 
   suite 'show', ->
-    test 'should do something', (done) ->
+    test 'should throw exception', (done) ->
       try
         base.show()
+      catch e
+        done()
+
+  suite 'hide', ->
+    test 'should throw exception', (done) ->
+      try
+        base.hide()
       catch e
         done()

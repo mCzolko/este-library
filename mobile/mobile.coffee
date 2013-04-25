@@ -98,7 +98,9 @@ goog.scope ->
   ###
   _.propagateFeatures = ->
     html = document.documentElement
-    goog.dom.classes.enable html, 'este-device-mobile', goog.userAgent.MOBILE
-    goog.dom.classes.enable html, 'este-device-desktop', !goog.userAgent.MOBILE
+    # CSS :hover works well only on desktop, so use .este-mobile-disabled &
+    # stylus parent reference for :hover pseudos.
+    goog.dom.classes.enable html, 'este-mobile-enabled', goog.userAgent.MOBILE
+    goog.dom.classes.enable html, 'este-mobile-disabled', !goog.userAgent.MOBILE
 
   return

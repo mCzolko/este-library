@@ -12,7 +12,9 @@
       tap
       submit
 
-  TODO: off does not work for delegated listeners
+  TODO:
+    off does not work for delegated listeners
+    on(el, type, fn) should use submit, tap, etc. too
 
 ###
 goog.provide 'este.ui.Component'
@@ -246,6 +248,7 @@ class este.ui.Component extends goog.ui.Component
     matcher = @createSelectorMatcher selector
     target = goog.dom.getAncestor e.target, matcher, true
     return if !target
+    e.originTarget = e.target
     e.target = target
     fn.call @, e
 

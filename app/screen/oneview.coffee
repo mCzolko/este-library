@@ -1,5 +1,8 @@
 ###*
-  @fileoverview este.app.screen.OneView.
+  @fileoverview Simple view manager. It just switch view's elements without
+  fancy animation. This is useful for old mobile devices, where fx is slow
+  and overflow needs JS touch workaround. Therefore, use only simple web/app
+  design.
 ###
 goog.provide 'este.app.screen.OneView'
 
@@ -24,26 +27,10 @@ class este.app.screen.OneView extends este.app.screen.Base
     @override
   ###
   show: (view) ->
-    if view.getElement()
-      # view el have to be in screen element, to ensure the same behaviour as
-      # in view render. Then, css computations will return same results.
-      @getElement().appendChild view.getElement()
-      view.enterDocument()
-    else
-      view.render @getElement()
-    if @previous
-      @dom_.removeNode @previous.getElement()
-    @previous = view
-    ###
-      Notes
-        Iphone needs explicit window.scrollTo 0, 0 to reset actual scroll. Ipad
-        is ok. Both iphone and ipad needs setTimeout 0 for window.scrollTo, to
-        prevent ugly scroll jumps and fixed positioned elements flickering.
-        TODO: what about android approch from este mobile?
-    ###
-    setTimeout =>
-      window.scrollTo 0, 0
-    , 0
+    @lazyRenderView view
+    @removePreviousView()
+    @setView view
+    @scrollTo 0, 0
 
   ###*
     @override

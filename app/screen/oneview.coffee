@@ -34,6 +34,16 @@ class este.app.screen.OneView extends este.app.screen.Base
     if @previous
       @dom_.removeNode @previous.getElement()
     @previous = view
+    ###
+      Notes
+        Iphone needs explicit window.scrollTo 0, 0 to reset actual scroll. Ipad
+        is ok. Both iphone and ipad needs setTimeout 0 for window.scrollTo, to
+        prevent ugly scroll jumps and fixed positioned elements flickering.
+        TODO: what about android approch from este mobile?
+    ###
+    setTimeout =>
+      window.scrollTo 0, 0
+    , 0
 
   ###*
     @override

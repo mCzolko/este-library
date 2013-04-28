@@ -36,6 +36,20 @@ class este.events.TapHandler extends este.Base
     TAP: 'tap'
 
   ###*
+    TapHandler needs to know scrollable elements to listen its scroll and
+    prevent tap dispatching on scroll momentum. Very useful feature. OneView
+    screen uses only body element. FxView will have to add all its srollable
+    views.
+    @param {Element} element
+  ###
+  @addScrollable: (element) ->
+    if element.tagName == 'BODY'
+      window = goog.dom.getWindow element.ownerDocument
+      TapHandler.scrollables.push window
+      return
+    TapHandler.scrollables.push element
+
+  ###*
     Touchstart on iOS<5 slowdown native scrolling, 4.3.2 does not fire
     touchstart on search input field etc..., so that's why iOS5 is required.
     @return {boolean}
@@ -60,6 +74,12 @@ class este.events.TapHandler extends este.Base
     # IOS4 bug: touch events are fired on text nodes
     target = target.parentNode if target.nodeType == 3
     target
+
+  ###*
+    @type {Array.<Element|Window>}
+    @protected
+  ###
+  @scrollables: []
 
   ###*
     @type {number}
@@ -107,18 +127,8 @@ class este.events.TapHandler extends este.Base
   registerEvents: ->
     if @touchSupported
       @on @element, 'touchstart', @onTouchStart
-      @on @getScrollObject(), 'scroll', @onScroll
     else
       @on @element, 'click', @onClick
-
-  ###*
-    @protected
-  ###
-  getScrollObject: ->
-    if @element.tagName == 'BODY'
-      goog.dom.getWindow @element.ownerDocument
-    else
-      @element
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -127,8 +137,21 @@ class este.events.TapHandler extends este.Base
   onTouchStart: (e) ->
     @coordinate = TapHandler.getTouchClients e
     @scrolled = false
+    @enableScrollEvents true
     @enableTouchMoveEndEvents true
     @dispatchTapEvent TapHandler.EventType.START, e.target
+
+  ###*
+    @param {boolean} enable
+    @protected
+  ###
+  enableScrollEvents: (enable) ->
+    for scrollable in TapHandler.scrollables
+      if enable
+        @on scrollable, 'scroll', @onScroll
+      else
+        @off scrollable, 'scroll', @onScroll
+    return
 
   ###*
     @param {boolean} enable
@@ -168,6 +191,7 @@ class este.events.TapHandler extends este.Base
     return if distance < @touchMoveSnap
     @dispatchTapEvent TapHandler.EventType.END, e.target
     @enableTouchMoveEndEvents false
+    @enableScrollEvents false
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -178,6 +202,7 @@ class este.events.TapHandler extends este.Base
     @enableTouchMoveEndEvents false
     setTimeout =>
       @dispatchTapEvent TapHandler.EventType.END, target
+      @enableScrollEvents false
       return if @scrolled
       @dispatchTapEvent TapHandler.EventType.TAP, target
     , @touchEndTimeout

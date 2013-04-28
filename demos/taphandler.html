@@ -3,6 +3,14 @@
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
   <title>este.events.TapHandler</title>
+  <style>
+    .row {
+      background-color: #eee;
+      border-bottom: solid 1px #ccc;
+      margin: 0;
+      padding: .5em;
+    }
+  </style>
   <script src='../../closure-library/closure/goog/base.js'></script>
   <script src='../../../client/deps.js'></script>
   <script>
@@ -16,35 +24,39 @@
   <p>Just list of paragraphs to have scrollable content.</p>
   <p>On desktop, nothing interesting. On mobile, it enables tap event, which is
     faster then click. TapHandler handles scrolled content, which is quite
-    unique feature.</p>
+    unique feature. Try fast scroll then stop scroll momentum. If should not
+    show alert, because scroll momentum is detected.
+  </p>
   <script>
-    for(var i = 0; i < 100; i++) {
-      var p = document.createElement('p')
-      p.innerHTML = i
-      document.body.appendChild(p)
-    }
+    for(var i = 0; i < 200; i++) {
+      var p = document.createElement('p');
+      p.className = 'row';
+      p.innerHTML = i;
+      document.body.appendChild(p);
+    };
 
-    este.dev.Monitor.create()
+    este.dev.Monitor.create();
 
-    var handler = new este.events.TapHandler(document.body)
+    var handler = new este.events.TapHandler(document.body);
+    este.events.TapHandler.addScrollable(document.body);
 
     goog.events.listen(handler, 'start', function(e) {
-      console.log('start')
-    })
+      console.log('start');
+    });
     goog.events.listen(handler, 'end', function(e) {
-      console.log('end')
-    })
+      console.log('end');
+    });
     goog.events.listen(handler, 'tap', function(e) {
-      console.log('tap')
+      console.log('tap');
       if (e.target.tagName != 'P')
-        return
-      alert(e.target.innerHTML)
-    })
+        return;
+      alert(e.target.innerHTML);
+    });
 
-    var disposeBtn = document.getElementById('dispose')
+    var disposeBtn = document.getElementById('dispose');
     goog.events.listenOnce(disposeBtn, 'click', function() {
-      handler.dispose()
-    })
+      handler.dispose();
+    });
 
   </script>
 </body>

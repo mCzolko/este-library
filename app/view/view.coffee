@@ -4,6 +4,7 @@
 goog.provide 'este.app.View'
 
 goog.require 'este.ui.View'
+goog.require 'goog.dom.classes'
 
 class este.app.View extends este.ui.View
 
@@ -15,6 +16,11 @@ class este.app.View extends este.ui.View
     super()
 
   ###*
+    @type {string}
+  ###
+  className: ''
+
+  ###*
     @type {Function}
   ###
   createUrl: null
@@ -23,3 +29,12 @@ class este.app.View extends este.ui.View
     @type {Function}
   ###
   redirect: null
+
+  ###*
+    @override
+  ###
+  createDom: ->
+    super()
+    if @className
+      goog.dom.classes.add @getElement(), @className
+    return

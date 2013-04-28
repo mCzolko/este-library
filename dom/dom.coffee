@@ -524,12 +524,12 @@ goog.scope ->
   ###
   _.showErrorsOnForm = (form, errors) ->
     for name, field of form.elements
-      goog.dom.classes.remove field, 'este-invalid'
+      goog.dom.classes.remove field, 'e-invalid'
     return if not errors
     error = errors[0]
     alert error.getMsg()
     invalidField = form.elements[error.key]
-    goog.dom.classes.add invalidField, 'este-invalid'
+    goog.dom.classes.add invalidField, 'e-invalid'
     este.dom.focus invalidField
 
   return

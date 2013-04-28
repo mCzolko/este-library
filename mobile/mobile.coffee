@@ -17,6 +17,8 @@ goog.scope ->
   ###
   _.defaultHomeScroll = 1
 
+  # This method only make sense, if default content is bigger than screen
+  # height, address bar height included.
   # See songary @media screen orientations, hardcoded sizes should ensure that
   # address bar can be always hidden.
   _.hideAddressBar = ->
@@ -97,13 +99,20 @@ goog.scope ->
   ###*
     Propagate various useful features for mobile development.
   ###
-  _.propagateFeatures = ->
-    html = document.documentElement
+  _.propagateDevices = ->
     enable = goog.dom.classes.enable
-    # CSS :hover works well only on desktop, so use .este-mobile-disabled &
-    # stylus parent reference for :hover pseudos.
-    enable html, 'este-mobile-enabled', goog.userAgent.MOBILE
-    enable html, 'este-mobile-disabled', !goog.userAgent.MOBILE
-    enable html, 'este-mobile-iphone', goog.labs.userAgent.platform.isIphone()
+    html = document.documentElement
+    enable html, 'e-mobile', goog.userAgent.MOBILE
+    enable html, 'e-desktop', !goog.userAgent.MOBILE
+    enable html, 'e-mobile-iphone', goog.labs.userAgent.platform.isIphone()
+
+  ###
+    Default mobile support behaviour.
+  ###
+  _.init = ->
+    este.mobile.propagateDevices()
+    return if !goog.userAgent.MOBILE
+    este.mobile.hideAddressBar()
+    este.mobile.hideFixedPositionedOnFocus()
 
   return

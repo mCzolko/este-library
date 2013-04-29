@@ -89,7 +89,7 @@ class este.mobile.Hover extends este.Base
     @protected
   ###
   handlePrevious: (target) ->
-    @removeHoverState target if @previous
+    @removeHoverState @previous
     @previous = target
 
   ###*
@@ -132,6 +132,7 @@ class este.mobile.Hover extends este.Base
   ###
   removeHoverState: (target) ->
     clearTimeout @hoverScrollTimeout
+    return if !target
     goog.dom.classes.remove target, 'e-hover', 'e-hover-scroll'
 
   ###*

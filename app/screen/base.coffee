@@ -25,6 +25,18 @@ class este.app.screen.Base extends este.ui.Component
   hide: goog.abstractMethod
 
   ###*
+    @type {este.app.View}
+    @protected
+  ###
+  previous: null
+
+  ###*
+    @type {este.app.View}
+    @protected
+  ###
+  current: null
+
+  ###*
     @param {este.app.View} view
     @protected
   ###
@@ -49,8 +61,15 @@ class este.app.screen.Base extends este.ui.Component
     @param {este.app.View} view
     @protected
   ###
-  setView: (view) ->
+  setPreviousView: (view) ->
     @previous = view
+
+  ###*
+    @param {este.app.View} view
+    @protected
+  ###
+  setCurrentView: (view) ->
+    @current = view
     @getElement().setAttribute 'e-active-view', view.className
 
   ###*

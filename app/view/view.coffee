@@ -31,6 +31,11 @@ class este.app.View extends este.ui.View
   redirect: null
 
   ###*
+    @type {goog.math.Coordinate}
+  ###
+  scroll: null
+
+  ###*
     @override
   ###
   createDom: ->

@@ -8,6 +8,7 @@ goog.provide 'este.app.screen.OneView'
 
 goog.require 'este.app.screen.Base'
 goog.require 'este.events.TapHandler'
+goog.require 'goog.dom.classes'
 
 class este.app.screen.OneView extends este.app.screen.Base
 
@@ -19,6 +20,7 @@ class este.app.screen.OneView extends este.app.screen.Base
     super()
     # with OneView, only body/window has to be scrollable
     este.events.TapHandler.addScrollable document.body
+    goog.dom.classes.add document.documentElement, 'e-screen-oneview'
 
   ###*
     @type {este.app.View}

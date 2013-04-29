@@ -35,6 +35,6 @@ class este.app.View extends este.ui.View
   ###
   createDom: ->
     super()
-    if @className
-      goog.dom.classes.add @getElement(), @className
+    goog.dom.classes.add @getElement(), 'e-app-view'
+    goog.dom.classes.add @getElement(), @className if @className
     return

@@ -1,0 +1,16 @@
+// ensures that este.mobile.hideAddressBar will
+mobile()
+  @media screen and (orientation: portrait) {
+    body { min-height: 420px; }
+  }
+
+  @media screen and (orientation: landscape) {
+    body { min-height: 300px; }
+  }
+
+  *
+    // http://stackoverflow.com/questions/3516173/ipad-safari-how-to-disable-the-quick-blinking-effect-when-a-link-has-been-hit
+    -webkit-tap-highlight-color rgba(0,0,0,0)
+
+
+

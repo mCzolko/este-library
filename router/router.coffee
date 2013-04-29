@@ -6,8 +6,10 @@
   Navigation element is any element with 'href' attribute. Not only anchor, but
   li or tr too. Of course only <a href='..'s are crawable with search engines.
   But if we are creating pure client side rendered web app, we can use 'href'
-  attribute on any element we need. We can even nest anchors, which is useful
+  attribute on any element we need. We can even nest 'anchors', which is useful
   for touch devices.
+  To bypass internal navigation, use 'e-ignore' attribute on anchor, or full
+  qualified path, e.g. with http(s):// prefix.
 ###
 goog.provide 'este.Router'
 

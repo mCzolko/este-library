@@ -128,7 +128,7 @@ class este.events.TapHandler extends este.Base
     if @touchSupported
       @on @element, 'touchstart', @onTouchStart
     else
-      @on @element, 'click', @onClick
+      @on @element, ['mousedown', 'mouseup', 'click'], @onMouseAction
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -218,7 +218,11 @@ class este.events.TapHandler extends este.Base
     @param {goog.events.BrowserEvent} e
     @protected
   ###
-  onClick: (e) ->
-    @dispatchTapEvent TapHandler.EventType.START, e.target
-    @dispatchTapEvent TapHandler.EventType.END, e.target
-    @dispatchTapEvent TapHandler.EventType.TAP, e.target, e
+  onMouseAction: (e) ->
+    switch e.type
+      when 'mousedown'
+        @dispatchTapEvent TapHandler.EventType.START, e.target
+      when 'mouseup'
+        @dispatchTapEvent TapHandler.EventType.END, e.target
+      when 'click'
+        @dispatchTapEvent TapHandler.EventType.TAP, e.target, e

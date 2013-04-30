@@ -1,5 +1,18 @@
 ###*
-  @fileoverview este.App.
+  @fileoverview Este MVC applications.
+  - routing with views
+  - sitemap defined in one place, URL's are not hardcored in source code
+  - scrolling on history, same behaviour as native browser has
+  - awesome pending navigation with UI blocking rendering until data is loaded
+  - forget about low-level XHR, use este.storage.Local|Rest storages instead
+  - mobile and desktop ready, write one app for all devices
+    - este.events.TapHandler facade for touch and mouse based devices
+    - este.app.screen.* with graceful degradation for old iPhones and Androids
+  - the fastest template rendering via Closure Templates
+  - unique mergeHtml which does partial innerHTML update out of the box
+  - powerfull events delegation
+  - and much more :)
+
   @see ../demos/app/layout/index.html
   @see ../demos/app/simple/index.html
   @see ../demos/app/todomvc/index.html

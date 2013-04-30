@@ -56,8 +56,10 @@ class este.app.screen.OneView extends este.app.screen.Base
     @override
   ###
   show: (view) ->
-    @lazyRenderView view
+    # It is important to remove previous view first, because view going to be
+    # shown could be the same view which was removed. /foo?someParam=xy.
     @removePreviousView()
+    @lazyRenderView view
     @setCurrentView view
     @rememberPreviousView view
     @updateScroll view

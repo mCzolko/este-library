@@ -61,16 +61,16 @@ class este.app.screen.Base extends este.ui.Component
     @param {este.app.View} view
     @protected
   ###
-  setPreviousView: (view) ->
-    @previous = view
+  setCurrentView: (view) ->
+    @current = view
+    @getElement().setAttribute 'e-active-view', view.className
 
   ###*
     @param {este.app.View} view
     @protected
   ###
-  setCurrentView: (view) ->
-    @current = view
-    @getElement().setAttribute 'e-active-view', view.className
+  rememberPreviousView: (view) ->
+    @previous = view
 
   ###*
     Iphone needs explicit window.scrollTo 0, 0 to reset actual scroll. Ipad

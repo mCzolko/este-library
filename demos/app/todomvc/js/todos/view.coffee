@@ -89,7 +89,7 @@ class este.demos.app.todomvc.todos.View extends este.app.View
   onLabelDblclick: (model, el) ->
     model.set 'editing', true
     edit = el.querySelector '.edit'
-    este.dom.focus edit
+    este.dom.focusWithZeroTimeout edit
 
   ###*
     @param {este.demos.app.todomvc.todo.Model} model

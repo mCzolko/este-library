@@ -45,8 +45,8 @@ suite 'este.App', ->
           result.setValue params
         , 8
       result
-    presenterClass::show = ->
-    presenterClass::hide = ->
+    presenterClass::beforeShow = ->
+    presenterClass::beforeHide = ->
     presenterClass::dispose = ->
     new presenterClass
 
@@ -118,7 +118,7 @@ suite 'este.App', ->
           este.result.ok()
         app.start()
 
-      test 'should dispatch show event then call show', (done) ->
+      test 'should dispatch show event then call beforeShow', (done) ->
         showDispatched = false
         goog.events.listen app, 'show', (e) ->
           jsonA = JSON.stringify e.request
@@ -128,7 +128,7 @@ suite 'este.App', ->
             isNavigation: false
           assert.equal jsonA, jsonB
           showDispatched = true
-        presenter0.show = ->
+        presenter0.beforeShow = ->
           assert.isTrue showDispatched
           done()
           este.result.ok()
@@ -138,16 +138,16 @@ suite 'este.App', ->
       setup ->
         app.start()
 
-      test 'routes[0] should show presenter0', (done) ->
-        presenter0.show = -> done()
+      test 'routes[0] should beforeShow presenter0', (done) ->
+        presenter0.beforeShow = -> done()
         router.routes[0].callback()
 
-      test 'routes[1] should show presenter1', (done) ->
-        presenter1.show = -> done()
+      test 'routes[1] should beforeShow presenter1', (done) ->
+        presenter1.beforeShow = -> done()
         router.routes[1].callback()
 
-      test 'routes[2] should show presenter2', (done) ->
-        presenter2.show = -> done()
+      test 'routes[2] should beforeShow presenter2', (done) ->
+        presenter2.beforeShow = -> done()
         router.routes[2].callback()
 
   suite 'last click win', ->
@@ -156,25 +156,25 @@ suite 'este.App', ->
 
     suite 'presenter1 loaded twice', ->
       test 'should be fired once', (done) ->
-        presenter1.show = -> done()
+        presenter1.beforeShow = -> done()
         router.routes[1].callback()
         setTimeout ->
           router.routes[1].callback()
         , 4
 
     suite 'presenter1, then presenter2', ->
-      test 'should call only presenter2.show', (done) ->
-        presenter1.show = -> throw Error 'error'
-        presenter2.show = -> done()
+      test 'should call only presenter2.beforeShow', (done) ->
+        presenter1.beforeShow = -> throw Error 'error'
+        presenter2.beforeShow = -> done()
         router.routes[1].callback()
         setTimeout ->
           router.routes[2].callback()
         , 4
 
     suite 'presenter1, then presenter2, then presenter1', ->
-      test 'should call only presenter1.show', (done) ->
-        presenter1.show = -> done()
-        presenter2.show = -> throw Error 'error'
+      test 'should call only presenter1.beforeShow', (done) ->
+        presenter1.beforeShow = -> done()
+        presenter2.beforeShow = -> throw Error 'error'
         router.routes[1].callback()
         setTimeout ->
           router.routes[2].callback()
@@ -184,7 +184,7 @@ suite 'este.App', ->
         , 4
 
   suite 'show/hide logic', ->
-    test 'should dispatch hide event then call presenter1 hide', (done) ->
+    test 'should dispatch hide event then call presenter1 beforeHide', (done) ->
       app.start()
       hideDispatched = false
       goog.events.listen app, 'hide', (e) ->
@@ -195,7 +195,7 @@ suite 'este.App', ->
           isNavigation: false
         assert.equal jsonA, jsonB
         hideDispatched = true
-      presenter0.hide = ->
+      presenter0.beforeHide = ->
         assert.isTrue hideDispatched
         done()
       router.routes[1].callback()

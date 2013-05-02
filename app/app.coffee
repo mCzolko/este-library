@@ -32,11 +32,12 @@ goog.require 'este.router.Route'
 class este.App extends este.Base
 
   ###*
-    @param {este.Router=} router
+    @param {este.Router} router
+    @param {este.app.screen.Base} screen
     @constructor
     @extends {este.Base}
   ###
-  constructor: (@router = null) ->
+  constructor: (@router, @screen) ->
     super()
     @queue = new este.app.request.Queue
     @routesInternal = []
@@ -65,7 +66,14 @@ class este.App extends este.Base
   storage: null
 
   ###*
+    @type {este.Router}
+    @protected
+  ###
+  router: null
+
+  ###*
     @type {este.app.screen.Base}
+    @protected
   ###
   screen: null
 
@@ -74,12 +82,6 @@ class este.App extends este.Base
     @protected
   ###
   queue: null
-
-  ###*
-    @type {este.Router}
-    @protected
-  ###
-  router: null
 
   ###*
     @type {este.app.Request}
@@ -194,6 +196,7 @@ class este.App extends este.Base
     @protected
   ###
   load: (presenter, params, isNavigation) ->
+    # console.log isNavigation
     request = new este.app.Request presenter, params, isNavigation
     @dispatchAppEvent App.EventType.LOAD, request
     result = presenter.load params
@@ -208,7 +211,7 @@ class este.App extends este.Base
     return if !@queue.dequeue request
     @hidePreviousIfAny request
     @dispatchAppEvent App.EventType.SHOW, request
-    request.presenter.show()
+    request.presenter.beforeShow request.isNavigation
     @updateLocation request
 
   ###*
@@ -218,7 +221,7 @@ class este.App extends este.Base
   hidePreviousIfAny: (request) ->
     if @lastSuccessRequest
       @dispatchAppEvent App.EventType.HIDE, @lastSuccessRequest
-      @lastSuccessRequest.presenter.hide()
+      @lastSuccessRequest.presenter.beforeHide()
     @lastSuccessRequest = request
 
   ###*
@@ -233,7 +236,8 @@ class este.App extends este.Base
     return if !@urlProjectionEnabled || request.isNavigation
     route = @findRouteByPresenter request.presenter
     path = route.path
-    @router.pathNavigate path, request.params, true if path
+    return if !path
+    @router.pathNavigate path, request.params, true
 
   ###*
     @param {este.App.EventType} type

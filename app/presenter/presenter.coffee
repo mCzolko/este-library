@@ -72,18 +72,33 @@ class este.app.Presenter extends este.Base
 
   ###*
     Called If load were successful and not canceled.
+    @param {boolean} isNavigation
   ###
-  show: ->
+  beforeShow: (isNavigation) ->
     return if !@view
     @view.createUrl = @createUrl
     @view.redirect = @redirect
-    @screen.show @view
+    @show()
+    @screen.show @view, isNavigation
+
+  ###*
+    You can use this method to pass data into view or start watching view model
+    events.
+    @protected
+  ###
+  show: ->
 
   ###*
     Called by este.App when next presenter is going to be shown.
   ###
-  hide: ->
+  beforeHide: ->
+    @hide()
     @screen.hide @view
+
+  ###*
+    @protected
+  ###
+  hide: ->
 
   ###*
     @override

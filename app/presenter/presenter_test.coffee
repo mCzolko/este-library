@@ -43,19 +43,19 @@ suite 'este.app.Presenter', ->
       result = presenter.load()
       assert.equal result.getState(), goog.result.Result.State.SUCCESS
 
-  suite 'show', ->
+  suite 'beforeShow', ->
     test 'should call screen show', (done) ->
       screen.show = (view) ->
         assert.equal view, presenter.view
         done()
-      presenter.show()
+      presenter.beforeShow()
 
-  suite 'hide', ->
+  suite 'beforeHide', ->
     test 'should call screen hide', (done) ->
       screen.hide = (view) ->
         assert.equal view, presenter.view
         done()
-      presenter.hide()
+      presenter.beforeHide()
 
   suite 'dispose', ->
     test 'should dispose view', (done) ->

@@ -27,8 +27,6 @@ este.app.create = (element, arg = true) ->
 
   element = goog.dom.getElement element
   router = este.router.create element, options.forceHash
-  app = new este.App router
   screen = este.app.screen.create options.scrollingOnHistory
   screen.decorate element
-  app.screen = screen
-  app
+  new este.App router, screen

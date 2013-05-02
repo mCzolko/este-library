@@ -115,4 +115,14 @@ goog.scope ->
     este.mobile.hideAddressBar()
     este.mobile.hideFixedPositionedOnFocus()
 
+  ###
+    Cross-device history back.
+  ###
+  _.back = ->
+    # use PhoneGap if available
+    if window.navigator['app']?['backHistory']
+      window.navigator['app']['backHistory']()
+      return
+    window.history.back()
+
   return

@@ -15,7 +15,20 @@ class este.app.screen.Base extends este.ui.Component
     super()
 
   ###*
+    @type {este.app.View}
+    @protected
+  ###
+  previousView: null
+
+  ###*
+    @type {este.app.View}
+    @protected
+  ###
+  currentView: null
+
+  ###*
     @param {este.app.View} view
+    @param {boolean} isNavigation
   ###
   show: goog.abstractMethod
 
@@ -25,52 +38,38 @@ class este.app.screen.Base extends este.ui.Component
   hide: goog.abstractMethod
 
   ###*
-    @type {este.app.View}
-    @protected
-  ###
-  previous: null
-
-  ###*
-    @type {este.app.View}
-    @protected
-  ###
-  current: null
-
-  ###*
-    @param {este.app.View} view
-    @protected
-  ###
-  lazyRenderView: (view) ->
-    if view.getElement()
-      # view el have to be in screen element, to ensure the same behaviour as
-      # in view render. Then, css computations will return same results.
-      @getElement().appendChild view.getElement()
-      view.enterDocument()
-    else
-      view.render @getElement()
-    return
-
-  ###*
     @protected
   ###
   removePreviousView: ->
-    return if !@previous
-    @dom_.removeNode @previous.getElement()
+    return if !@previousView
+    @dom_.removeNode @previousView.getElement()
 
   ###*
     @param {este.app.View} view
     @protected
   ###
   setCurrentView: (view) ->
-    @current = view
-    @getElement().setAttribute 'e-active-view', view.className
+    @currentView = view
+    @getElement().setAttribute 'e-active-view', @currentView.className
 
   ###*
-    @param {este.app.View} view
     @protected
   ###
-  rememberPreviousView: (view) ->
-    @previous = view
+  lazyRenderView: ->
+    if @currentView.getElement()
+      # view el have to be in screen element, to ensure the same behaviour as
+      # in view render. Then, css computations will return same results.
+      @getElement().appendChild @currentView.getElement()
+      @currentView.enterDocument()
+    else
+      @currentView.render @getElement()
+    return
+
+  ###*
+    @protected
+  ###
+  rememberPreviousView: ->
+    @previousView = @currentView
 
   ###*
     Iphone needs explicit window.scrollTo 0, 0 to reset actual scroll. Ipad

@@ -49,44 +49,42 @@ class este.app.screen.OneView extends este.app.screen.Base
     @protected
   ###
   onWindowScroll: (e) ->
-    return if !@current
-    @current.scroll = goog.dom.getDocumentScroll()
+    return if !@currentView
+    @currentView.scroll = goog.dom.getDocumentScroll()
 
   ###*
-    @override
-  ###
-  show: (view) ->
-    # It is important to remove previous view first, because view going to be
-    # shown could be the same view which was removed. /foo?someParam=xy.
-    @removePreviousView()
-    @lazyRenderView view
-    @setCurrentView view
-    @rememberPreviousView view
-    @updateScroll view
-    # if navigation change or enforced back button via attribute
-
-  ###*
-    @param {este.app.View} view
+    @param {boolean} isNavigation
     @protected
   ###
-  updateScroll: (view) ->
+  updateScroll: (isNavigation) ->
     # TODO: check on real iphone and ipad
     # If the document body is the main scroll element then you will need to
     # update the scroll position at the moment you are flipping screens. Get
     # this wrong and you see a visual jump on the old screen.
     # https://medium.com/joys-of-javascript/4353246f4480
     update = =>
-      if view.scroll
-        window.scrollTo view.scroll.x, view.scroll.y
+      if isNavigation && @currentView.scroll
+        window.scrollTo @currentView.scroll.x, @currentView.scroll.y
       else
         @scrollTo 0, 0
     if goog.userAgent.MOBILE
-      # ios 6.1 needs timeout to prevent flickering
-      # it still flick, but less :(
+      # iOS needs timeout to less flickering
       setTimeout update, 0
     else
       # mac Chrome needs immediate update to prevent scroll flickering
       update()
+
+  ###*
+    @override
+  ###
+  show: (view, isNavigation) ->
+    # It is important to remove previous view first, because view going to be
+    # shown could be the same view which was removed. /foo?someParam=xy.
+    @removePreviousView()
+    @setCurrentView view
+    @lazyRenderView()
+    @rememberPreviousView()
+    @updateScroll isNavigation
 
   ###*
     @override

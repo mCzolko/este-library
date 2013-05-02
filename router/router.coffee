@@ -1,21 +1,39 @@
 ###*
-  @fileoverview este.Router.
+  @fileoverview Listen tap event on any element with href attribute. Prevents
+  default anchor behaviour, and uses AJAX navigation instead. Both hashchange
+  and pushState is supported.
+
+  Examples
+    hashchange anchor
+      <a href='#/'>
+        There has to be slash on end, to prevent scroll jump, if element with
+        id equals href is in document, which is default browser behaviour.
+    pushState anchor
+      <a href='/'>
+    ajax back button
+      <a e-back-button href='#/home'>
+        In many native-like apps, we want to have back button. Imagine some
+        detail view, /products/123, which can be pointed from several other
+        urls. e-back-button will call history.back(). But there is one catch.
+        What if /products/123 is shown as first page. Should e-back-button
+        redirect browser to previous site? No. App back button should redirect
+        only into app. este.Router in such case will use default anchor href.
+        This patter could be called 'app back button'.
+    classic link, ignored by router
+      just add scheme
+        <a href='http(s)://...'>
+      or e-ignore attribute
+        <a e-ignore href='/foo'
+
   @see ../demos/routerhash.html
   @see ../demos/routerhtml5.html
-
-  Navigation element is any element with 'href' attribute. Not only anchor, but
-  li or tr too. Of course only <a href='..'s are crawable with search engines.
-  But if we are creating pure client side rendered web app, we can use 'href'
-  attribute on any element we need. We can even nest 'anchors', which is useful
-  for touch devices.
-  To bypass internal navigation, use 'e-ignore' attribute on anchor, or full
-  qualified path, e.g. with http(s):// prefix.
 ###
 goog.provide 'este.Router'
 
 goog.require 'este.array'
 goog.require 'este.Base'
 goog.require 'este.dom'
+goog.require 'este.mobile'
 goog.require 'este.router.Route'
 goog.require 'este.string'
 
@@ -30,6 +48,7 @@ class este.Router extends este.Base
   constructor: (@history, @tapHandler) ->
     super()
     @routes = []
+    @visitedTokens = []
 
   ###*
     If true, tapHandler will not change url.
@@ -62,6 +81,12 @@ class este.Router extends este.Base
   ignoreNextOnHistoryNavigate: false
 
   ###*
+    @type {Array.<string>}
+    @protected
+  ###
+  visitedTokens: null
+
+  ###*
     @param {string} path
     @param {Function} show
     @param {este.router.Route.Options=} options
@@ -81,6 +106,29 @@ class este.Router extends este.Base
     path = este.string.stripSlashHashPrefixes path
     este.array.removeAllIf @routes, (item) ->
       item.path == path
+
+  ###*
+    @return {boolean}
+  ###
+  isHtml5historyEnabled: ->
+    @history.html5historyEnabled
+
+  ###*
+    Start router.
+  ###
+  start: ->
+    @on @tapHandler.getElement(), 'click', @onTapHandlerElementClick
+    @on @tapHandler, 'tap', @onTapHandlerTap
+    @on @history, 'navigate', @onHistoryNavigate
+    @history.setEnabled true
+    return
+
+  ###*
+    @param {string} token
+  ###
+  navigate: (token) ->
+    token = este.string.stripSlashHashPrefixes token
+    @history.setToken token
 
   ###*
     @param {string} path
@@ -104,35 +152,13 @@ class este.Router extends este.Base
       item.path == path
 
   ###*
-    @param {string} token
-  ###
-  navigate: (token) ->
-    token = este.string.stripSlashHashPrefixes token
-    @history.setToken token
-
-  ###*
-    @return {boolean}
-  ###
-  isHtml5historyEnabled: ->
-    @history.html5historyEnabled
-
-  ###*
-    Start router.
-  ###
-  start: ->
-    @on @tapHandler.getElement(), 'click', @onTapHandlerElementClick
-    @on @tapHandler, 'tap', @onTapHandlerTap
-    @on @history, 'navigate', @onHistoryNavigate
-    @history.setEnabled true
-    return
-
-  ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
   onTapHandlerElementClick: (e) ->
-    token = @tryGetToken e.target
-    return if !token || !este.dom.isRealMouseClick e
+    return if !este.dom.isRealMouseClick e
+    token = @tryGetToken e
+    return if !token
     e.preventDefault()
 
   ###*
@@ -140,40 +166,58 @@ class este.Router extends este.Base
     @protected
   ###
   onTapHandlerTap: (e) ->
-    token = @tryGetToken e.target
-    return if !token
     return if e.clickEvent && !este.dom.isRealMouseClick e.clickEvent
+    if @isBackButton e
+      este.mobile.back()
+      return
+    token = @tryGetToken e
+    return if !token
     if @silentTapHandler
       @processRoutes token, false
       return
-    strippedToken = este.string.stripSlashHashPrefixes token
-    @history.setToken strippedToken
+    @navigate token
 
   ###*
     @param {goog.history.Event} e
     @protected
   ###
   onHistoryNavigate: (e) ->
+    token = este.string.stripSlashHashPrefixes e.token
+    goog.array.insert @visitedTokens, token
     if @ignoreNextOnHistoryNavigate
       @ignoreNextOnHistoryNavigate = false
       return
-    @processRoutes e.token, e.isNavigation
+    @processRoutes token, e.isNavigation
 
   ###*
-    @param {Node} target
+    @param {goog.events.BrowserEvent} e
     @return {string}
     @protected
   ###
-  tryGetToken: (target) ->
+  tryGetToken: (e) ->
     token = ''
-    goog.dom.getAncestor target, (node) ->
-      return false if node.nodeType != 1
-      return false if node.hasAttribute && node.hasAttribute 'e-ignore'
-      return false if node.getAttribute('href')?.indexOf('http') == 0
+    goog.dom.getAncestor e.target, (node) =>
+      return false if node.nodeType != goog.dom.NodeType.ELEMENT
+      return true if node.hasAttribute 'e-ignore'
+      return true if node.getAttribute('href')?.indexOf('http') == 0
       token = goog.string.trim node.getAttribute('href') || ''
       !!token
     , true
     token
+
+  ###*
+    @param {goog.events.BrowserEvent} e
+    @return {boolean}
+    @protected
+  ###
+  isBackButton: (e) ->
+    !!goog.dom.getAncestor e.target, (node) =>
+      return false if node.nodeType != goog.dom.NodeType.ELEMENT
+      return false if !node.hasAttribute 'e-back-button'
+      href = node.getAttribute 'href'
+      token = este.string.stripSlashHashPrefixes href
+      goog.array.contains @visitedTokens, token
+    , true
 
   ###*
     @param {string} token

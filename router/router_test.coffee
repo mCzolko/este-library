@@ -119,6 +119,7 @@ suite 'este.Router', ->
           router.start()
           dispatchTapHandlerTapEvent
             nodeType: 1
+            hasAttribute: ->
             getAttribute: (name) ->
               return token if name == 'href'
       testRoute '/foo', 'foo'
@@ -143,6 +144,7 @@ suite 'este.Router', ->
           router.start()
           dispatchTapHandlerTapEvent
             nodeType: 1
+            hasAttribute: ->
             getAttribute: (name) ->
               return token if name == 'href'
       testRoute '/foo', 'foo'
@@ -158,9 +160,11 @@ suite 'este.Router', ->
           router.start()
           dispatchTapHandlerTapEvent
             nodeType: 1
+            hasAttribute: ->
             getAttribute: ->
             parentNode:
               nodeType: 1
+              hasAttribute: ->
               getAttribute: (name) ->
                 return token if name == 'href'
       testRoute '/foo', 'foo'
@@ -176,6 +180,7 @@ suite 'este.Router', ->
           router.start()
           dispatchTapHandlerTapEvent
             nodeType: 1
+            hasAttribute: ->
             getAttribute: (name) ->
               return token if name == 'href'
       testRoute '/foo', 'bla'

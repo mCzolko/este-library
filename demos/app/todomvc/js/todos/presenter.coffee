@@ -52,14 +52,12 @@ class este.demos.app.todomvc.todos.Presenter extends este.app.Presenter
   show: ->
     @view.filter = @filter
     @viewTodos.reset @todos.toJson true
-    super()
     @on @viewTodos, 'update', @onTodosUpdate
 
   ###*
     @override
   ###
   hide: ->
-    super()
     @off @viewTodos, 'update', @onTodosUpdate
 
   ###*

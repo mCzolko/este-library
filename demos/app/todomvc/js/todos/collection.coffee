@@ -4,7 +4,7 @@
 goog.provide 'este.demos.app.todomvc.todos.Collection'
 
 goog.require 'este.Collection'
-goog.require 'este.demos.app.todomvc.todo.Model'
+goog.require 'este.demos.app.todomvc.todos.Model'
 
 class este.demos.app.todomvc.todos.Collection extends este.Collection
 
@@ -19,7 +19,7 @@ class este.demos.app.todomvc.todos.Collection extends este.Collection
   ###*
     @override
   ###
-  model: este.demos.app.todomvc.todo.Model
+  model: este.demos.app.todomvc.todos.Model
 
   ###*
     @param {boolean} completed

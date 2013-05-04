@@ -12,7 +12,7 @@
   should instance model/collection and view.
 
   Example
-    Take a look at este.demos.app.todomvc.todos.Presenter demo.
+    Take a look at este.demos.app.todomvc.todos.list.Presenter demo.
 
   Steps for creating your own presenter
     - create model/collection

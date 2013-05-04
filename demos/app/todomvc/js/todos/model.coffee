@@ -1,11 +1,11 @@
 ###*
   @fileoverview Model representing one todo item.
 ###
-goog.provide 'este.demos.app.todomvc.todo.Model'
+goog.provide 'este.demos.app.todomvc.todos.Model'
 
 goog.require 'este.Model'
 
-class este.demos.app.todomvc.todo.Model extends este.Model
+class este.demos.app.todomvc.todos.Model extends este.Model
 
   ###*
     @param {Object=} json

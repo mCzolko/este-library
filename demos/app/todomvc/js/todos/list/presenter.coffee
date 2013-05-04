@@ -1,13 +1,13 @@
 ###*
-  @fileoverview este.demos.app.todomvc.todos.Presenter.
+  @fileoverview este.demos.app.todomvc.todos.list.Presenter.
 ###
-goog.provide 'este.demos.app.todomvc.todos.Presenter'
+goog.provide 'este.demos.app.todomvc.todos.list.Presenter'
 
 goog.require 'este.app.Presenter'
 goog.require 'este.demos.app.todomvc.todos.Collection'
-goog.require 'este.demos.app.todomvc.todos.View'
+goog.require 'este.demos.app.todomvc.todos.list.View'
 
-class este.demos.app.todomvc.todos.Presenter extends este.app.Presenter
+class este.demos.app.todomvc.todos.list.Presenter extends este.app.Presenter
 
   ###*
     @constructor
@@ -19,7 +19,7 @@ class este.demos.app.todomvc.todos.Presenter extends este.app.Presenter
     @todos = new este.demos.app.todomvc.todos.Collection
     # this collection is used for view data projection and manipulation
     @viewTodos = new este.demos.app.todomvc.todos.Collection
-    @view = new este.demos.app.todomvc.todos.View @viewTodos
+    @view = new este.demos.app.todomvc.todos.list.View @viewTodos
 
   ###*
     @type {este.demos.app.todomvc.todos.Collection}

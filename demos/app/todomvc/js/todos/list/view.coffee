@@ -1,14 +1,14 @@
 ###*
-  @fileoverview este.demos.app.todomvc.todos.View.
+  @fileoverview este.demos.app.todomvc.todos.list.View.
 ###
-goog.provide 'este.demos.app.todomvc.todos.View'
+goog.provide 'este.demos.app.todomvc.todos.list.View'
 
 goog.require 'este.app.View'
 goog.require 'este.demos.app.todomvc.todos.Collection'
-goog.require 'este.demos.app.todomvc.todos.templates'
+goog.require 'este.demos.app.todomvc.todos.list.templates'
 goog.require 'goog.i18n.pluralRules'
 
-class este.demos.app.todomvc.todos.View extends este.app.View
+class este.demos.app.todomvc.todos.list.View extends este.app.View
 
   ###*
     @param {este.demos.app.todomvc.todos.Collection} todos
@@ -49,7 +49,7 @@ class este.demos.app.todomvc.todos.View extends este.app.View
     @protected
   ###
   onNewTodoSubmit: (e) ->
-    todo = new este.demos.app.todomvc.todo.Model e.json
+    todo = new este.demos.app.todomvc.todos.Model e.json
     errors = todo.validate()
     return if errors
     e.target.elements['title'].value = ''
@@ -68,21 +68,21 @@ class este.demos.app.todomvc.todos.View extends este.app.View
     @todos.clearCompleted()
 
   ###*
-    @param {este.demos.app.todomvc.todo.Model} model
+    @param {este.demos.app.todomvc.todos.Model} model
     @protected
   ###
   onToggleTap: (model) ->
     model.toggleCompleted()
 
   ###*
-    @param {este.demos.app.todomvc.todo.Model} model
+    @param {este.demos.app.todomvc.todos.Model} model
     @protected
   ###
   onDestroyTap: (model) ->
     @todos.remove model
 
   ###*
-    @param {este.demos.app.todomvc.todo.Model} model
+    @param {este.demos.app.todomvc.todos.Model} model
     @param {Element} el
     @protected
   ###
@@ -92,7 +92,7 @@ class este.demos.app.todomvc.todos.View extends este.app.View
     este.dom.focusWithZeroTimeout edit
 
   ###*
-    @param {este.demos.app.todomvc.todo.Model} model
+    @param {este.demos.app.todomvc.todos.Model} model
     @param {Element} el
     @protected
   ###
@@ -120,7 +120,7 @@ class este.demos.app.todomvc.todos.View extends este.app.View
   ###
   update: ->
     json = @getJsonForTemplate()
-    html = este.demos.app.todomvc.todos.templates.element json
+    html = este.demos.app.todomvc.todos.list.templates.element json
     este.dom.merge @getElement(), html
 
   ###*

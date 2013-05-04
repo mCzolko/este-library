@@ -1,6 +1,6 @@
-suite 'este.demos.app.todomvc.todo.Model', ->
+suite 'este.demos.app.todomvc.todos.Model', ->
 
-  Model = este.demos.app.todomvc.todo.Model
+  Model = este.demos.app.todomvc.todos.Model
 
   model = null
 

@@ -18,20 +18,16 @@ este.demos.app.simple.start = (data) ->
     este.dev.Monitor.create()
 
   forceHash = false
-  app = este.app.create 'simple-app', forceHash
+  simpleApp = este.app.create 'simple-app', forceHash
 
-  productPresenter = new este.demos.app.simple.product.Presenter
-  productsPresenter = new este.demos.app.simple.products.Presenter
+  simpleApp.addRoutes
+    '/': new este.demos.app.simple.products.Presenter
+    '/product/:id': new este.demos.app.simple.product.Presenter
 
-  app.routes = [
-    new este.app.Route '/product/:id', productPresenter
-    new este.app.Route '/', productsPresenter
-  ]
-
-  # app loading progress bar
+  # simpleApp loading progress bar
   progressEl = document.getElementById 'progress'
   timer = null
-  goog.events.listen app, 'load', (e) ->
+  goog.events.listen simpleApp, 'load', (e) ->
     goog.dom.classes.add progressEl, 'loading'
     progressEl.innerHTML = 'loading'
     progressEl.innerHTML += ' ' + e.request.params.id if e.request.params?.id
@@ -39,17 +35,17 @@ este.demos.app.simple.start = (data) ->
     timer = setInterval ->
       progressEl.innerHTML += '.'
     , 250
-  goog.events.listen app, 'show', (e) ->
+  goog.events.listen simpleApp, 'show', (e) ->
     clearInterval timer
     goog.dom.classes.remove progressEl, 'loading'
     progressEl.innerHTML = 'loaded'
 
-  app.start()
+  simpleApp.start()
 
-  # dispose app
+  # dispose simpleApp
   goog.events.listenOnce document.body, 'click', (e) ->
     if e.target.id == 'dispose'
-      app.dispose()
+      simpleApp.dispose()
       e.target.disabled = true
       e.target.innerHTML = 'disposed'
 

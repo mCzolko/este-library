@@ -28,3 +28,11 @@ class este.app.Route extends este.Base
     @type {este.app.Presenter}
   ###
   presenter: null
+
+  ###*
+    @override
+  ###
+  disposeInternal: ->
+    @presenter.dispose()
+    super()
+    return

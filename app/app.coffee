@@ -40,7 +40,7 @@ class este.App extends este.Base
   constructor: (@router, @screen) ->
     super()
     @queue = new este.app.request.Queue
-    @routesInternal = []
+    @routes = []
 
   ###*
     @enum {string}
@@ -54,11 +54,6 @@ class este.App extends este.Base
     @type {boolean}
   ###
   urlProjectionEnabled: true
-
-  ###*
-    @type {Array.<este.app.Route>}
-  ###
-  routes: null
 
   ###*
     @type {este.storage.Base}
@@ -84,6 +79,12 @@ class este.App extends este.Base
   queue: null
 
   ###*
+    @type {Array.<este.app.Route>}
+    @protected
+  ###
+  routes: null
+
+  ###*
     @type {este.app.Request}
     @protected
   ###
@@ -99,13 +100,28 @@ class este.App extends este.Base
   locationUpdated: false
 
   ###*
-    @type {Array.<este.app.Route>}
-    @protected
+    Example.
+    myApp.addRoutes
+      '/': new app.songs.list.Presenter user, songs
+    @param {string} path
+    @param {este.app.Presenter} presenter
   ###
-  routesInternal: null
+  addRoute: (path, presenter) ->
+    route = new este.app.Route path, presenter
+    @routes.push route
+    @preparePresenter route.presenter
+    return if !@urlProjectionEnabled
+    @router.add route.path, goog.bind @onRouteMatch, @, route.presenter
 
   ###*
-    Starts router.
+    @param {Object.<string, este.app.Presenter>} routes
+  ###
+  addRoutes: (routes) ->
+    @addRoute mask, presenter for mask, presenter of routes
+    return
+
+  ###*
+    Starts app.
   ###
   start: ->
     goog.asserts.assert @routes && @routes.length,
@@ -113,18 +129,7 @@ class este.App extends este.Base
     if !@urlProjectionEnabled
       @load @routes[0].presenter
       return
-
-    @addRoute route for route in @routes
     @startRouter()
-
-  ###*
-    @param {este.app.Route} route
-  ###
-  addRoute: (route) ->
-    @routesInternal.push route
-    @preparePresenter route.presenter
-    return if !route.path
-    @router.add route.path, goog.bind @onRouteMatch, @, route.presenter
 
   ###*
     @param {function(new:este.app.Presenter)} presenterClass
@@ -254,6 +259,7 @@ class este.App extends este.Base
   disposeInternal: ->
     @router.dispose()
     @queue.dispose()
-    route.presenter.dispose() for route in @routesInternal
+    route.dispose() for route in @routes
+    @screen.dispose()
     super()
     return

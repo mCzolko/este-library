@@ -15,7 +15,7 @@ goog.require 'este.router.create'
   }=} arg
   @return {este.App}
 ###
-este.app.create = (element, arg = true) ->
+este.app.create = (element, arg = false) ->
   options =
     forceHash: true
     scrollingOnHistory: true

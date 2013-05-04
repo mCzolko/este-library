@@ -3,6 +3,7 @@ suite 'este.App', ->
   App = este.App
 
   router = null
+  screen = null
   app = null
   Presenter0 = null
   Presenter1 = null
@@ -13,7 +14,8 @@ suite 'este.App', ->
 
   setup ->
     router = mockRouter()
-    app = new App router
+    screen = mockScreen()
+    app = new App router, screen
     arrangePresenters()
     arrangeRoutes()
 
@@ -25,6 +27,9 @@ suite 'este.App', ->
       @routes[0].callback someParams: true
     pathNavigate: ->
     isHtml5historyEnabled: -> true
+    dispose: ->
+
+  mockScreen = ->
     dispose: ->
 
   arrangePresenters = ->
@@ -51,15 +56,10 @@ suite 'este.App', ->
     new presenterClass
 
   arrangeRoutes = ->
-    app.routes = [
-      mockRoute '/', presenter0
-      mockRoute '/foo', presenter1
-      mockRoute '/bla/:id', presenter2
-    ]
-
-  mockRoute = (path, presenter) ->
-    path: path
-    presenter: presenter
+    app.addRoutes
+      '/': presenter0
+      '/foo': presenter1
+      '/bla/:id': presenter2
 
   suite 'constructor', ->
     test 'should work', ->
@@ -204,7 +204,7 @@ suite 'este.App', ->
     suite 'storage', ->
       test 'should be set on presenter, if not defined', ->
         app.storage = {}
-        app.start()
+        arrangeRoutes()
         assert.equal presenter0.storage, app.storage
         assert.equal presenter1.storage, app.storage
         assert.equal presenter2.storage, app.storage
@@ -214,25 +214,22 @@ suite 'este.App', ->
         storage0 = presenter0.storage = {}
         storage1 = presenter1.storage = {}
         storage2 = presenter2.storage = {}
-        app.start()
+        arrangeRoutes()
         assert.equal presenter0.storage, storage0
         assert.equal presenter1.storage, storage1
         assert.equal presenter2.storage, storage2
 
     suite 'screen', ->
       test 'should be set on presenter, if not defined', ->
-        app.screen = {}
-        app.start()
         assert.equal presenter0.screen, app.screen
         assert.equal presenter1.screen, app.screen
         assert.equal presenter2.screen, app.screen
 
       test 'should not be set on presenter, if defined', ->
-        app.screen = {}
         screen0 = presenter0.screen = {}
         screen1 = presenter1.screen = {}
         screen2 = presenter2.screen = {}
-        app.start()
+        arrangeRoutes()
         assert.equal presenter0.screen, screen0
         assert.equal presenter1.screen, screen1
         assert.equal presenter2.screen, screen2
@@ -243,7 +240,10 @@ suite 'este.App', ->
         app.createUrl = (presenterClass, params) ->
           calls += presenterClass
           calls += params
-        app.start()
+        presenter0.createUrl = null
+        presenter1.createUrl = null
+        presenter2.createUrl = null
+        arrangeRoutes()
         presenter0.createUrl 0, 0
         presenter1.createUrl 1, 1
         presenter2.createUrl 2, 2
@@ -254,7 +254,7 @@ suite 'este.App', ->
         createUrl0 = presenter0.createUrl = ->
         createUrl1 = presenter1.createUrl = ->
         createUrl2 = presenter2.createUrl = ->
-        app.start()
+        arrangeRoutes()
         assert.equal presenter0.createUrl, createUrl0
         assert.equal presenter1.createUrl, createUrl1
         assert.equal presenter2.createUrl, createUrl2
@@ -265,7 +265,10 @@ suite 'este.App', ->
         app.redirect = (presenterClass, params) ->
           calls += presenterClass
           calls += params
-        app.start()
+        presenter0.redirect = null
+        presenter1.redirect = null
+        presenter2.redirect = null
+        arrangeRoutes()
         presenter0.redirect 0, 0
         presenter1.redirect 1, 1
         presenter2.redirect 2, 2
@@ -276,7 +279,7 @@ suite 'este.App', ->
         redirect0 = presenter0.redirect = ->
         redirect1 = presenter1.redirect = ->
         redirect2 = presenter2.redirect = ->
-        app.start()
+        arrangeRoutes()
         assert.equal presenter0.redirect, redirect0
         assert.equal presenter1.redirect, redirect1
         assert.equal presenter2.redirect, redirect2
@@ -337,8 +340,9 @@ suite 'este.App', ->
       app.start()
       app.router.dispose = -> calls++
       app.queue.dispose = -> calls++
+      app.screen.dispose = -> calls++
       presenter0.dispose = -> calls++
       presenter1.dispose = -> calls++
       presenter2.dispose = -> calls++
       app.dispose()
-      assert.equal calls, 5
+      assert.equal calls, 6

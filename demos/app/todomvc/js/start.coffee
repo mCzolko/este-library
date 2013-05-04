@@ -16,16 +16,11 @@ este.demos.app.todomvc.start = (data) ->
   if goog.DEBUG
     este.dev.Monitor.create()
 
-  app = este.app.create 'todoapp', true
-  app.storage = new este.storage.Local 'todos-este'
-
-  todosPresenter = new este.demos.app.todomvc.todos.Presenter
-
-  app.routes = [
-    new este.app.Route '/:filter?', todosPresenter
-  ]
-
-  app.start()
+  todoApp = este.app.create 'todoapp', true
+  todoApp.storage = new este.storage.Local 'todos-este'
+  todoApp.addRoutes
+    '/:filter?': new este.demos.app.todomvc.todos.Presenter
+  todoApp.start()
 
 # ensures the symbol will be visible after compiler renaming
 goog.exportSymbol 'este.demos.app.todomvc.start', este.demos.app.todomvc.start

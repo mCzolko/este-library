@@ -38,3 +38,4 @@ class este.demos.app.simple.product.Presenter extends este.app.Presenter
   ###
   show: ->
     @view.params = @params
+    return

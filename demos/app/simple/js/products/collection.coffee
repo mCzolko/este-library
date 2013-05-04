@@ -4,7 +4,7 @@
 goog.provide 'este.demos.app.simple.products.Collection'
 
 goog.require 'este.Collection'
-goog.require 'este.demos.app.simple.product.Model'
+goog.require 'este.demos.app.simple.products.Model'
 
 class este.demos.app.simple.products.Collection extends este.Collection
 
@@ -19,4 +19,4 @@ class este.demos.app.simple.products.Collection extends este.Collection
   ###*
     @override
   ###
-  model: este.demos.app.simple.product.Model
+  model: este.demos.app.simple.products.Model

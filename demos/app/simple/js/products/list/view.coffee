@@ -1,12 +1,12 @@
 ###*
-  @fileoverview este.demos.app.simple.products.View.
+  @fileoverview este.demos.app.simple.products.list.View.
 ###
-goog.provide 'este.demos.app.simple.products.View'
+goog.provide 'este.demos.app.simple.products.list.View'
 
 goog.require 'este.app.View'
 goog.require 'este.demos.app.simple.products.Collection'
 
-class este.demos.app.simple.products.View extends este.app.View
+class este.demos.app.simple.products.list.View extends este.app.View
 
   ###*
     @param {este.demos.app.simple.products.Collection} products
@@ -37,7 +37,7 @@ class este.demos.app.simple.products.View extends este.app.View
     window['console']['log'] "products rendered"
     links = []
     for product in @products.toJson()
-      url = @createUrl este.demos.app.simple.product.Presenter,
+      url = @createUrl este.demos.app.simple.products.detail.Presenter,
         'id': product['_cid']
       links.push "<li><a href='#{url}'>#{product['name']}</a>"
 

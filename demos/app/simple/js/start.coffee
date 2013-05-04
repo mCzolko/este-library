@@ -5,8 +5,8 @@
 goog.provide 'este.demos.app.simple.start'
 
 goog.require 'este.app.create'
-goog.require 'este.demos.app.simple.product.Presenter'
-goog.require 'este.demos.app.simple.products.Presenter'
+goog.require 'este.demos.app.simple.products.detail.Presenter'
+goog.require 'este.demos.app.simple.products.list.Presenter'
 goog.require 'este.dev.Monitor.create'
 
 ###*
@@ -17,12 +17,12 @@ este.demos.app.simple.start = (data) ->
   if goog.DEBUG
     este.dev.Monitor.create()
 
-  forceHash = false
-  simpleApp = este.app.create 'simple-app', forceHash
+  simpleApp = este.app.create 'simple-app',
+    forceHash: true
 
   simpleApp.addRoutes
-    '/': new este.demos.app.simple.products.Presenter
-    '/product/:id': new este.demos.app.simple.product.Presenter
+    '/': new este.demos.app.simple.products.list.Presenter
+    '/product/:id': new este.demos.app.simple.products.detail.Presenter
 
   # simpleApp loading progress bar
   progressEl = document.getElementById 'progress'

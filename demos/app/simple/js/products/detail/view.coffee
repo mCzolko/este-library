@@ -1,11 +1,11 @@
 ###*
-  @fileoverview este.demos.app.simple.product.View.
+  @fileoverview este.demos.app.simple.products.detail.View.
 ###
-goog.provide 'este.demos.app.simple.product.View'
+goog.provide 'este.demos.app.simple.products.detail.View'
 
 goog.require 'este.app.View'
 
-class este.demos.app.simple.product.View extends este.app.View
+class este.demos.app.simple.products.detail.View extends este.app.View
 
   ###*
     @constructor
@@ -52,4 +52,4 @@ class este.demos.app.simple.product.View extends este.app.View
   ###
   onButtonClick: (e) ->
     # explicit redirection example
-    @redirect este.demos.app.simple.products.Presenter
+    @redirect este.demos.app.simple.products.list.Presenter

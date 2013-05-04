@@ -1,13 +1,13 @@
 ###*
-  @fileoverview este.demos.app.simple.products.Presenter.
+  @fileoverview este.demos.app.simple.products.list.Presenter.
 ###
-goog.provide 'este.demos.app.simple.products.Presenter'
+goog.provide 'este.demos.app.simple.products.list.Presenter'
 
 goog.require 'este.app.Presenter'
 goog.require 'este.demos.app.simple.products.Collection'
-goog.require 'este.demos.app.simple.products.View'
+goog.require 'este.demos.app.simple.products.list.View'
 
-class este.demos.app.simple.products.Presenter extends este.app.Presenter
+class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
 
   ###*
     @constructor
@@ -26,7 +26,7 @@ class este.demos.app.simple.products.Presenter extends este.app.Presenter
       'description': 'C description...'
     ]
     @products = new este.demos.app.simple.products.Collection seedJsonData
-    @view = new este.demos.app.simple.products.View @products
+    @view = new este.demos.app.simple.products.list.View @products
 
   ###*
     @override

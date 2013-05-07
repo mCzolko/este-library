@@ -24,7 +24,7 @@ suite 'este.ui.View', ->
         wrapped = view.bindModel original
         target =
           nodeType: 1
-          attributes: 'data-cid': '123'
+          attributes: 'e-model-cid': '123'
           hasAttribute: (name) -> name of @attributes
           getAttribute: (name) -> @attributes[name]
         event = target: target
@@ -43,7 +43,7 @@ suite 'este.ui.View', ->
         wrapped = view.bindModel original
         target =
           nodeType: 1
-          attributes: 'data-cid': '123'
+          attributes: 'e-model-cid': '123'
           hasAttribute: (name) -> name of @attributes
           getAttribute: (name) -> @attributes[name]
         event = target: target

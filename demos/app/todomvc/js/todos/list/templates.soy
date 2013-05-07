@@ -68,7 +68,7 @@
 {template .todo}
   <li
     class="{if $todo['completed']}completed{/if} {if $todo['editing']}editing{/if}"
-    data-cid="{$todo['_cid']}">
+    e-model-cid="{$todo['_cid']}">
     <div class="view">
       <input {if $todo['completed']}checked{/if} class="toggle" type="checkbox">
       <label>{$todo['title']}</label>

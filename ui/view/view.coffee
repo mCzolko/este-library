@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Adds useful autobinding bindModel method. Uses data-cid
+  @fileoverview Adds useful autobinding bindModel method. Uses e-model-cid
   attribute to pass model into listener.
 ###
 goog.provide 'este.ui.View'
@@ -25,7 +25,7 @@ class este.ui.View extends este.ui.Component
   bindModel: (fn) ->
     (e) ->
       el = @getClientIdParent e.target
-      model = @findModelByClientId el.getAttribute 'data-cid' if el
+      model = @findModelByClientId el.getAttribute 'e-model-cid' if el
       fn.call @, model, el, e
 
   ###*
@@ -35,7 +35,7 @@ class este.ui.View extends este.ui.Component
   ###
   getClientIdParent: (el) ->
     parent = goog.dom.getAncestor el, (node) ->
-      goog.dom.isElement(node) && node.hasAttribute 'data-cid'
+      goog.dom.isElement(node) && node.hasAttribute 'e-model-cid'
     , true
     `/** @type {Element} */ (parent)`
 

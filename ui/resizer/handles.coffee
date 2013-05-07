@@ -92,8 +92,8 @@ class este.ui.resizer.Handles extends este.ui.Component
     @protected
   ###
   createHandles: ->
-    @vertical = @dom_.createDom 'div', 'e-resizer-handle-vertical'
-    @horizontal = @dom_.createDom 'div', 'e-resizer-handle-horizontal'
+    @vertical = @dom_.createDom 'div', 'e-ui-resizer-handle-vertical'
+    @horizontal = @dom_.createDom 'div', 'e-ui-resizer-handle-horizontal'
     parent = @getElement().offsetParent || @getElement()
     parent.appendChild @vertical
     parent.appendChild @horizontal

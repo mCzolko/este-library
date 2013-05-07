@@ -11,19 +11,19 @@
     pushState anchor
       <a href='/'>
     ajax back button
-      <a e-back-button href='#/home'>
+      <a e-router-back-button href='#/home'>
         In many native-like apps, we want to have back button. Imagine some
         detail view, /products/123, which can be pointed from several other
-        urls. e-back-button will call history.back(). But there is one catch.
-        What if /products/123 is shown as first page. Should e-back-button
+        urls. e-router-back-button will call history.back(). But there is one catch.
+        What if /products/123 is shown as first page. Should e-router-back-button
         redirect browser to previous site? No. App back button should redirect
         only into app. este.Router in such case will use default anchor href.
         This patter could be called 'app back button'.
     classic link, ignored by router
       just add scheme
         <a href='http(s)://...'>
-      or e-ignore attribute
-        <a e-ignore href='/foo'
+      or e-router-ignore attribute
+        <a e-router-ignore href='/foo'
 
   @see ../demos/routerhash.html
   @see ../demos/routerhtml5.html
@@ -198,7 +198,7 @@ class este.Router extends este.Base
     token = ''
     goog.dom.getAncestor e.target, (node) =>
       return false if node.nodeType != goog.dom.NodeType.ELEMENT
-      return true if node.hasAttribute 'e-ignore'
+      return true if node.hasAttribute 'e-router-ignore'
       return true if node.getAttribute('href')?.indexOf('http') == 0
       token = goog.string.trim node.getAttribute('href') || ''
       !!token
@@ -213,7 +213,7 @@ class este.Router extends este.Base
   isBackButton: (e) ->
     !!goog.dom.getAncestor e.target, (node) =>
       return false if node.nodeType != goog.dom.NodeType.ELEMENT
-      return false if !node.hasAttribute 'e-back-button'
+      return false if !node.hasAttribute 'e-router-back-button'
       href = node.getAttribute 'href'
       token = este.string.stripSlashHashPrefixes href
       goog.array.contains @visitedTokens, token

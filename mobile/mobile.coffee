@@ -103,7 +103,7 @@ goog.scope ->
     enable = goog.dom.classes.enable
     html = document.documentElement
     enable html, 'e-mobile', goog.userAgent.MOBILE
-    enable html, 'e-desktop', !goog.userAgent.MOBILE
+    enable html, 'e-mobile-off', !goog.userAgent.MOBILE
     enable html, 'e-mobile-iphone', goog.labs.userAgent.platform.isIphone()
 
   ###

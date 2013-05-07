@@ -5,12 +5,10 @@
   className for matched elements.
 
   Desiderated behaviour:
-    'e-hover' class is applied immediately
-    'e-hover-scroll' class is applied after 250ms, which is usefull for
+    'e-mobile-hover' class is applied immediately
+    'e-mobile-hover-scroll' class is applied after 250ms, which is usefull for
       scrollable content, where we don't want to see 'hover' immediately.
-      It mimics native iOS behaviour on scrollable lists. But there is little
-      difference, iOS changes view after 250ms whereas Este updates its views
-      immediately.
+      It mimics native iOS behaviour on scrollable lists.
     Hover state is removed after 750ms, because on anchors native context menu
       is shown and that prevents touchend event to be dispatched. Previous
       hover is removed too for sure.
@@ -97,7 +95,7 @@ class este.mobile.Hover extends este.Base
     @protected
   ###
   addHoverNow: (target) ->
-    goog.dom.classes.add target, 'e-hover'
+    goog.dom.classes.add target, 'e-mobile-hover'
 
   ###*
     @param {Node} target
@@ -105,7 +103,7 @@ class este.mobile.Hover extends este.Base
   ###
   addHoverScrollAfterWhile: (target) ->
     @hoverScrollTimeout = setTimeout =>
-      goog.dom.classes.add target, 'e-hover-scroll'
+      goog.dom.classes.add target, 'e-mobile-hover-scroll'
     , 250
 
   ###*
@@ -133,7 +131,7 @@ class este.mobile.Hover extends este.Base
   removeHoverState: (target) ->
     clearTimeout @hoverScrollTimeout
     return if !target
-    goog.dom.classes.remove target, 'e-hover', 'e-hover-scroll'
+    goog.dom.classes.remove target, 'e-mobile-hover', 'e-mobile-hover-scroll'
 
   ###*
     @param {Node} node

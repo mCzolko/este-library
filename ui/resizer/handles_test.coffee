@@ -70,8 +70,8 @@ suite 'este.ui.resizer.Handles', ->
       assert.equal handles.vertical.style.height, '200px'
 
     test 'should add classes to handles', ->
-      assert.ok goog.dom.classes.has handles.horizontal, 'e-resizer-handle-horizontal'
-      assert.ok goog.dom.classes.has handles.vertical, 'e-resizer-handle-vertical'
+      assert.ok goog.dom.classes.has handles.horizontal, 'e-ui-resizer-handle-horizontal'
+      assert.ok goog.dom.classes.has handles.vertical, 'e-ui-resizer-handle-vertical'
 
     test 'should render handles into element itself if offsetParent is null', ->
       element.offsetParent = null

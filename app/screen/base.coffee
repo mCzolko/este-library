@@ -50,7 +50,7 @@ class este.app.screen.Base extends este.ui.Component
   ###
   setCurrentView: (view) ->
     @currentView = view
-    @getElement().setAttribute 'e-active-view', @currentView.className
+    @getElement().setAttribute 'e-app-screen-active-view', @currentView.className
 
   ###*
     @protected

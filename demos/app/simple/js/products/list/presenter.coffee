@@ -16,12 +16,15 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
   constructor: ->
     super()
     seedJsonData = [
+      'id': 0
       'name': 'Product A'
       'description': 'A description...'
     ,
+      'id': 1
       'name': 'Product B'
       'description': 'B description...'
     ,
+      'id': 2
       'name': 'Product C'
       'description': 'C description...'
     ]
@@ -36,7 +39,7 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
     result = new goog.result.SimpleResult
     setTimeout ->
       result.setValue null
-    , 2000
+    , 1000
     result
 
   ###*

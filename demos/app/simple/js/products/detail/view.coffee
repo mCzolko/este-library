@@ -41,8 +41,8 @@ class este.demos.app.simple.products.detail.View extends este.app.View
   update: ->
     window['console']['log'] "product with id #{@params['id']} rendered"
     @getElement().innerHTML = """
-      <p>Product detail:</p>
-      <p>product with id #{@params['id']} rendered</p>
+      <h3>Product Detail</h3>
+      <p>Product with id: #{@params['id']} rendered</p>
       <button>show products</button>
     """
 

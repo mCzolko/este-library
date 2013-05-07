@@ -26,11 +26,14 @@ class este.demos.app.simple.products.detail.Presenter extends este.app.Presenter
     @override
   ###
   load: (@params = {}) ->
+    delay = 1000
+    if @params['id'] == '0'
+      delay = 8000
     # async simulation
     result = new goog.result.SimpleResult
     setTimeout ->
       result.setValue null
-    , 2000
+    , delay
     result
 
   ###*

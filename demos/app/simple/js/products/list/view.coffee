@@ -38,11 +38,11 @@ class este.demos.app.simple.products.list.View extends este.app.View
     links = []
     for product in @products.toJson()
       url = @createUrl este.demos.app.simple.products.detail.Presenter,
-        'id': product['_cid']
+        'id': product['id']
       links.push "<li><a href='#{url}'>#{product['name']}</a>"
 
     @getElement().innerHTML = """
-      <p>List of products:</p>
+      <h3>List of Products</h3>
       <ul>
         #{links.join ''}
       </ul>

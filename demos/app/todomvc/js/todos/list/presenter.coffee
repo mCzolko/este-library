@@ -66,13 +66,15 @@ class este.demos.app.todomvc.todos.list.Presenter extends este.app.Presenter
   ###
   onTodosUpdate: (e) ->
     result = @storage.saveChangesFromEvent e
-    return if !result
-    goog.result.waitOnSuccess result, @onSuccessTodosUpdate, @
+    goog.result.waitOnSuccess result, @onStorageSaveChangesSuccess, @
 
   ###*
     @protected
   ###
-  onSuccessTodosUpdate: ->
+  onStorageSaveChangesSuccess: ->
+    # Why clearTimeout? Because when many models has changed, for example tap
+    # to complete all, we want to project only last change. Without timeout,
+    # ui would be rewritten n-times.
     clearTimeout @viewUpdateTimer
     @viewUpdateTimer = setTimeout =>
       @view.update()

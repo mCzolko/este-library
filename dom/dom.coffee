@@ -494,7 +494,7 @@ goog.scope ->
   ###*
     @param {Element} el
   ###
-  _.focusWithZeroTimeout = (el) ->
+  _.focusAsync = (el) ->
     setTimeout ->
       _.focus el
     , 0

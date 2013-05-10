@@ -201,7 +201,6 @@ class este.App extends este.Base
     @protected
   ###
   load: (presenter, params, isNavigation) ->
-    # console.log isNavigation
     request = new este.app.Request presenter, params, isNavigation
     @dispatchAppEvent App.EventType.LOAD, request
     result = presenter.load params

@@ -1,75 +1,85 @@
 ###*
-  @fileoverview Lightbox.
-  @see ../../demos/lightbox.html
+  @fileoverview este.ui.lightbox.Lightbox.
 ###
-goog.provide 'este.ui.Lightbox'
+goog.provide 'este.ui.lightbox.Lightbox'
 
 goog.require 'este.ui.Component'
-goog.require 'este.ui.lightbox.AnchorClickHandler'
-goog.require 'este.ui.lightbox.View.create'
 
-class este.ui.Lightbox extends este.ui.Component
+class este.ui.lightbox.Lightbox extends este.ui.Component
 
   ###*
-    @param {este.ui.lightbox.AnchorClickHandler} anchorClickHandler
-    @param {Function} viewFactory
+    @param {Function} createView
     @constructor
     @extends {este.ui.Component}
   ###
-  constructor: (@anchorClickHandler, @viewFactory) ->
-
-  ###*
-    @return {este.ui.Lightbox}
-  ###
-  @create: ->
-    handler = new este.ui.lightbox.AnchorClickHandler
-    factory = este.ui.lightbox.View.create
-    new Lightbox handler, factory
-
-  ###*
-    @type {este.ui.lightbox.AnchorClickHandler}
-  ###
-  anchorClickHandler: null
+  constructor: (@createView) ->
+    super()
 
   ###*
     @type {Function}
-  ###
-  viewFactory: null
-
-  ###*
-    @type {este.ui.lightbox.View}
     @protected
   ###
-  view: null
-
-  ###*
-    Close view.
-  ###
-  close: ->
-    @removeChild @view
-    @view.dispose()
+  createView: null
 
   ###*
     @override
   ###
-  decorateInternal: (element) ->
-    super element
-    @anchorClickHandler.decorate element
+  registerEvents: ->
+    @on @, este.ui.lightbox.View.EventType.CLOSE, @onViewClose
+    @on
+      'a click': @onAnchorClick
+      'a tap': @onAnchorTap
     return
 
   ###*
-    @override
-  ###
-  enterDocument: ->
-    super()
-    @on @anchorClickHandler, 'click', @onAnchorClickHandlerClick
-    return
-
-  ###*
-    @param {Object} e
+    @param {goog.events.Event} e
     @protected
   ###
-  onAnchorClickHandlerClick: (e) ->
-    @view = @viewFactory e.currentAnchor, e.anchors
-    @addChild @view, true
-    @on @view, 'close', @close
+  onViewClose: (e) ->
+    @closeView()
+
+  ###*
+    @param {goog.events.BrowserEvent} e
+    @protected
+  ###
+  onAnchorClick: (e) ->
+    return if !@isLightboxAnchor e.target
+    e.preventDefault()
+
+  ###*
+    @param {goog.events.BrowserEvent} e
+    @protected
+  ###
+  onAnchorTap: (e) ->
+    return if !@isLightboxAnchor e.target
+    @showView e.target
+
+  ###*
+    @param {Node} node
+    @protected
+  ###
+  isLightboxAnchor: (node) ->
+    node.rel.indexOf('lightbox') == 0
+
+  ###*
+    @param {Node} anchor
+    @protected
+  ###
+  showView: (anchor) ->
+    @closeView()
+    anchors = @getAnchorsWithSameRelAttribute anchor.rel
+    view = @createView anchor, anchors
+    @addChild view, true
+
+  ###*
+    @protected
+  ###
+  closeView: ->
+    @removeChildren true
+
+  ###*
+    @param {string} rel
+    @protected
+  ###
+  getAnchorsWithSameRelAttribute: (rel) ->
+    @getElement().querySelectorAll "a[rel='#{rel}']"

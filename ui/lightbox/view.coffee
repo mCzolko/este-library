@@ -1,12 +1,11 @@
-###
+###*
   @fileoverview este.ui.lightbox.View.
 ###
-
 goog.provide 'este.ui.lightbox.View'
-goog.provide 'este.ui.lightbox.View.create'
+goog.provide 'este.ui.lightbox.View.EventType'
 
 goog.require 'este.ui.Component'
-goog.require 'goog.events.KeyCodes'
+goog.require 'este.ui.lightbox.templates'
 
 class este.ui.lightbox.View extends este.ui.Component
 
@@ -20,20 +19,25 @@ class este.ui.lightbox.View extends este.ui.Component
     super()
 
   ###*
-    Factory method.
-    @param {Element} currentAnchor
-    @param {Array.<Element>} anchors
+    @enum {string}
   ###
-  @create = (currentAnchor, anchors) ->
-    new View currentAnchor, anchors
+  @EventType:
+    CLOSE: 'close'
+
+  ###*
+    @type {string}
+  ###
+  className: 'e-ui-lightbox'
 
   ###*
     @type {Element}
+    @protected
   ###
   currentAnchor: null
 
   ###*
     @type {Array.<Element>}
+    @protected
   ###
   anchors: null
 
@@ -42,89 +46,74 @@ class este.ui.lightbox.View extends este.ui.Component
   ###
   createDom: ->
     super()
-    @getElement().className = 'e-ui-lightbox'
-    @updateInternal()
+    @getElement().className = @className
+    goog.dom.setFocusableTabIndex @getElement(), true
+    @update()
+    este.dom.focusAsync @getElement()
     return
-
-  ###*
-    @protected
-  ###
-  updateInternal: ->
-    imageSrc = @currentAnchor.href
-    title = @currentAnchor.title
-    firstDisabled = secondDisabled = ''
-    currentAnchorIdx = goog.array.indexOf @anchors, @currentAnchor
-    totalAnchorsCount = @anchors.length
-    if @currentAnchor == @anchors[0]
-      firstDisabled = ' e-ui-lightbox-disabled'
-    if @currentAnchor == @anchors[totalAnchorsCount - 1]
-      secondDisabled = ' e-ui-lightbox-disabled'
-    @getElement().innerHTML = "
-      <div class='e-ui-lightbox-background'></div>
-      <div class='e-ui-lightbox-content'>
-        <div class='e-ui-lightbox-image-wrapper'>
-          <img class='e-ui-lightbox-image' src='#{imageSrc}'>
-          <div class='e-ui-lightbox-title'>#{title}</div>
-        </div>
-      </div>
-      <div class='e-ui-lightbox-sidebar'>
-        <button class='e-ui-lightbox-previous#{firstDisabled}'>previous</button>
-        <button class='e-ui-lightbox-next#{secondDisabled}'>next</button>
-        <div class='e-ui-lightbox-numbers'>
-          <span class='e-ui-lightbox-current'>#{currentAnchorIdx + 1}</span>/
-          <span class='e-ui-lightbox-total'>#{totalAnchorsCount}</span>
-        </div>
-        <button class='e-ui-lightbox-close'>close</button>
-      </div>"
 
   ###*
     @override
   ###
-  enterDocument: ->
-    super()
-    @on @getElement(), 'click', @onClick
-    @on @dom_.getDocument(), 'keydown', @onDocumentKeydown
-    return
+  canDecorate: (element) ->
+    false
 
   ###*
-    @param {goog.events.BrowserEvent} e
-    @protected
+    @override
   ###
-  onClick: (e) ->
-    switch e.target.className
-      when 'e-ui-lightbox-previous'
-        @moveToNextImage false
-      when 'e-ui-lightbox-next'
-        @moveToNextImage true
-      when 'e-ui-lightbox-close'
-        @dispatchCloseEvent()
+  registerEvents: ->
+    @on '.e-ui-lightbox-close tap', @close
+    @on '.e-ui-lightbox-previous tap', @moveLeft
+    @on '.e-ui-lightbox-next tap', @moveRight
+    @on '*', goog.events.KeyCodes.ESC, @close
+    @on '*', goog.events.KeyCodes.LEFT, @moveLeft
+    @on '*', goog.events.KeyCodes.UP, @moveLeft
+    @on '*', goog.events.KeyCodes.RIGHT, @moveRight
+    @on '*', goog.events.KeyCodes.DOWN, @moveRight
+    @on '*', goog.events.KeyCodes.HOME, @moveStart
+    @on '*', goog.events.KeyCodes.PAGE_UP, @moveStart
+    @on '*', goog.events.KeyCodes.END, @moveEnd
+    @on '*', goog.events.KeyCodes.PAGE_DOWN, @moveEnd
 
   ###*
-    @param {goog.events.BrowserEvent} e
     @protected
   ###
-  onDocumentKeydown: (e) ->
-    switch e.keyCode
-      when goog.events.KeyCodes.ESC
-        @dispatchCloseEvent()
-      when goog.events.KeyCodes.RIGHT, goog.events.KeyCodes.DOWN
-        @moveToNextImage true
-      when goog.events.KeyCodes.LEFT, goog.events.KeyCodes.UP
-        @moveToNextImage false
+  close: ->
+    @dispatchEvent View.EventType.CLOSE
+
+  ###*
+    @protected
+  ###
+  moveLeft: ->
+    @move false
+    @update()
+
+  ###*
+    @protected
+  ###
+  moveRight: ->
+    @move true
+    @update()
+
+  ###*
+    @protected
+  ###
+  moveStart: ->
+    @currentAnchor = @anchors[0]
+    @update()
+
+  ###*
+    @protected
+  ###
+  moveEnd: ->
+    @currentAnchor = @anchors[@anchors.length - 1]
+    @update()
 
   ###*
     @param {boolean} next
     @protected
   ###
-  moveToNextImage: (next) ->
-    @setNextCurrentAnchor next
-    @updateInternal()
-
-  ###*
-    @param {boolean} next
-    @protected
-  ###
-  setNextCurrentAnchor: (next) ->
+  move: (next) ->
     idx = goog.array.indexOf @anchors, @currentAnchor
     if next then idx++ else idx--
     anchor = @anchors[idx]
@@ -134,5 +123,17 @@ class este.ui.lightbox.View extends este.ui.Component
   ###*
     @protected
   ###
-  dispatchCloseEvent: ->
-    @dispatchEvent 'close'
+  update: ->
+    json = @getViewJson()
+    html = este.ui.lightbox.templates.view json
+    este.dom.merge @getElement(), html
+
+  ###*
+    @return {Object}
+    @protected
+  ###
+  getViewJson: ->
+    src: @currentAnchor.href
+    title: @currentAnchor.title
+    idx: goog.array.indexOf @anchors, @currentAnchor
+    total: @anchors.length

@@ -12,6 +12,18 @@
       tap
       submit
 
+  Example
+    registerEvents: ->
+      (at)on
+        '#new-todo-form submit': (at)onNewTodoSubmit
+        '#toggle-all tap': (at)onToggleAllTap
+        '#clear-completed tap': (at)onClearCompletedTap
+        '.toggle tap': (at)bindModel (at)onToggleTap
+        '.destroy tap': (at)bindModel (at)onDestroyTap
+        'label dblclick': (at)bindModel (at)onLabelDblclick
+        '.edit blur': (at)bindModel (at)onEditEnd
+        '.edit': [goog.events.KeyCodes.ENTER, (at)bindModel (at)onEditEnd]
+
   TODO:
     off does not work for delegated listeners
     on(el, type, fn) should use submit, tap, etc. too
@@ -26,6 +38,7 @@ goog.require 'este.events.SubmitHandler'
 goog.require 'este.events.TapHandler'
 goog.require 'goog.asserts'
 goog.require 'goog.dom.classes'
+goog.require 'goog.events.KeyCodes'
 goog.require 'goog.events.KeyHandler'
 goog.require 'goog.object'
 goog.require 'goog.string'
@@ -71,9 +84,6 @@ class este.ui.Component extends goog.ui.Component
   enterDocument: ->
     super()
     @delegations = []
-    @keyHandler = null
-    @tapHandler = null
-    @submitHandler = null
     @registerEvents()
     return
 
@@ -91,6 +101,7 @@ class este.ui.Component extends goog.ui.Component
     @keyHandler?.dispose()
     @tapHandler?.dispose()
     @submitHandler?.dispose()
+    @keyHandler = @tapHandler = @submitHandler = null
     return
 
   ###*
@@ -131,7 +142,7 @@ class este.ui.Component extends goog.ui.Component
         @on @getElement(), src
         return
       when 2
-        `type = /** @type {Object.<(Array|Function|null)>} */ (type)`
+        `type = /** @type {Object.<string, Function|Array>} */ (type)`
         `src = /** @type {Element} */ (src)`
         @delegate type, src
         return
@@ -165,8 +176,8 @@ class este.ui.Component extends goog.ui.Component
       chunks = (goog.string.trim goog.string.normalizeSpaces key).split ' '
       selector = chunks[0]
       type = chunks[1] || value[0]
+      # is keyCode for KeyHander
       if goog.string.isNumeric type
-        # cast to number for keyCodes for key event handler
         type = Number(type)
       else
         type = type.split ',' if ~type.indexOf ','

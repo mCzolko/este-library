@@ -9,7 +9,7 @@ goog.provide 'este.storage.Base'
 
 goog.require 'este.Collection'
 goog.require 'este.Model'
-goog.require 'este.result'
+goog.require 'goog.result'
 
 class este.storage.Base
 
@@ -125,7 +125,7 @@ class este.storage.Base
         results.push result if result
     if results.length
       return goog.result.combineOnSuccess.apply @, results
-    este.result.ok()
+    goog.result.successfulResult null
 
   ###*
     @param {este.Model} model
@@ -198,7 +198,7 @@ class este.storage.Base
       results.push result
     if results.length
       return goog.result.combineOnSuccess.apply @, results
-    este.result.ok()
+    goog.result.successfulResult null
 
   ###*
     @param {este.Model} model

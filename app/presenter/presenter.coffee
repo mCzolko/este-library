@@ -24,7 +24,7 @@ goog.provide 'este.app.Presenter'
 
 goog.require 'este.app.View'
 goog.require 'este.Base'
-goog.require 'este.result'
+goog.require 'goog.result'
 
 class este.app.Presenter extends este.Base
 
@@ -68,7 +68,7 @@ class este.app.Presenter extends este.Base
     @return {!goog.result.Result}
   ###
   load: (params) ->
-    este.result.ok()
+    goog.result.successfulResult null
 
   ###*
     Called If load were successful and not canceled.

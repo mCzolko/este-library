@@ -10,7 +10,7 @@
 goog.provide 'este.storage.Local'
 
 goog.require 'este.json'
-goog.require 'este.result'
+goog.require 'goog.result'
 goog.require 'este.storage.Base'
 goog.require 'goog.object'
 goog.require 'goog.storage.mechanism.mechanismfactory'
@@ -59,11 +59,11 @@ class este.storage.Local extends este.storage.Base
   loadInternal: (model, url) ->
     id = model.getId()
     models = @loadModels url
-    return este.result.fail() if !models
+    return goog.result.failedResult() if !models
     json = models[id]
-    return este.result.fail() if !json
+    return goog.result.failedResult() if !json
     model.set json
-    este.result.ok id
+    goog.result.successfulResult id
 
   ###*
     @override
@@ -75,7 +75,7 @@ class este.storage.Local extends este.storage.Base
     models = if serializedModels then este.json.parse serializedModels else {}
     models[id] = model.toJson true
     @saveModels models, url
-    este.result.ok id
+    goog.result.successfulResult id
 
   ###*
     @override
@@ -87,8 +87,8 @@ class este.storage.Local extends este.storage.Base
       if models && models[id]
         delete models[id]
         @saveModels models, url
-        return este.result.ok id
-    este.result.fail()
+        return goog.result.successfulResult id
+    goog.result.failedResult()
 
   ###*
     @override
@@ -97,7 +97,7 @@ class este.storage.Local extends este.storage.Base
     models = @loadModels url
     array = (model for id, model of models)
     collection.reset array
-    este.result.ok params
+    goog.result.successfulResult params
 
   ###*
     @param {este.Model} model

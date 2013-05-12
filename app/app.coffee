@@ -26,7 +26,7 @@ goog.require 'este.app.Request'
 goog.require 'este.app.request.Queue'
 goog.require 'este.app.Route'
 goog.require 'este.Base'
-goog.require 'este.result'
+goog.require 'goog.result'
 goog.require 'este.router.Route'
 
 class este.App extends este.Base

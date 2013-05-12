@@ -80,7 +80,7 @@ suite 'este.App', ->
         app.urlEnabled = false
         presenter0.load = ->
           done()
-          este.result.ok()
+          goog.result.successfulResult null
         presenter1.load = -> throw Error 'error'
         presenter2.load = -> throw Error 'error'
         app.start()
@@ -95,7 +95,7 @@ suite 'este.App', ->
       test 'should call presenter0.load', (done) ->
         presenter0.load = ->
           done()
-          este.result.ok()
+          goog.result.successfulResult null
         presenter1.load = -> throw Error 'error'
         presenter2.load = -> throw Error 'error'
         app.start()
@@ -115,7 +115,7 @@ suite 'este.App', ->
         presenter0.load = ->
           assert.isTrue loadDispatched
           done()
-          este.result.ok()
+          goog.result.successfulResult null
         app.start()
 
       test 'should dispatch show event then call beforeShow', (done) ->
@@ -131,7 +131,7 @@ suite 'este.App', ->
         presenter0.beforeShow = ->
           assert.isTrue showDispatched
           done()
-          este.result.ok()
+          goog.result.successfulResult null
         app.start()
 
     suite 'routes', ->
@@ -331,7 +331,7 @@ suite 'este.App', ->
       presenter2.load = (p_params) ->
         assert.equal p_params, params
         done()
-        este.result.ok()
+        goog.result.successfulResult null
       app.redirect Presenter2, params
 
   suite 'dispose', ->

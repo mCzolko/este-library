@@ -80,11 +80,6 @@ class este.Model extends este.Base
     UPDATE: 'update'
 
   ###*
-    @type {Array.<string>}
-  ###
-  @eventTypes: (type for name, type of Model.EventType)
-
-  ###*
     @param {?} a
     @param {?} b
     @suppress {missingProperties} Because runtime detection.

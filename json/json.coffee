@@ -1,12 +1,16 @@
 ###*
-  @fileoverview Wrapper for goog.json leveraging native implementation.
-  goog.json will never switch to native, because it has different implementation
-  in detail.
+  @fileoverview Wrapper for goog.json using native implementation where
+  available. Use compiler define to strip code for IE6/7.
 ###
 
 goog.provide 'este.json'
 
 goog.require 'goog.json'
+
+###*
+ @define {boolean} Whether native JSON is supported.
+###
+goog.define 'este.json.SUPPORTS_NATIVE_JSON', false
 
 goog.scope ->
   `var _ = este.json`
@@ -16,20 +20,24 @@ goog.scope ->
     @return {string} A JSON string representation of the input.
   ###
   _.stringify = (object) ->
-    if goog.global['JSON']
-      goog.global['JSON']['stringify'] object
-    else
-      goog.json.serialize object
+    if _.nativeJsonIsSupported()
+      return goog.global['JSON'].stringify object
+    goog.json.serialize object
 
   ###*
     @param {string} str The JSON string to parse.
     @return {Object} The object generated from the JSON string.
   ###
   _.parse = (str) ->
-    if goog.global['JSON']
-      goog.global['JSON']['parse'] str
-    else
-      goog.json.parse str
+    if _.nativeJsonIsSupported()
+      return goog.global['JSON'].parse str
+    goog.json.parse str
+
+  ###*
+    @return {boolean}
+  ###
+  _.nativeJsonIsSupported = ->
+    este.json.SUPPORTS_NATIVE_JSON || goog.global['JSON']
 
   ###*
     @param {*} a

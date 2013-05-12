@@ -1,5 +1,5 @@
 ###*
-  @fileoverview este.demos.app.todomvc.start.
+  @fileoverview Este TodoMVC (todomvc.com) implementation.
 ###
 
 goog.provide 'este.demos.app.todomvc.start'

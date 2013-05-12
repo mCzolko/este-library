@@ -10,6 +10,7 @@ goog.require 'goog.storage.CollectableStorage'
 
 goog.scope ->
   `var _ = este.storage`
+  `var mechanismfactory = este.goog.storage.mechanism.mechanismfactory`
 
   ###*
     @param {string} key e.g. e-ui-formspersister
@@ -39,10 +40,8 @@ goog.scope ->
     @return {goog.storage.mechanism.IterableMechanism}
   ###
   _.getMechanism = (key, session) ->
-    factory = goog.storage.mechanism.mechanismfactory
-    mechanism = if session
-      factory.createHTML5SessionStorage key
-    else
-      factory.create key
+    if session
+      return mechanismfactory.createHTML5SessionStorage key
+    mechanismfactory.create key
 
   return

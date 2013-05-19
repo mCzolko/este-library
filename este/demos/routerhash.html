@@ -2,7 +2,7 @@
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
-  <title>este.Router html5</title>
+  <title>este.Router hash</title>
   <link href='css/default.css' rel='stylesheet'>
   <style>
     a {
@@ -18,8 +18,8 @@
       text-decoration: none;
     }
   </style>
-  <script src='../../closure-library/closure/goog/base.js'></script>
-  <script src='../../../client/deps.js'></script>
+  <script src='../../../closure-library/closure/goog/base.js'></script>
+  <script src='../../../../client/deps.js'></script>
   <script>
     goog.require('este.dev.Monitor.create')
     goog.require('goog.Uri')
@@ -27,12 +27,12 @@
   </script>
 </head>
 <body>
-  <h1>este.Router html5</h1>
+  <h1>este.Router hash</h1>
   <p id='links'>
-    <a href='kittens' title='Kittens'>Kittens</a> |
-    <a href='puppies' title='Puppies'>Puppies</a> |
-    <a href='pandas' title='Pandas'>Pandas</a> |
-    <a href='bucket' title='Bucket'>Bucket</a>
+    <a href='#/kittens' title='Kittens'>Kittens</a> |
+    <a href='#/puppies' title='Puppies'>Puppies</a> |
+    <a href='#/pandas' title='Pandas'>Pandas</a> |
+    <a href='#/bucket' title='Bucket'>Bucket</a>
   </p>
   <div id='kittens' class='section'>
     <img src='http://farm4.static.flickr.com/3045/2481490798_bba0c585b4.jpg'>
@@ -46,10 +46,11 @@
   <div id='bucket' class='section'>
     <img src='http://farm1.static.flickr.com/146/421093356_6bbefa304e.jpg'>
   </div>
+  <p>Router ignores <a href='http://google.com'>link</a> with scheme. Router also ignores <a e-router-ignore href='/server'>link</a> with e-router-ignore attribute.</p>
   <script>
     este.dev.Monitor.create()
 
-    var router = este.router.create(document.body)
+    var router = este.router.create(document.body, true)
     var cur = 'kittens'
 
     var updateUI = function(token) {
@@ -66,11 +67,11 @@
       var anchors = document.getElementsByTagName('a')
       for (var i = 0, l = anchors.length; i < l; i++)
         anchors[i].className = ''
-      el = document.querySelector('*[href="' + token + '"]')
+      el = document.querySelector('*[href="#/' + token + '"]')
       el.className = 'shown'
     }
 
-    router.add('/:token?', function(params) {
+    router.add('#/:token?', function(params) {
       var token = params.token || 'kittens'
       updateUI(token)
     })

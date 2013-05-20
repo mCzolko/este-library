@@ -11,9 +11,9 @@ Google Closure library written in CoffeeScript and powered by [Este](https://git
 
 ## Why yet another library/MVC framework/utils whatever?
 
-Because this is build on top of the great Google Closure Tools. We can have a future right
-now. Robust and ready for production. Statically compiled JavaScript with beautiful
-syntax and luxory development stack.
+Because this is build on top of the great Google Closure Tools. We can have future right
+now. Statically compiled JavaScript with beautiful syntax and luxory development stack.
+Robust and ready for production.
 
 ## License
 Copyright (c) 2013 Daniel Steigerwald

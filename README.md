@@ -1,12 +1,13 @@
-# este-library
+# este-library [![Build Status](https://secure.travis-ci.org/Steida/este-library.png?branch=master)](http://travis-ci.org/Steida/este-library)
 
-JavaScript library for Google Closure. Written in CoffeeScript and powered by [Este](https://github.com/steida/este) dev stack. It contains
+Google Closure library written in CoffeeScript and powered by [Este](https://github.com/steida/este).
 
-  - Este MVC framework with TodoMVC demo
-  - several UI components
-  - a lot of other usefull stuff
-
-Tutorials will be added soon. You can browse well documented source code with examples.
+  - Este MVC framework with canonical TodoMVC demo
+  - several UI components intented as tutorial
+  - mobile and offline support
+  - well documented sources
+  - a lot of simple demos
+  - etc.
 
 ## Why yet another library/MVC framework/utils whatever?
 

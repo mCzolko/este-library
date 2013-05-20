@@ -1,6 +1,108 @@
 module.exports = (grunt) ->
 
+  depsDirs = [
+    'bower_components/closure-library'
+    'bower_components/closure-templates'
+    'este'
+  ]
+  depsPath = 'build/deps.js'
+  depsPrefix = '../../../../'
+
   grunt.initConfig
+
+    clean:
+      all:
+        options:
+          force: true
+        src: 'este/**/*.{js,css}'
+
+    stylus:
+      all:
+        files: [
+          expand: true
+          src: 'este/**/*.styl'
+          ext: '.css'
+        ]
+
+    coffee:
+      all:
+        options:
+          bare: true
+        files: [
+          expand: true
+          src: 'este/**/*.coffee'
+          ext: '.js'
+        ]
+
+    coffee2closure:
+      all:
+        files: [
+          expand: true
+          src: 'este/**/*.coffee'
+          ext: '.js'
+        ]
+
+    coffeelint:
+      all:
+        options:
+          no_backticks:
+            level: 'ignore'
+          max_line_length:
+            level: 'ignore'
+        files: [
+          expand: true
+          src: 'este/**/*.coffee'
+        ]
+
+    esteTemplates:
+      all:
+        src: 'este/**/*.soy'
+
+    esteDeps:
+      all:
+        options:
+          outputFile: depsPath
+          prefix: depsPrefix
+          root: depsDirs
+
+    esteUnitTests:
+      app:
+        options:
+          depsPath: depsPath
+          prefix: depsPrefix
+        src: 'este/**/*_test.js'
+
+    esteBuilder:
+      options:
+        root: depsDirs
+        depsPath: depsPath
+        compilerFlags: [
+          # you will love advanced compilation with verbose warning level
+          '--output_wrapper="(function(){%output%})();"'
+          '--compilation_level="ADVANCED_OPTIMIZATIONS"'
+          '--warning_level="VERBOSE"'
+          # remove code for ancient browsers (IE<8, very old Gecko/Webkit)
+          '--define=goog.net.XmlHttp.ASSUME_NATIVE_XHR=true'
+          '--define=este.json.SUPPORTS_NATIVE_JSON=true'
+          '--define=goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS=true'
+          '--define=goog.DEBUG=false'
+        ]
+
+      todomvc:
+        options:
+          namespace: 'este.demos.app.todomvc.start'
+          outputFilePath: 'build/app_todomvc.js'
+
+      simple:
+        options:
+          namespace: 'este.demos.app.simple.start'
+          outputFilePath: 'build/app_simple.js'
+
+      layout:
+        options:
+          namespace: 'este.demos.app.layout.start'
+          outputFilePath: 'build/app_layout.js'
+
     release:
       options:
         bump: true
@@ -11,4 +113,22 @@ module.exports = (grunt) ->
         pushTags: true
         npm: false
 
+  grunt.loadNpmTasks 'grunt-coffeelint'
+  grunt.loadNpmTasks 'grunt-contrib-clean'
+  grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-stylus'
+  grunt.loadNpmTasks 'grunt-este'
   grunt.loadNpmTasks 'grunt-release'
+
+  grunt.registerTask 'test', ->
+    grunt.task.run [
+      'clean'
+      'stylus'
+      'coffee'
+      'coffee2closure'
+      'coffeelint'
+      'esteTemplates'
+      'esteDeps'
+      'esteUnitTests'
+      'esteBuilder'
+    ]

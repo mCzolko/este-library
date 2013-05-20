@@ -10,7 +10,7 @@ goog.require 'goog.storage.CollectableStorage'
 
 goog.scope ->
   `var _ = este.storage`
-  `var mechanismfactory = este.goog.storage.mechanism.mechanismfactory`
+  `var mechanismfactory = goog.storage.mechanism.mechanismfactory`
 
   ###*
     @param {string} key e.g. e-ui-formspersister

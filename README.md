@@ -1,4 +1,4 @@
-# este-library [![Build Status](https://secure.travis-ci.org/Steida/este-library.png?branch=master)](http://travis-ci.org/Steida/este-library)
+# este-library [![Build Status](https://secure.travis-ci.org/Steida/este-library.png?branch=master)](http://travis-ci.org/Steida/este-library) [![devDependency Status](https://david-dm.org/steida/este-library/dev-status.png)](https://david-dm.org/steida/este-library#info=devDependencies)
 
 Google Closure library written in CoffeeScript and powered by [Este](https://github.com/steida/este).
 

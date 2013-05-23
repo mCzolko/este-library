@@ -1,29 +1,31 @@
 ###*
-  @fileoverview Listen tap event on any element with href attribute. Prevents
-  default anchor behaviour, and uses AJAX navigation instead. Both hashchange
-  and pushState is supported.
+  @fileoverview hashchange/pushState router. It watches any element with href
+  attribute, and prevents default redirecting behaviour. But you can still use
+  right click and other ways to open link in new tab.
 
-  Examples
-    hashchange anchor
-      <a href='#/'>
-        There has to be slash on end, to prevent scroll jump, if element with
-        id equals href is in document, which is default browser behaviour.
-    pushState anchor
-      <a href='/'>
-    ajax back button
-      <a e-router-back-button href='#/home'>
-        In many native-like apps, we want to have back button. Imagine some
-        detail view, /products/123, which can be pointed from several other
-        urls. e-router-back-button will call history.back(). But there is one catch.
-        What if /products/123 is shown as first page. Should e-router-back-button
-        redirect browser to previous site? No. App back button should redirect
-        only into app. este.Router in such case will use default anchor href.
-        This patter could be called 'app back button'.
-    classic link, ignored by router
-      just add scheme
-        <a href='http(s)://...'>
-      or e-router-ignore attribute
-        <a e-router-ignore href='/foo'
+  Anchor with hashchange navigation. Slash is required to prevent scroll jumps
+  when element with the same id as anchor href is matched.
+  <pre>
+  <a href='#/about'>about</a>
+  </pre>
+
+  Anchor with pushState navigation.
+  <pre>
+  <a href='/about'>about</a>
+  </pre>
+
+  Back button. It calls history.back(), but only when its href attribute was
+  yet visited by router. This behavior ensures that back button works only
+  within application. Ajax back button should not leave the application.
+  <pre>
+  <a e-router-back-button href='#/home'>back</a>
+  </pre>
+
+  Classic links ignored by router. TODO: add relative protocol (//domain.com).
+  <pre>
+  <a href='http(s)://...'>
+  <a e-router-ignore href='/foo'
+  </pre>
 
   @see ../demos/routerhash.html
   @see ../demos/routerhtml5.html

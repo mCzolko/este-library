@@ -4,7 +4,6 @@
 goog.provide 'este.demos.app.todomvc.todos.list.View'
 
 goog.require 'este.app.View'
-goog.require 'este.demos.app.todomvc.todos.Collection'
 goog.require 'este.demos.app.todomvc.todos.list.templates'
 goog.require 'goog.i18n.pluralRules'
 

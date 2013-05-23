@@ -7,7 +7,6 @@ goog.provide 'este.events.Delegation.create'
 
 goog.require 'este.Base'
 goog.require 'goog.dom'
-goog.require 'goog.events'
 goog.require 'goog.userAgent'
 
 class este.events.Delegation extends este.Base

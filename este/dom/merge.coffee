@@ -23,11 +23,9 @@
   @see ../demos/merge.html
 ###
 
-goog.provide 'este.dom.merge'
 goog.provide 'este.dom.Merge'
+goog.provide 'este.dom.merge'
 
-goog.require 'este.dom'
-goog.require 'este.json'
 goog.require 'goog.array'
 
 ###*

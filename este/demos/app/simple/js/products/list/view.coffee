@@ -4,7 +4,6 @@
 goog.provide 'este.demos.app.simple.products.list.View'
 
 goog.require 'este.app.View'
-goog.require 'este.demos.app.simple.products.Collection'
 
 class este.demos.app.simple.products.list.View extends este.app.View
 

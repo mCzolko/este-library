@@ -9,8 +9,6 @@
 
 goog.provide 'este.history.TokenTransformer'
 
-goog.require 'goog.history.Html5History.TokenTransformer'
-
 class este.history.TokenTransformer
 
   ###*

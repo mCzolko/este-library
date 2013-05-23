@@ -397,7 +397,7 @@ goog.scope ->
   ###*
     @param {Element} newNode
     @param {Element} refNode
-    @param {string} where before, after, prepend, append
+    @param {string} where Before, after, prepend, append.
   ###
   _.insert = (newNode, refNode, where) ->
     switch where
@@ -413,7 +413,8 @@ goog.scope ->
 
   ###*
     @param {goog.events.BrowserEvent} e
-    @param {Object.<string, Function>} object key is className, value is callback
+    @param {Object.<string, Function>} object Key is className, value is
+      callback.
     @return {boolean}
   ###
   _.onTargetWithClass = (e, object) ->
@@ -446,7 +447,7 @@ goog.scope ->
 
     @param {Element} form
     @param {string} name
-    @return {string|null}
+    @return {?string}
   ###
   _.getSingleFormValueByName = (form, name) ->
     `form = /** @type {HTMLFormElement} */ (form)`

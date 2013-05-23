@@ -8,7 +8,6 @@
 goog.provide 'este.storage.Base'
 
 goog.require 'este.Collection'
-goog.require 'este.Model'
 goog.require 'goog.result'
 
 class este.storage.Base

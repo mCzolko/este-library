@@ -3,8 +3,6 @@
 ###
 goog.provide 'este.ui.maxFontSize'
 
-goog.require 'goog.dom.classes'
-
 ###*
   @param {Element} el
 ###

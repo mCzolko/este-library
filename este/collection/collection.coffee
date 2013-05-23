@@ -7,7 +7,6 @@ goog.provide 'este.Collection'
 
 goog.require 'este.Base'
 goog.require 'este.Model'
-goog.require 'este.Model.Event'
 goog.require 'goog.array'
 
 class este.Collection extends este.Base

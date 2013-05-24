@@ -1,4 +1,5 @@
 // useful mixin from assets/este/este/styl
+
 inline-block-container()
   letter-spacing -0.31em
   word-spacing -0.43em
@@ -29,18 +30,18 @@ inline-block-container()
   cursor w-resize
 
 #layout-app
+
   .este-links
     inline-block-container()
-    display inline-block
     background-color #eee
     border solid 1px #ccc
-    padding .3em
+    padding .1em .3em
     border-radius 6px
 
     a
       padding .2em 1em
       margin .3em
-      border solid 1px #ccc
+      border solid 1px transparent
       border-radius 6px
       color #333
       text-decoration none
@@ -50,7 +51,7 @@ inline-block-container()
         background-color #fff
 
       &.este-selected
-        border solid 1px #aaa
+        border solid 1px #ccc
         background-color #fff
 
   .este-content,

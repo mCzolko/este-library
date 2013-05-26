@@ -39,13 +39,14 @@ class este.router.Route
     path
 
   ###*
-    - sensitive: if routing is case sensitive
-    - hide: callback
-    TODO: - strict:
+    hide - callback
+    sensitive - Enable case sensitive routing
+    strict - Enable strict routing, by default "/foo" and "/foo/" are treated
+    the same by the route.
     @typedef {{
+      hide: (Function|undefined),
       sensitive: (boolean|undefined),
-      strict: (boolean|undefined),
-      hide: (Function|undefined)
+      strict: (boolean|undefined)
     }}
   ###
   @Options

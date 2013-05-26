@@ -20,6 +20,8 @@
     - how to define schema: see model_test.coffee
 
   @see ../demos/model.html
+  @see ../demos/app/todomvc/index.html
+  @see ../demos/app/todomvc/js/todos/model.coffee
 ###
 
 goog.provide 'este.Model'
@@ -62,7 +64,8 @@ class este.Model extends este.Base
     super()
     @attributes = {}
     @schema ?= {}
-    @setInternal @defaults, true if @defaults
+    defaults = @getResolvedDefaults()
+    @setInternal defaults, true if defaults
     @setInternal json, true if json
     @ensureClientId idGenerator
 
@@ -131,6 +134,17 @@ class este.Model extends este.Base
     @protected
   ###
   attributes: null
+
+  ###*
+    @return {Object}
+    @protected
+  ###
+  getResolvedDefaults: ->
+    return {} if !@defaults
+    goog.object.map @defaults, (value, key) ->
+      if typeof value == 'function'
+        return value()
+      value
 
   ###*
     @param {string|number} id

@@ -1,46 +1,45 @@
-trimSetter = (value) ->
-  goog.string.trim value || ''
-
-RequiredValidator = ->
-RequiredValidator::isValidable = ->
-  true
-RequiredValidator::validate = ->
-  switch goog.typeOf @value
-    when 'string'
-      goog.string.trim(@value + '').length > 0
-    when 'array'
-      @value.length > 0
-    else
-      @value?
-
-requiredValidator = ->
-  new RequiredValidator
-
-class Person extends este.Model
-
-  constructor: (json, randomStringGenerator) ->
-    super json, randomStringGenerator
-
-  defaults:
-    'title': ''
-    'defaultFoo': 1
-
-  schema:
-    'firstName':
-      'set': trimSetter
-      'validators': [
-        requiredValidator
-      ]
-    'lastName':
-      'validators': [
-        requiredValidator
-      ]
-    'name':
-      'meta': (self) -> self.get('firstName') + ' ' + self.get('lastName')
-    'age':
-      'get': (age) -> Number age
-
 suite 'este.Model', ->
+
+  trimSetter = (value) ->
+    goog.string.trim value || ''
+
+  RequiredValidator = ->
+  RequiredValidator::isValidable = -> true
+  RequiredValidator::validate = ->
+    switch goog.typeOf @value
+      when 'string'
+        goog.string.trim(@value + '').length > 0
+      when 'array'
+        @value.length > 0
+      else
+        @value?
+
+  requiredValidator = ->
+    new RequiredValidator
+
+  class Person extends este.Model
+
+    constructor: (json, randomStringGenerator) ->
+      super json, randomStringGenerator
+
+    defaults:
+      'title': ''
+      'defaultFoo': 1
+
+    schema:
+      'firstName':
+        'set': trimSetter
+        'validators': [
+          requiredValidator
+        ]
+      'lastName':
+        'validators': [
+          requiredValidator
+        ]
+      'name':
+        'meta': (self) -> self.get('firstName') + ' ' + self.get('lastName')
+      'age':
+        'get': (age) -> Number age
 
   json = null
   person = null
@@ -468,3 +467,13 @@ suite 'este.Model', ->
       model1 = [1]
       model2 = [2]
       assert.isFalse este.Model.equal model1, model2
+
+  suite 'defaults', ->
+    test 'should be possible to use function instead of value', ->
+      class Foo extends este.Model
+        constructor: ->
+          super
+        defaults:
+          'title': -> 'foo'
+      foo = new Foo
+      assert.equal foo.get('title'), 'foo'

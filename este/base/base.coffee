@@ -15,7 +15,6 @@ class este.Base extends goog.events.EventTarget
   ###
   constructor: ->
     super()
-    @parents_ = []
 
   ###*
     @type {goog.events.EventHandler}
@@ -27,12 +26,6 @@ class este.Base extends goog.events.EventTarget
     @type {Array.<este.Base>}
   ###
   parents_: null
-
-  ###*
-    @protected
-  ###
-  getHandler: ->
-    @handler_ ?= new goog.events.EventHandler @
 
   ###*
     Alias for .listen.
@@ -81,7 +74,7 @@ class este.Base extends goog.events.EventTarget
     @protected
   ###
   addParent: (parent) ->
-    goog.array.insert @parents_, parent
+    goog.array.insert @getParents(), parent
 
   ###*
     @param {este.Base} parent
@@ -89,7 +82,7 @@ class este.Base extends goog.events.EventTarget
     @protected
   ###
   removeParent: (parent) ->
-    goog.array.remove @parents_, parent
+    goog.array.remove @getParents(), parent
 
   ###*
     Return clone of the parents.
@@ -97,8 +90,13 @@ class este.Base extends goog.events.EventTarget
     @protected
   ###
   getParents: ->
-    return @parents_.slice 0 if @parents_
-    []
+    @parents_ || @parents_ = []
+
+  ###*
+    @protected
+  ###
+  getHandler: ->
+    @handler_ ?= new goog.events.EventHandler @
 
   ###*
     @override
@@ -106,7 +104,8 @@ class este.Base extends goog.events.EventTarget
   dispatchEvent: (e) ->
     result = super e
     return result if !@parents_
-    for parent in @getParents()
+    # clone array to safe iteration
+    for parent in @getParents().slice 0
       parentResult = parent.dispatchEvent e
       result = false if parentResult == false
     result

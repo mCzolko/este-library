@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Este TodoMVC (todomvc.com) implementation.
+  @fileoverview Este TodoMVC (todomvc.com).
 ###
 
 goog.provide 'este.demos.app.todomvc.start'
@@ -9,10 +9,9 @@ goog.require 'este.demos.app.todomvc.todos.list.Presenter'
 goog.require 'este.dev.Monitor.create'
 goog.require 'este.storage.Local'
 
-###*
-  @param {Object} data JSON from server
-###
-este.demos.app.todomvc.start = (data) ->
+este.demos.app.todomvc.start = ->
+
+  # shows total registered listeners count in bottom right corner
   if goog.DEBUG
     este.dev.Monitor.create()
 

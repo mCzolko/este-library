@@ -136,17 +136,6 @@ class este.Model extends este.Base
   attributes: null
 
   ###*
-    @return {Object}
-    @protected
-  ###
-  getResolvedDefaults: ->
-    return {} if !@defaults
-    goog.object.map @defaults, (value, key) ->
-      if typeof value == 'function'
-        return value()
-      value
-
-  ###*
     @param {string|number} id
   ###
   setId: (id) ->
@@ -207,55 +196,6 @@ class este.Model extends este.Base
       json = _json
 
     @setInternal json
-
-  ###*
-    @param {Object} json
-    @param {boolean=} silent
-    @return {Array.<este.validators.Base>}
-    @protected
-  ###
-  setInternal: (json, silent) ->
-    changes = @getChanges json
-    return null if !changes
-
-    if !silent
-      errors = @getErrors changes
-      return errors if errors
-
-    @setAttributes changes
-    if !silent
-      @dispatchChangeEvent changes
-    null
-
-  ###*
-    @param {Object} json
-    @protected
-  ###
-  setAttributes: (json) ->
-    idAttributes = @idAttribute.split '.'
-    for key, value of json
-      $key = @getKey key
-      currentValue = @attributes[$key]
-      if key == idAttributes[0]
-        @setIdAttribute value, currentValue, idAttributes
-      if key == '_cid' && currentValue?
-        goog.asserts.fail 'Model _cid is immutable.'
-      @attributes[$key] = value
-      value.addParent @ if value instanceof este.Base
-    return
-
-  ###*
-    @protected
-  ###
-  setIdAttribute: (value, currentValue, idAttributes) ->
-    if currentValue?
-      goog.asserts.fail 'Model id is immutable.'
-    if idAttributes.length == 1
-      @id = value.toString()
-    else
-      nestedId = goog.object.getValueByKeys value, idAttributes.slice 1
-      @id = nestedId.toString()
-    return
 
   ###*
     Returns model attribute(s).
@@ -340,6 +280,66 @@ class este.Model extends este.Base
   ###
   getKey: (key) ->
     '$' + key
+
+  ###*
+    @return {Object}
+    @protected
+  ###
+  getResolvedDefaults: ->
+    return {} if !@defaults
+    goog.object.map @defaults, (value, key) ->
+      if typeof value == 'function'
+        return value()
+      value
+
+  ###*
+    @param {Object} json
+    @param {boolean=} silent
+    @return {Array.<este.validators.Base>}
+    @protected
+  ###
+  setInternal: (json, silent) ->
+    changes = @getChanges json
+    return null if !changes
+
+    if !silent
+      errors = @getErrors changes
+      return errors if errors
+
+    @setAttributes changes
+    if !silent
+      @dispatchChangeEvent changes
+    null
+
+  ###*
+    @param {Object} json
+    @protected
+  ###
+  setAttributes: (json) ->
+    idAttributes = @idAttribute.split '.'
+    for key, value of json
+      $key = @getKey key
+      currentValue = @attributes[$key]
+      if key == idAttributes[0]
+        @setIdAttribute value, currentValue, idAttributes
+      if key == '_cid' && currentValue?
+        goog.asserts.fail 'Model _cid is immutable.'
+      @attributes[$key] = value
+      value.addParent @ if value instanceof este.Base
+    return
+
+  ###*
+    @protected
+  ###
+  setIdAttribute: (value, currentValue, idAttributes) ->
+    if currentValue?
+      goog.asserts.fail 'Model id is immutable.'
+    if idAttributes.length == 1
+      @id = value.toString()
+    else
+      nestedId = goog.object.getValueByKeys value, idAttributes.slice 1
+      @id = nestedId.toString()
+    return
 
   ###*
     @param {Object} json

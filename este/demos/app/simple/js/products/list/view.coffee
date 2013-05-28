@@ -4,6 +4,7 @@
 goog.provide 'este.demos.app.simple.products.list.View'
 
 goog.require 'este.app.View'
+goog.require 'este.demos.app.simple.products.list.templates'
 
 class este.demos.app.simple.products.list.View extends este.app.View
 
@@ -34,15 +35,13 @@ class este.demos.app.simple.products.list.View extends este.app.View
   ###
   update: ->
     window['console']['log'] "products rendered"
-    links = []
-    for product in @products.toJson()
-      url = @createUrl este.demos.app.simple.products.detail.Presenter,
-        'id': product['id']
-      links.push "<li><a href='#{url}'>#{product['name']}</a>"
-
-    @getElement().innerHTML = """
-      <h3>List of Products</h3>
-      <ul>
-        #{links.join ''}
-      </ul>
-    """
+    links = for product in @products.toJson()
+      name: product['name']
+      description: product['description']
+      href: @createUrl(
+        este.demos.app.simple.products.detail.Presenter, 'id': product['id'])
+    html = este.demos.app.simple.products.list.templates.element
+      links: links
+      timeoutHref: @createUrl este.demos.app.simple.timeout.Presenter
+      errorHref: @createUrl este.demos.app.simple.error.Presenter
+    @getElement().innerHTML = html

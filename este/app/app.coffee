@@ -27,6 +27,7 @@ goog.require 'este.app.request.Queue'
 goog.require 'este.app.Route'
 goog.require 'este.Base'
 goog.require 'este.router.Route'
+goog.require 'goog.async.Delay'
 goog.require 'goog.result'
 
 class este.App extends este.Base
@@ -49,6 +50,24 @@ class este.App extends este.Base
     LOAD: 'load'
     SHOW: 'show'
     HIDE: 'hide'
+    TIMEOUT: 'timeout'
+    ERROR: 'error'
+
+  ###*
+    @desc App request timed out message.
+  ###
+  @MSG_REQUEST_TIMEOUT: goog.getMsg 'Sorry, the request timed out. Please try again later.'
+
+  ###*
+    @desc App request error message.
+  ###
+  @MSG_REQUEST_ERROR: goog.getMsg 'Sorry, server error. Please try again later.'
+
+  ###*
+    Default timeout used for async presenters loading.
+    @type {number}
+  ###
+  timeoutMs: 10000
 
   ###*
     @type {boolean}
@@ -59,6 +78,17 @@ class este.App extends este.Base
     @type {este.storage.Base}
   ###
   storage: null
+
+  ###*
+    @type {boolean}
+  ###
+  showAlertOnError: true
+
+  ###*
+    @type {Window}
+    @protected
+  ###
+  window: window
 
   ###*
     @type {este.Router}
@@ -88,7 +118,7 @@ class este.App extends este.Base
     @type {goog.result.Result}
     @protected
   ###
-  lastResult: null
+  lastLoadResult: null
 
   ###*
     @type {este.app.Request}
@@ -155,6 +185,14 @@ class este.App extends este.Base
     @load route.presenter, params
 
   ###*
+    @param {function(new:este.app.Presenter)} presenterClass
+    @return {este.app.Route}
+  ###
+  findRouteByPresenterClass: (presenterClass) ->
+    goog.array.find @routes, (route) ->
+      route.presenter instanceof presenterClass
+
+  ###*
     @param {este.app.Presenter} presenter
     @return {este.app.Route}
     @protected
@@ -162,14 +200,6 @@ class este.App extends este.Base
   findRouteByPresenter: (presenter) ->
     goog.array.find @routes, (route) ->
       route.presenter == presenter
-
-  ###*
-    @param {function(new:este.app.Presenter)} presenterClass
-    @return {este.app.Route}
-  ###
-  findRouteByPresenterClass: (presenterClass) ->
-    goog.array.find @routes, (route) ->
-      route.presenter instanceof presenterClass
 
   ###*
     @param {este.app.Presenter} presenter
@@ -204,26 +234,44 @@ class este.App extends este.Base
     @protected
   ###
   load: (presenter, params, isNavigation) ->
-    request = new este.app.Request presenter, params, isNavigation
     @queue.clear() if isNavigation
+    request = new este.app.Request presenter, params, isNavigation
     return if @queue.contains request
     @queue.add request
     @dispatchAppEvent App.EventType.LOAD, request
-    @lastResult = presenter.load params
-    goog.result.wait @lastResult, goog.bind @onLoad, @, request
+    @lastLoadResult = presenter.load params
+    delay = @getResultTimeoutDelay @lastLoadResult
+    goog.result.wait @lastLoadResult,
+      goog.bind @onLoadResultWait, @, request, delay
+
+  ###*
+    @param {goog.result.Result} result
+    @return {goog.async.Delay}
+    @protected
+  ###
+  getResultTimeoutDelay: (result) ->
+    delay = new goog.async.Delay ->
+      result.cancel()
+    , @timeoutMs, @
+    delay.start()
+    delay
 
   ###*
     @param {este.app.Request} request
+    @param {goog.async.Delay} delay
     @param {goog.result.Result} result
     @protected
   ###
-  onLoad: (request, result) ->
-    return if @lastResult != result
+  onLoadResultWait: (request, delay, result) ->
+    delay.dispose()
+    return if @lastLoadResult != result
     @queue.clear()
     switch result.getState()
       when goog.result.Result.State.SUCCESS
         @onSuccessLoad request
-      # when goog.result.Result.State.ERROR
+      when goog.result.Result.State.ERROR
+        @onFailedLoad request, result
+    return
 
   ###*
     @param {este.app.Request} request
@@ -235,6 +283,21 @@ class este.App extends este.Base
     @dispatchAppEvent App.EventType.SHOW, request
     request.presenter.beforeShow request.isNavigation
     @updateLocation request
+
+  ###*
+    @param {este.app.Request} request
+    @param {goog.result.Result} result
+    @protected
+  ###
+  onFailedLoad: (request, result) ->
+    if result.isCanceled()
+      if @showAlertOnError
+        @window.alert App.MSG_REQUEST_TIMEOUT
+      @dispatchAppEvent App.EventType.TIMEOUT, request, result.getError()
+      return
+    if @showAlertOnError
+      @window.alert App.MSG_REQUEST_ERROR
+    @dispatchAppEvent App.EventType.ERROR, request, result.getError()
 
   ###*
     @protected
@@ -265,10 +328,11 @@ class este.App extends este.Base
   ###*
     @param {este.App.EventType} type
     @param {este.app.Request} request
+    @param {*=} error
     @protected
   ###
-  dispatchAppEvent: (type, request) ->
-    event = new este.app.Event type, request
+  dispatchAppEvent: (type, request, error) ->
+    event = new este.app.Event type, request, error
     @dispatchEvent event
 
   ###*

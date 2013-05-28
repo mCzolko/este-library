@@ -5,6 +5,7 @@ suite 'este.App', ->
   router = null
   screen = null
   app = null
+  window = null
   Presenter0 = null
   Presenter1 = null
   Presenter2 = null
@@ -16,6 +17,8 @@ suite 'este.App', ->
     router = mockRouter()
     screen = mockScreen()
     app = new App router, screen
+    window = alert: ->
+    app.window = window
     arrangePresenters()
     arrangeRoutes()
 
@@ -384,7 +387,7 @@ suite 'este.App', ->
         app.load presenter2, {}, true
 
     suite 'onLoad', ->
-      test 'should clear queue cache', (done) ->
+      test 'should clear queue', (done) ->
         app.start()
         showCount = 0
         goog.events.listen app, 'show', (e) ->
@@ -395,3 +398,74 @@ suite 'este.App', ->
           app.load presenter1
         app.load presenter1
 
+  suite 'timeout event', ->
+    test 'should be dispatched if loading time > timeoutMs', (done) ->
+      app.timeoutMs = 4
+      app.start()
+      goog.events.listen app, 'timeout', (e) ->
+        done()
+      app.load presenter1
+
+    test 'should display alert', (done) ->
+      app.timeoutMs = 4
+      app.start()
+      app.window.alert = (msg) ->
+        assert.equal msg, App.MSG_REQUEST_TIMEOUT
+        done()
+      app.load presenter1
+
+    test 'should not display alert', (done) ->
+      app.showAlertOnError = false
+      app.timeoutMs = 4
+      app.start()
+      alertCalled = false
+      app.window.alert = (msg) ->
+        alertCalled = true
+      goog.events.listen app, 'timeout', (e) ->
+        assert.isFalse alertCalled
+        done()
+      app.load presenter1
+
+  suite 'error event', ->
+    test 'should be dispatched if result has non cancelled error', (done) ->
+      app.start()
+      goog.events.listen app, 'error', (e) ->
+        assert.equal e.error, 'foo'
+        done()
+      presenter0.load = ->
+        result = new goog.result.SimpleResult
+        setTimeout ->
+          result.setError 'foo'
+        , 2
+        result
+      app.load presenter0
+
+    test 'should display alert', (done) ->
+      app.start()
+      app.window.alert = (msg) ->
+        assert.equal msg, App.MSG_REQUEST_ERROR
+        done()
+      presenter0.load = ->
+        result = new goog.result.SimpleResult
+        setTimeout ->
+          result.setError 'foo'
+        , 2
+        result
+      app.load presenter0
+
+    test 'should not display alert', (done) ->
+      app.showAlertOnError = false
+      app.start()
+      alertCalled = false
+      app.window.alert = ->
+        alertCalled = true
+      goog.events.listen app, 'error', (e) ->
+        assert.isFalse alertCalled
+        done()
+      presenter0.load = ->
+        result = new goog.result.SimpleResult
+        setTimeout ->
+          result.setError 'foo'
+        , 2
+        result
+      app.load presenter0

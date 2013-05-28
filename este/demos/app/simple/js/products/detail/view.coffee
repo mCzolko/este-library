@@ -4,6 +4,7 @@
 goog.provide 'este.demos.app.simple.products.detail.View'
 
 goog.require 'este.app.View'
+goog.require 'este.demos.app.simple.products.detail.templates'
 
 class este.demos.app.simple.products.detail.View extends este.app.View
 
@@ -40,11 +41,9 @@ class este.demos.app.simple.products.detail.View extends este.app.View
   ###
   update: ->
     window['console']['log'] "product with id #{@params['id']} rendered"
-    @getElement().innerHTML = """
-      <h3>Product Detail</h3>
-      <p>Product with id: #{@params['id']} rendered</p>
-      <button>show products</button>
-    """
+    html = este.demos.app.simple.products.detail.templates.element
+      id: @params['id']
+    @getElement().innerHTML = html
 
   ###*
     @param {goog.events.BrowserEvent} e

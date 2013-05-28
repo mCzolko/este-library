@@ -19,10 +19,16 @@
   </p>
   <p>
       Try click to products/0, then before request is finished, click to
-      products/1. First click will be canceled.
+      products/1. First click will be canceled. Try several fast clicks on the
+      same link. Only first click will be processed. Detail Presenter uses
+      timeouts for slow connection simulation. products/0 is timeouted by 6s,
+      others products by 2s.
   </p>
   <p>
-      Try several fast clicks on the same link. Only first will be processed.
+      Default app timeout is 10s. Then timeout error is shown and user can
+      repeat action. Loading errors are also detected. Both error and timeout
+      are shown via window.alert by default. It can be disabled via showAlertOnError
+      option.
   </p>
   <p>
     <button id='dispose'>dispose</button>

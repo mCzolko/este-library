@@ -85,6 +85,7 @@ class este.app.Presenter extends este.Base
     Called when next presenter is going to be shown.
   ###
   beforeHide: ->
+    return if !@view
     @hide()
     @screen.hide @view
 

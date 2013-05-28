@@ -18,7 +18,11 @@
       UX.
   </p>
   <p>
-      Check 'last click win' pattern. Try to click to Product A, then before Products A is loaded (it needs 8 secs), click to Product B. First request will be canceled.
+      Try click to products/0, then before request is finished, click to
+      products/1. First click will be canceled.
+  </p>
+  <p>
+      Try several fast clicks on the same link. Only first will be processed.
   </p>
   <p>
     <button id='dispose'>dispose</button>

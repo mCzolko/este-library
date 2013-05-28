@@ -1,5 +1,5 @@
 ###*
-  @fileoverview este.demos.app.todomvc.todos.list.View.
+  @fileoverview View for list of todos.
 ###
 goog.provide 'este.demos.app.todomvc.todos.list.View'
 
@@ -10,16 +10,53 @@ goog.require 'goog.i18n.pluralRules'
 class este.demos.app.todomvc.todos.list.View extends este.app.View
 
   ###*
-    @param {este.demos.app.todomvc.todos.Collection} todos
     @constructor
     @extends {este.app.View}
   ###
-  constructor: (@todos) ->
+  constructor: ->
     super()
+
+  # Localization messages for goog.i18n.pluralRules.
+  # estejs.tumblr.com/post/35639619128/este-js-localization-cheat-sheet
+
+  ###*
+    @desc Zero items left.
+    @protected
+  ###
+  @MSG_ZERO_ITEMLEFT: goog.getMsg 'items left'
+
+  ###*
+    @desc One item left.
+    @protected
+  ###
+  @MSG_ONE_ITEMLEFT: goog.getMsg 'item left'
+
+  ###*
+    @desc Two items left.
+    @protected
+  ###
+  @MSG_TWO_ITEMLEFT: goog.getMsg 'items left'
+
+  ###*
+    @desc Few items left.
+    @protected
+  ###
+  @MSG_FEW_ITEMLEFT: goog.getMsg 'items left'
+
+  ###*
+    @desc Many items left.
+    @protected
+  ###
+  @MSG_MANY_ITEMLEFT: goog.getMsg 'items left'
+
+  ###*
+    @desc Other items left.
+    @protected
+  ###
+  @MSG_OTHER_ITEMLEFT: goog.getMsg 'items left'
 
   ###*
     @type {este.demos.app.todomvc.todos.Collection}
-    @protected
   ###
   todos: null
 
@@ -138,7 +175,6 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
     showMainAndFooter: !!length
 
   ###*
-    estejs.tumblr.com/post/35639619128/este-js-localization-cheat-sheet
     @param {number} remainingCount
     @return {string}
     @protected
@@ -146,50 +182,14 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   getLocalizedItems: (remainingCount) ->
     switch goog.i18n.pluralRules.select remainingCount
       when goog.i18n.pluralRules.Keyword.ONE
-        @MSG_ONE_ITEMLEFT
+        View.MSG_ONE_ITEMLEFT
       when goog.i18n.pluralRules.Keyword.ZERO
-        @MSG_ZERO_ITEMLEFT
+        View.MSG_ZERO_ITEMLEFT
       when goog.i18n.pluralRules.Keyword.TWO
-        @MSG_TWO_ITEMLEFT
+        View.MSG_TWO_ITEMLEFT
       when goog.i18n.pluralRules.Keyword.FEW
-        @MSG_FEW_ITEMLEFT
+        View.MSG_FEW_ITEMLEFT
       when goog.i18n.pluralRules.Keyword.MANY
-        @MSG_MANY_ITEMLEFT
+        View.MSG_MANY_ITEMLEFT
       else
-        @MSG_OTHER_ITEMLEFT
-
-  ###*
-    @desc One item left.
-    @protected
-  ###
-  MSG_ONE_ITEMLEFT: goog.getMsg 'item left'
-
-  ###*
-    @desc Zero items left.
-    @protected
-  ###
-  MSG_ZERO_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Two items left.
-    @protected
-  ###
-  MSG_TWO_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Few items left.
-    @protected
-  ###
-  MSG_FEW_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Many items left.
-    @protected
-  ###
-  MSG_MANY_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Other items left.
-    @protected
-  ###
-  MSG_OTHER_ITEMLEFT: goog.getMsg 'items left'
+        View.MSG_OTHER_ITEMLEFT

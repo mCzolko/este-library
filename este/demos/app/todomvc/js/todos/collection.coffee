@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Collection representing list of items.
+  @fileoverview Collection representing list of todos.
 ###
 goog.provide 'este.demos.app.todomvc.todos.Collection'
 
@@ -50,7 +50,7 @@ class este.demos.app.todomvc.todos.Collection extends este.Collection
 
   ###*
     @param {string} state
-    @return {Object}
+    @return {Array.<Object>}
   ###
   filterByState: (state) ->
     switch state

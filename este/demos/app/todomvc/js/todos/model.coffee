@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Model representing one todo item.
+  @fileoverview Model representing one todo.
 ###
 goog.provide 'este.demos.app.todomvc.todos.Model'
 

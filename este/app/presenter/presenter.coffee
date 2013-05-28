@@ -62,8 +62,8 @@ class este.app.Presenter extends este.Base
   redirect: null
 
   ###*
-    Load method has to return object implementing goog.result.Result interface.
-    This method should be overridden.
+    Async data load. Use this method in subclassed presenter to load data for
+    view. This method should be overridden.
     @param {Object=} params
     @return {!goog.result.Result}
   ###
@@ -71,7 +71,7 @@ class este.app.Presenter extends este.Base
     goog.result.successfulResult null
 
   ###*
-    Called If load were successful and not canceled.
+    Called on successful load.
     @param {boolean} isNavigation
   ###
   beforeShow: (isNavigation) ->
@@ -82,20 +82,22 @@ class este.app.Presenter extends este.Base
     @screen.show @view, isNavigation
 
   ###*
-    You can use this method to pass data into view or start watching view model
-    events.
-    @protected
-  ###
-  show: ->
-
-  ###*
-    Called by este.App when next presenter is going to be shown.
+    Called when next presenter is going to be shown.
   ###
   beforeHide: ->
     @hide()
     @screen.hide @view
 
   ###*
+    You can use this method to pass data into view or start watching view model
+    events. This method should be overridden.
+    @protected
+  ###
+  show: ->
+
+  ###*
+    You can use this method to stop watching view model events. This method
+    should be overridden.
     @protected
   ###
   hide: ->

@@ -150,39 +150,6 @@ suite 'este.App', ->
         presenter2.beforeShow = -> done()
         router.routes[2].callback()
 
-  suite 'last click win', ->
-    setup ->
-      app.start()
-
-    suite 'presenter1 loaded twice', ->
-      test 'should be fired once', (done) ->
-        presenter1.beforeShow = -> done()
-        router.routes[1].callback()
-        setTimeout ->
-          router.routes[1].callback()
-        , 4
-
-    suite 'presenter1, then presenter2', ->
-      test 'should call only presenter2.beforeShow', (done) ->
-        presenter1.beforeShow = -> throw Error 'error'
-        presenter2.beforeShow = -> done()
-        router.routes[1].callback()
-        setTimeout ->
-          router.routes[2].callback()
-        , 4
-
-    suite 'presenter1, then presenter2, then presenter1', ->
-      test 'should call only presenter1.beforeShow', (done) ->
-        presenter1.beforeShow = -> done()
-        presenter2.beforeShow = -> throw Error 'error'
-        router.routes[1].callback()
-        setTimeout ->
-          router.routes[2].callback()
-        , 2
-        setTimeout ->
-          router.routes[1].callback()
-        , 4
-
   suite 'show/hide logic', ->
     test 'should dispatch hide event then call presenter1 beforeHide', (done) ->
       app.start()
@@ -339,10 +306,92 @@ suite 'este.App', ->
       calls = 0
       app.start()
       app.router.dispose = -> calls++
-      app.queue.dispose = -> calls++
       app.screen.dispose = -> calls++
       presenter0.dispose = -> calls++
       presenter1.dispose = -> calls++
       presenter2.dispose = -> calls++
       app.dispose()
-      assert.equal calls, 6
+      assert.equal calls, 5
+
+  suite 'last click win', ->
+    setup ->
+      app.start()
+
+    suite 'presenter1 loaded twice', ->
+      test 'should be fired once', (done) ->
+        presenter1.beforeShow = -> done()
+        router.routes[1].callback()
+        setTimeout ->
+          router.routes[1].callback()
+        , 4
+
+    suite 'presenter1, then presenter2', ->
+      test 'should call only presenter2.beforeShow', (done) ->
+        presenter1.beforeShow = -> throw Error 'error'
+        presenter2.beforeShow = -> done()
+        router.routes[1].callback()
+        setTimeout ->
+          router.routes[2].callback()
+        , 4
+
+  suite 'dont repeat same requests', ->
+    suite 'presenter1, then presenter2, then presenter1', ->
+      test 'should call only presenter1.beforeShow', (done) ->
+        presenter1.beforeShow = -> throw Error 'error'
+        presenter2.beforeShow = -> done()
+        router.routes[1].callback()
+        setTimeout ->
+          router.routes[2].callback()
+        , 2
+        setTimeout ->
+          router.routes[1].callback()
+        , 4
+
+    suite 'presenter1 trying to be loaded twice', ->
+      test 'should dispatch only one load event', (done) ->
+        app.start()
+        loadCount = 0
+        goog.events.listen app, 'load', (e) ->
+          loadCount++
+        goog.events.listen app, 'show', (e) ->
+          assert.equal loadCount, 1
+          done()
+        app.load presenter1
+        app.load presenter1
+
+    suite 'presenter1 trying to be loaded twice with different params', ->
+      test 'should dispatch two load events', (done) ->
+        app.start()
+        loadCount = 0
+        goog.events.listen app, 'load', (e) ->
+          loadCount++
+        goog.events.listen app, 'show', (e) ->
+          assert.equal loadCount, 2
+          done()
+        app.load presenter1
+        app.load presenter1, a: 1
+
+    suite 'browser BF', ->
+      test 'should reset queue cache', (done) ->
+        app.start()
+        loadCount = 0
+        goog.events.listen app, 'load', (e) ->
+          loadCount++
+        goog.events.listen app, 'show', (e) ->
+          assert.equal loadCount, 2
+          done()
+        app.load presenter1, {}
+        app.load presenter2, {}, true
+
+    suite 'onLoad', ->
+      test 'should clear queue cache', (done) ->
+        app.start()
+        showCount = 0
+        goog.events.listen app, 'show', (e) ->
+          showCount++
+          if showCount == 2
+            done()
+            return
+          app.load presenter1
+        app.load presenter1
+

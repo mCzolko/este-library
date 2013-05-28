@@ -26,8 +26,8 @@ goog.require 'este.app.Request'
 goog.require 'este.app.request.Queue'
 goog.require 'este.app.Route'
 goog.require 'este.Base'
-goog.require 'goog.result'
 goog.require 'este.router.Route'
+goog.require 'goog.result'
 
 class este.App extends este.Base
 
@@ -39,8 +39,8 @@ class este.App extends este.Base
   ###
   constructor: (@router, @screen) ->
     super()
-    @queue = new este.app.request.Queue
     @routes = []
+    @queue = new este.app.request.Queue
 
   ###*
     @enum {string}
@@ -73,27 +73,30 @@ class este.App extends este.Base
   screen: null
 
   ###*
-    @type {este.app.request.Queue}
-    @protected
-  ###
-  queue: null
-
-  ###*
     @type {Array.<este.app.Route>}
     @protected
   ###
   routes: null
 
   ###*
+    @type {este.app.request.Queue}
+    @protected
+  ###
+  queue: null
+
+  ###*
+    @type {goog.result.Result}
+    @protected
+  ###
+  lastResult: null
+
+  ###*
     @type {este.app.Request}
     @protected
   ###
-  lastSuccessRequest: null
+  previousRequest: null
 
   ###*
-    First location update has to be ignored, because it's caused by router
-    start method, therefore there is no need to update location. If updated,
-    it confuse este.History.
     @type {boolean}
     @protected
   ###
@@ -202,37 +205,53 @@ class este.App extends este.Base
   ###
   load: (presenter, params, isNavigation) ->
     request = new este.app.Request presenter, params, isNavigation
-    @dispatchAppEvent App.EventType.LOAD, request
-    result = presenter.load params
+    @queue.clear() if isNavigation
+    return if @queue.contains request
     @queue.add request
-    goog.result.waitOnSuccess result, goog.bind @onLoad, @, request
+    @dispatchAppEvent App.EventType.LOAD, request
+    @lastResult = presenter.load params
+    goog.result.wait @lastResult, goog.bind @onLoad, @, request
+
+  ###*
+    @param {este.app.Request} request
+    @param {goog.result.Result} result
+    @protected
+  ###
+  onLoad: (request, result) ->
+    return if @lastResult != result
+    @queue.clear()
+    switch result.getState()
+      when goog.result.Result.State.SUCCESS
+        @onSuccessLoad request
+      # when goog.result.Result.State.ERROR
 
   ###*
     @param {este.app.Request} request
     @protected
   ###
-  onLoad: (request) ->
-    return if !@queue.dequeue request
-    @hidePreviousIfAny request
+  onSuccessLoad: (request) ->
+    @handlePreviousRequest()
+    @previousRequest = request
     @dispatchAppEvent App.EventType.SHOW, request
     request.presenter.beforeShow request.isNavigation
     @updateLocation request
 
   ###*
-    @param {este.app.Request} request
     @protected
   ###
-  hidePreviousIfAny: (request) ->
-    if @lastSuccessRequest
-      @dispatchAppEvent App.EventType.HIDE, @lastSuccessRequest
-      @lastSuccessRequest.presenter.beforeHide()
-    @lastSuccessRequest = request
+  handlePreviousRequest: ->
+    return if !@previousRequest
+    @dispatchAppEvent App.EventType.HIDE, @previousRequest
+    @previousRequest.presenter.beforeHide()
 
   ###*
     @param {este.app.Request} request
     @protected
   ###
   updateLocation: (request) ->
+    # First location update has to be ignored, because it's caused by router
+    # start method, therefore there is no need to update location. If updated,
+    # it confuses este.History.
     if !@locationUpdated
       @locationUpdated = true
       return
@@ -257,7 +276,6 @@ class este.App extends este.Base
   ###
   disposeInternal: ->
     @router.dispose()
-    @queue.dispose()
     route.dispose() for route in @routes
     @screen.dispose()
     super()

@@ -13,41 +13,39 @@ class este.app.request.Queue extends goog.Disposable
     @extends {goog.Disposable}
   ###
   constructor: ->
-    @pending = []
+    @pendings = []
 
   ###*
     @type {Array.<este.app.Request>}
     @protected
   ###
-  pending: null
+  pendings: null
 
   ###*
     @param {este.app.Request} request
   ###
   add: (request) ->
-    @pending.push request
+    @pendings.push request
 
   ###*
     @param {este.app.Request} request
-    @return {boolean}
   ###
-  dequeue: (request) ->
-    return false if !@pending.length
-    return false if !goog.array.peek(@pending).equal request
-    @clear()
-    true
+  contains: (request) ->
+    for pending in @pendings
+      return true if pending.equal request
+    false
 
   ###*
     @return {boolean}
   ###
   isEmpty: ->
-    !@pending.length
+    !@pendings.length
 
   ###*
-    Clear pending requests.
+    Clear pendings requests.
   ###
   clear: ->
-    @pending.length = 0
+    @pendings.length = 0
 
   ###*
     @override

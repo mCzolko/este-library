@@ -24,7 +24,7 @@ class este.ui.FieldReset extends este.ui.Component
   ###*
     @type {string}
   ###
-  @className: 'e-ui-fieldreset-empty'
+  @CLASS_NAME: 'e-ui-fieldreset-empty'
 
   ###*
     @enum {string}
@@ -50,7 +50,7 @@ class este.ui.FieldReset extends este.ui.Component
   enterDocument: ->
     super()
     @on @inputHandler, 'input', @onInputHandlerInput
-    @on @resetBtn, este.mobile.tapEvent, @onResetBtnTap
+    @on '.e-ui-fieldreset tap', @onResetBtnTap
     @update()
     return
 
@@ -73,7 +73,7 @@ class este.ui.FieldReset extends este.ui.Component
     @protected
   ###
   onResetBtnTap: (e) ->
-    # prevents paste bubble in ios5 emulator (didnt tested on real iphone still...)
+    # prevents paste bubble in ios5 emulator
     e.preventDefault()
     @getElement().value = ''
     @update()
@@ -85,7 +85,7 @@ class este.ui.FieldReset extends este.ui.Component
   ###
   update: ->
     isEmpty = !goog.string.trim(@getElement().value).length
-    goog.dom.classes.enable @getElement(), FieldReset.className, isEmpty
+    goog.dom.classes.enable @getElement(), FieldReset.CLASS_NAME, isEmpty
     if isEmpty
       goog.dom.removeNode @resetBtn
     else

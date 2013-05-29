@@ -30,11 +30,6 @@ goog.scope ->
       window.scrollTo 0, _.defaultHomeScroll
     , 0
 
-  if goog.userAgent.MOBILE
-    _.tapEvent = 'touchstart'
-  else
-    _.tapEvent = 'mousedown'
-
   ###*
     https://gist.github.com/2829457
     Outputs a float representing the iOS version if user is using an iOS browser i.e. iPhone, iPad

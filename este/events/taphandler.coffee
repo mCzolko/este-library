@@ -24,7 +24,7 @@ class este.events.TapHandler extends este.Base
   ###
   constructor: (@element, touchSupported) ->
     super()
-    @touchSupported = touchSupported ? TapHandler.touchSupported()
+    @touchSupported = touchSupported ? este.mobile.touchSupported()
     @registerEvents()
 
   ###*
@@ -48,15 +48,6 @@ class este.events.TapHandler extends este.Base
       TapHandler.scrollables.push window
       return
     TapHandler.scrollables.push element
-
-  ###*
-    Touchstart on iOS<5 slowdown native scrolling, 4.3.2 does not fire
-    touchstart on search input field etc..., so that's why iOS5 is required.
-    @return {boolean}
-  ###
-  @touchSupported: ->
-    return false if !goog.userAgent.MOBILE
-    !este.mobile.iosVersion || este.mobile.iosVersion >= 5
 
   ###*
     @param {goog.events.BrowserEvent} e

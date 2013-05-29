@@ -120,4 +120,13 @@ goog.scope ->
       return
     window.history.back()
 
+  ###*
+    Touchstart on iOS<5 slowdown native scrolling, 4.3.2 does not fire
+    touchstart on search input field etc..., so that's why iOS5 is required.
+    @return {boolean}
+  ###
+  _.touchSupported = ->
+    return false if !goog.userAgent.MOBILE
+    !este.mobile.iosVersion || este.mobile.iosVersion >= 5
+
   return

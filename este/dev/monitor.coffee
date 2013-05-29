@@ -1,9 +1,11 @@
 ###*
   @fileoverview Dev monitor. Small console output at right bottom of screen.
   Useful for mobile development. It also shows total count of registered
-  listeners. It's useful to see it and be sure, that app does not leak.
-  Example (devlog element id, which is global as any other id)
-    devlog.innerHTML += '.'
+  listeners, to see if and how much app leaks.
+
+  How to use it instead of console.log. devMonitor is global, so it can be used
+  everywhere.
+  devMonitor.innerHTML = 'some info'
 ###
 goog.provide 'este.dev.Monitor'
 goog.provide 'este.dev.Monitor.create'
@@ -57,7 +59,7 @@ class este.dev.Monitor extends este.ui.Component
       'style': 'white-space: nowrap; font-size: 10px; position: absolute; z-index: 9999999999999; opacity: .8; max-width: 100%; right: 10px; bottom: 0; background-color: #eee; color: #000; padding: .7em;'
     @left = @monitor.appendChild @dom_.createDom 'div',
       'style': 'word-break: break-word; display: inline-block'
-      'id': 'devlog'
+      'id': 'devMonitor'
     @right = @monitor.appendChild @dom_.createDom 'div',
       'style': 'display: inline-block'
     element.appendChild @monitor

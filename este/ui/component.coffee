@@ -14,15 +14,15 @@
 
   Example
     registerEvents: ->
-      (at)on
-        '#new-todo-form submit': (at)onNewTodoSubmit
-        '#toggle-all tap': (at)onToggleAllTap
-        '#clear-completed tap': (at)onClearCompletedTap
-        '.toggle tap': (at)bindModel (at)onToggleTap
-        '.destroy tap': (at)bindModel (at)onDestroyTap
-        'label dblclick': (at)bindModel (at)onLabelDblclick
-        '.edit blur': (at)bindModel (at)onEditEnd
-        '.edit': [goog.events.KeyCodes.ENTER, (at)bindModel (at)onEditEnd]
+      this.on
+        '#new-todo-form submit': this.onNewTodoSubmit
+        '#toggle-all tap': this.onToggleAllTap
+        '#clear-completed tap': this.onClearCompletedTap
+        '.toggle tap': this.bindModel this.onToggleTap
+        '.destroy tap': this.bindModel this.onDestroyTap
+        'label dblclick': this.bindModel this.onLabelDblclick
+        '.edit blur': this.bindModel this.onEditEnd
+        '.edit': [goog.events.KeyCodes.ENTER, this.bindModel this.onEditEnd]
 
   TODO:
     off does not work for delegated listeners

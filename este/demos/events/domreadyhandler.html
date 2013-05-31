@@ -2,13 +2,15 @@
 <head>
   <meta charset="utf-8">
   <title>este.events.domReady</title>
-</head>
-<body>
+  <link href='../css/default.css' rel='stylesheet'>
   <script src='../../../../closure-library/closure/goog/base.js'></script>
   <script src='../../../../../client/deps.js'></script>
   <script>
     goog.require('este.events.domReady');
   </script>
+</head>
+<body>
+  <h1>este.events.DomReady</h1>
   <script>
     goog.events.listen(este.events.domReady, 'ready', function() {
       var test = document.getElementById('test');

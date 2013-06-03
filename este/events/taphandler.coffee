@@ -3,6 +3,9 @@
   For touch devices, touchstart is used, which fixes 300ms click delay.
   This approach is also known as FastButton, but TapHandler implementation
   is better, because works fine with native mobile scroll momentum.
+
+  TODO: enable deprecated annotation
+  (at)deprecated Use este.events.GestureHandler
   @see ../demos/taphandler.html
 ###
 goog.provide 'este.events.TapHandler'

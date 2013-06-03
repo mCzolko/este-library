@@ -1,0 +1,125 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <!-- block zoom on double tap -->
+  <meta name="viewport" content="user-scalable=0">
+
+  <title>este.events.GestureHandler</title>
+  <link href="../css/default.css" rel="stylesheet">
+  <style>
+
+    * {
+      /* to remove quick blinking */
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+
+    #rows {
+      height: 400px;
+      overflow-y: scroll;
+      /* to enable native scroll momentum */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .row {
+      background-color: #eee;
+      border-bottom: solid 1px #ccc;
+      margin: 0;
+      padding: .5em;
+    }
+
+    #box {
+      background-color: #eee;
+      padding: 4em;
+      display: inline-block;
+    }
+
+    .row.selected, #box.selected {
+      background-color: #ddd;
+    }
+
+    .disable-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+  <script src="../../../../closure-library/closure/goog/base.js"></script>
+  <script src="../../../../../client/deps.js"></script>
+  <script>
+    goog.require('este.dev.Monitor.create');
+    goog.require('este.events.GestureHandler');
+  </script>
+  <script src="http://localhost:35729/livereload.js"></script>
+</head>
+<body>
+  <h1>este.events.GestureHandler</h1>
+  <p>Detected gestures:</p>
+  <ul>
+    <li>tap
+    <li>swipeleft, swiperight, swipeup, swipedown
+    <li>TODO: taphold, doubletap, pinchin, pinchout
+  </ul>
+  <p>Compatibility: latest version of “evergreen” browsers and IE10. For IE &lt; 10
+    tap is emulated via click.</p>
+  <p>Remember to use <a href="http://www.polymer-project.org/platform/pointer-events.html">touch-action</a> attribute.</p>
+  <h2>Examples</h2>
+  <h3>Try tap and swipe</h3>
+  <div touch-action="none" id="box" class="disable-select">
+    swipe or tap on me
+  </div>
+  <h3>Try tap, swipeleft, swiperight</h3>
+  <div touch-action="pan-y" id="rows" class="disable-select"></div>
+  <p>Dispose all handlers.</p>
+  <button id="dispose">dispose</button>
+  <script>
+    este.dev.Monitor.create();
+
+    var rows = document.querySelector('#rows');
+    var box = document.querySelector('#box');
+
+    // create rows
+    for (var i = 0; i < 50; i++) {
+      var p = document.createElement('p');
+      p.className = 'row';
+      p.innerHTML = '<i>row ' + i + '</i>';
+      p.setAttribute('data-rowid', i);
+      rows.appendChild(p);
+    };
+
+    var boxGestureHandler = new este.events.GestureHandler(box);
+    goog.events.listen(boxGestureHandler, [
+      'tap', 'swipeleft', 'swiperight', 'swipeup', 'swipedown'
+    ], function(e) {
+      console.log(e);
+      goog.dom.classes.toggle(box, 'selected');
+      //alert(e.type);
+    });
+
+    var rowsGestureHandler = new este.events.GestureHandler(rows);
+    var previousSelected = null;
+    goog.events.listen(rowsGestureHandler, [
+      'tap', 'swipeleft', 'swiperight'
+    ], function(e) {
+      // simple event delegation to delegate from inner <i> elements
+      var row = goog.dom.getAncestorByClass(e.target, 'row');
+      if (!row) return;
+      if (previousSelected)
+        goog.dom.classes.remove(previousSelected, 'selected');
+      previousSelected = row;
+      goog.dom.classes.add(row, 'selected');
+      var id = row.getAttribute('data-rowid');
+      console.log(e);
+      //alert(e.type + ' on row with id: ' + id);
+    });
+
+    // dispose
+    var disposeBtn = document.getElementById('dispose');
+    goog.events.listenOnce(disposeBtn, 'click', function() {
+      boxGestureHandler.dispose();
+      rowsGestureHandler.dispose();
+    });
+
+  </script>
+</body>

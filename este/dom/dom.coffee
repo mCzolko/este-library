@@ -365,20 +365,21 @@ goog.scope ->
     true
 
   ###*
-    Get element ancestors.
-    @param {Node} el
-    @param {boolean=} opt_includeNode
-    @param {boolean=} opt_stopOnBody
+    Get node ancestors.
+    @param {Node} node
+    @param {boolean=} includeNode
+    @param {boolean=} stopOnBody
     @return {Array.<Element>}
   ###
-  _.getAncestors = (el, opt_includeNode, opt_stopOnBody) ->
-    els = []
-    el = el.parentNode if !opt_includeNode
-    while el
-      break if opt_stopOnBody && el.tagName == 'BODY'
-      els.push el
-      el = el.parentNode
-    els
+  _.getAncestors = (node, includeNode, stopOnBody) ->
+    elements = []
+    node = node.parentNode if !includeNode
+    while node
+      break if stopOnBody && node.tagName == 'BODY'
+      break if node.nodeType == goog.dom.NodeType.DOCUMENT
+      elements.push node
+      node = node.parentNode
+    elements
 
   ###*
     @param {Array.<Element>} elements

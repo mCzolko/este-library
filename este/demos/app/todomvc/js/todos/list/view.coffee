@@ -72,10 +72,10 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   registerEvents: ->
     @on
       '#new-todo-form submit': @onNewTodoSubmit
-      '#toggle-all tap': @onToggleAllTap
-      '#clear-completed tap': @onClearCompletedTap
-      '.toggle tap': @bindModel @onToggleTap
-      '.destroy tap': @bindModel @onDestroyTap
+      '#toggle-all click': @onToggleAllClick
+      '#clear-completed click': @onClearCompletedClick
+      '.toggle click': @bindModel @onToggleClick
+      '.destroy click': @bindModel @onDestroyClick
       'label dblclick': @bindModel @onLabelDblclick
       '.edit blur': @bindModel @onEditEnd
       '.edit': [goog.events.KeyCodes.ENTER, @bindModel @onEditEnd]
@@ -94,27 +94,27 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   ###*
     @protected
   ###
-  onToggleAllTap: ->
+  onToggleAllClick: ->
     @todos.toggleAll()
 
   ###*
     @protected
   ###
-  onClearCompletedTap: ->
+  onClearCompletedClick: ->
     @todos.clearCompleted()
 
   ###*
     @param {este.demos.app.todomvc.todos.Model} model
     @protected
   ###
-  onToggleTap: (model) ->
+  onToggleClick: (model) ->
     model.toggleCompleted()
 
   ###*
     @param {este.demos.app.todomvc.todos.Model} model
     @protected
   ###
-  onDestroyTap: (model) ->
+  onDestroyClick: (model) ->
     @todos.remove model
 
   ###*

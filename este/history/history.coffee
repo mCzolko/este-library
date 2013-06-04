@@ -19,8 +19,8 @@ goog.require 'este.string'
 goog.require 'goog.dom'
 goog.require 'goog.History'
 goog.require 'goog.history.Html5History'
+goog.require 'goog.labs.userAgent.platform'
 goog.require 'goog.Uri'
-goog.require 'goog.userAgent.product.isVersion'
 
 class este.History extends este.Base
 
@@ -39,20 +39,21 @@ class este.History extends este.Base
       pathPrefix = new goog.Uri(document.location.href).getPath()
       pathPrefix += '/' if !goog.string.endsWith pathPrefix, '/'
 
-    html5historySupported = goog.history.Html5History.isSupported()
-
-    # iOS < 5 does not support pushState correctly
-    if este.mobile.iosVersion && este.mobile.iosVersion < 5
-      html5historySupported = false
-
-    # Android 2.x is forced to use hash-based history due to a bug in Android's
-    # HTML5 history implementation. This bug does not affect Android 3.0 and
-    # higher.
-    if goog.userAgent.product.ANDROID && !goog.userAgent.product.isVersion 3
-      html5historySupported = false
-
-    @html5historyEnabled = html5historySupported && !forceHash
+    @html5historyEnabled = !forceHash && History.CAN_USE_HTML5_HISTORY
     @setHistoryInternal pathPrefix ? '/'
+
+  ###*
+    http://caniuse.com/#search=pushstate
+    http://webdesign.about.com/od/historyapi/a/what-is-history-api.htm
+    @type {boolean}
+  ###
+  @CAN_USE_HTML5_HISTORY: do ->
+    platform = goog.labs.userAgent.platform
+    if platform.isIos()
+      return platform.isVersionOrHigher 5
+    if platform.isAndroid()
+      return platform.isVersionOrHigher 4.2
+    goog.history.Html5History.isSupported()
 
   ###*
     @type {boolean}

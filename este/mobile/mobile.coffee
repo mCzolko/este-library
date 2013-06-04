@@ -31,23 +31,6 @@ goog.scope ->
     , 0
 
   ###*
-    https://gist.github.com/2829457
-    Outputs a float representing the iOS version if user is using an iOS browser i.e. iPhone, iPad
-    Possible values include:
-      3 - v3.0
-      4.0 - v4.0
-      4.14 - v4.1.4
-      false - Not iOS
-    NOTE: Wait for new Closure labs userAgent.
-  ###
-  _.iosVersion = parseFloat(
-    ('' + (/CPU.*OS ([0-9_]{1,5})|(CPU like).*AppleWebKit.*Mobile/i.
-      exec(navigator.userAgent) || [0,''])[1]).
-        replace('undefined', '3_2').
-        replace('_', '.').
-        replace('_', '')) || false
-
-  ###*
     Adds basic iPhone home icon link to the head
     @param {string} url
   ###
@@ -119,14 +102,5 @@ goog.scope ->
       window.navigator['app']['backHistory']()
       return
     window.history.back()
-
-  ###*
-    Touchstart on iOS<5 slowdown native scrolling, 4.3.2 does not fire
-    touchstart on search input field etc..., so that's why iOS5 is required.
-    @return {boolean}
-  ###
-  _.touchSupported = ->
-    return false if !goog.userAgent.MOBILE
-    !este.mobile.iosVersion || este.mobile.iosVersion >= 5
 
   return

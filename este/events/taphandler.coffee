@@ -12,7 +12,6 @@ goog.provide 'este.events.TapHandler'
 goog.provide 'este.events.TapHandler.EventType'
 
 goog.require 'este.Base'
-goog.require 'este.mobile'
 goog.require 'goog.dom'
 goog.require 'goog.math.Coordinate'
 goog.require 'goog.userAgent'
@@ -27,7 +26,7 @@ class este.events.TapHandler extends este.Base
   ###
   constructor: (@element, touchSupported) ->
     super()
-    @touchSupported = touchSupported ? este.mobile.touchSupported()
+    @touchSupported = touchSupported ? goog.userAgent.MOBILE
     @registerEvents()
 
   ###*

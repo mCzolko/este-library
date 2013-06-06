@@ -12,8 +12,6 @@
     Hover state is removed after 750ms, because on anchors native context menu
       is shown and that prevents touchend event to be dispatched. Previous
       hover is removed too for sure.
-
-  TODO: make a demo
 ###
 goog.provide 'este.mobile.Hover'
 

@@ -23,11 +23,6 @@
         'label dblclick': this.bindModel this.onLabelDblclick
         '.edit blur': this.bindModel this.onEditEnd
         '.edit': [goog.events.KeyCodes.ENTER, this.bindModel this.onEditEnd]
-
-  TODO:
-    off does not work for delegated listeners
-    on(el, type, fn) should use submit, tap, etc. too
-
 ###
 goog.provide 'este.ui.Component'
 

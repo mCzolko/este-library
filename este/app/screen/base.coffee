@@ -75,7 +75,6 @@ class este.app.screen.Base extends este.ui.Component
     Iphone needs explicit window.scrollTo 0, 0 to reset actual scroll. Ipad
     is ok. Both iphone and ipad needs setTimeout 0 for window.scrollTo, to
     prevent ugly scroll jumps and fixed positioned elements flickering.
-    TODO: what about android scroll 1 fix from este mobile?
     @param {number} x
     @param {number} y
     @protected

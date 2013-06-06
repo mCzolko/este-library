@@ -57,7 +57,6 @@ class este.app.screen.OneView extends este.app.screen.Base
     @protected
   ###
   updateScroll: (isNavigation) ->
-    # TODO: check on real iphone and ipad
     # If the document body is the main scroll element then you will need to
     # update the scroll position at the moment you are flipping screens. Get
     # this wrong and you see a visual jump on the old screen.

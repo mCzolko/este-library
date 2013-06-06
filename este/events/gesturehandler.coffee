@@ -3,8 +3,8 @@
   developed only for evergreen browsers, so additional support for IE < 10 is
   provided.
 
-  Why PointerGestures flick and tap isn't directly?
-  TLDR; For better UX behaviour.
+  Why PointerGestures flick and tap isn't used directly?
+  TLDR; Because we need better UX.
   https://groups.google.com/forum/?fromgroups=#!topic/polymer-dev/VCGlOaaI8u0
 
   IE < 10 support

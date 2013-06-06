@@ -1,11 +1,6 @@
 ###*
   @fileoverview Forms persister. Persist form fields state into localStorage
   or session.
-
-  TODO:
-    add expiration
-    improve field dom path (consider: url, form name, etc.)
-    check&fix IE (http://stackoverflow.com/a/266252/233902)
   @see ../demos/formspersister.html
 ###
 

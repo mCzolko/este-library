@@ -21,9 +21,10 @@
   <a e-router-back-button href='#/home'>back</a>
   </pre>
 
-  Classic links ignored by router. TODO: add relative protocol (//domain.com).
+  Ignored hrefs.
   <pre>
   <a href='http(s)://...'>
+  <a href='//...'>
   <a e-router-ignore href='/foo'
   </pre>
 
@@ -202,6 +203,8 @@ class este.Router extends este.Base
       return false if node.nodeType != goog.dom.NodeType.ELEMENT
       return true if node.hasAttribute 'e-router-ignore'
       return true if node.getAttribute('href')?.indexOf('http') == 0
+      # http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml?showone=Protocol#Protocol
+      return true if node.getAttribute('href')?.indexOf('//') == 0
       token = goog.string.trim node.getAttribute('href') || ''
       !!token
     , true

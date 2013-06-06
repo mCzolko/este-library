@@ -1,7 +1,7 @@
 goog.provide 'este.mobile'
 
 goog.require 'goog.dom'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.events.FocusHandler'
 goog.require 'goog.style'
 goog.require 'goog.userAgent'
@@ -78,7 +78,7 @@ goog.scope ->
     Propagate various useful features for mobile development.
   ###
   _.propagateDevices = ->
-    enable = goog.dom.classes.enable
+    enable = goog.dom.classlist.enable
     html = document.documentElement
     enable html, 'e-mobile', goog.userAgent.MOBILE
     enable html, 'e-mobile-off', !goog.userAgent.MOBILE

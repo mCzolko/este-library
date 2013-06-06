@@ -10,7 +10,7 @@ goog.provide 'este.app.screen.OneView'
 goog.require 'este.app.screen.Base'
 goog.require 'este.events.TapHandler'
 goog.require 'goog.dom'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.userAgent'
 
 class este.app.screen.OneView extends este.app.screen.Base
@@ -26,7 +26,7 @@ class este.app.screen.OneView extends este.app.screen.Base
     # old devices where elements with overflow are unscrollable, and
     # -webkit-overflow-scrolling: touch does not work
     este.events.TapHandler.addScrollable document.body
-    goog.dom.classes.add document.documentElement, 'e-app-screen-oneview'
+    goog.dom.classlist.add document.documentElement, 'e-app-screen-oneview'
 
   ###*
     @type {boolean}

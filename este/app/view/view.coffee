@@ -4,7 +4,7 @@
 goog.provide 'este.app.View'
 
 goog.require 'este.ui.View'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 
 class este.app.View extends este.ui.View
 
@@ -40,6 +40,6 @@ class este.app.View extends este.ui.View
   ###
   createDom: ->
     super()
-    goog.dom.classes.add @getElement(), 'e-app-view'
-    goog.dom.classes.add @getElement(), @className if @className
+    goog.dom.classlist.add @getElement(), 'e-app-view'
+    goog.dom.classlist.add @getElement(), @className if @className
     return

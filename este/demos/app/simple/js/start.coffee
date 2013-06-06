@@ -33,7 +33,7 @@ este.demos.app.simple.start = (data) ->
     progressEl = document.getElementById 'progress'
     timer = null
     goog.events.listen simpleApp, 'load', (e) ->
-      goog.dom.classes.add progressEl, 'loading'
+      goog.dom.classlist.add progressEl, 'loading'
       progressEl.innerHTML = 'loading'
       progressEl.innerHTML += ' ' + e.request.params.id if e.request.params?.id
       clearInterval timer
@@ -42,15 +42,15 @@ este.demos.app.simple.start = (data) ->
       , 250
     goog.events.listen simpleApp, 'show', (e) ->
       clearInterval timer
-      goog.dom.classes.remove progressEl, 'loading'
+      goog.dom.classlist.remove progressEl, 'loading'
       progressEl.innerHTML = 'loaded'
     goog.events.listen simpleApp, 'timeout', (e) ->
       clearInterval timer
-      goog.dom.classes.remove progressEl, 'loading'
+      goog.dom.classlist.remove progressEl, 'loading'
       progressEl.innerHTML = 'timeouted'
     goog.events.listen simpleApp, 'error', (e) ->
       clearInterval timer
-      goog.dom.classes.remove progressEl, 'loading'
+      goog.dom.classlist.remove progressEl, 'loading'
       progressEl.innerHTML = 'error'
 
   # start app

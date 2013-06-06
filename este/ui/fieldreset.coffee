@@ -4,7 +4,7 @@
 goog.provide 'este.ui.FieldReset'
 
 goog.require 'este.mobile'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.events.InputHandler'
 goog.require 'goog.string'
 goog.require 'este.ui.Component'
@@ -85,7 +85,7 @@ class este.ui.FieldReset extends este.ui.Component
   ###
   update: ->
     isEmpty = !goog.string.trim(@getElement().value).length
-    goog.dom.classes.enable @getElement(), FieldReset.CLASS_NAME, isEmpty
+    goog.dom.classlist.enable @getElement(), FieldReset.CLASS_NAME, isEmpty
     if isEmpty
       goog.dom.removeNode @resetBtn
     else

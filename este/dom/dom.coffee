@@ -7,7 +7,7 @@ goog.provide 'este.dom'
 goog.require 'este.object'
 goog.require 'goog.array'
 goog.require 'goog.dom'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.dom.forms'
 goog.require 'goog.string'
 
@@ -361,7 +361,8 @@ goog.scope ->
         node.tagName?.toLowerCase() != part.tag.toLowerCase()
       return false if part.id && node.id != part.id
       for className in part.classes
-        return false if !goog.dom.classes.has node, className
+        `node = /** @type {Element} */ (node)`
+        return false if !goog.dom.classlist.contains node, className
     true
 
   ###*
@@ -389,7 +390,7 @@ goog.scope ->
     for element in elements
       path.push element.tagName.toUpperCase()
       path.push '#', element.id if element.id
-      for className in goog.dom.classes.get element
+      for className in goog.dom.classlist.get element
         path.push '.', className
       path.push ' '
     path.pop()
@@ -422,7 +423,8 @@ goog.scope ->
     node = e.target
     while node && node.nodeType == 1
       for className, callback of object
-        if goog.dom.classes.has node, className
+        `node = /** @type {Element} */ (node)`
+        if goog.dom.classlist.contains node, className
           callback node
           return true
       node = node.parentNode
@@ -534,12 +536,12 @@ goog.scope ->
   ###
   _.showErrorsOnForm = (form, errors) ->
     for name, field of form.elements
-      goog.dom.classes.remove field, 'e-dom-field-error'
+      goog.dom.classlist.remove field, 'e-dom-field-error'
     return if not errors
     error = errors[0]
     alert error.getMsg()
     invalidField = form.elements[error.key]
-    goog.dom.classes.add invalidField, 'e-dom-field-error'
+    goog.dom.classlist.add invalidField, 'e-dom-field-error'
     este.dom.focus invalidField
 
   return

@@ -1,12 +1,12 @@
 ###*
   Inspired from Modernizr
   este.userAgent.propagateSupport 'overflowScrolling'
-  document.title = goog.dom.classes.has document.documentElement,
+  document.title = goog.dom.classlist.contains document.documentElement,
     'support-overflow-scrolling'
 ###
 goog.provide 'este.userAgent'
 
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.string'
 
 goog.scope ->
@@ -45,6 +45,6 @@ goog.scope ->
   _.propagateSupport = (prop) ->
     return if !_.supportCss prop
     prop = goog.string.toSelectorCase prop
-    goog.dom.classes.add document.documentElement, 'support-' + prop
+    goog.dom.classlist.add document.documentElement, 'support-' + prop
 
   return

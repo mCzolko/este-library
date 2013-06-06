@@ -51,5 +51,5 @@ class este.demos.app.layout.foo.View extends este.app.View
   createResiser: ->
     @resizer = este.ui.Resizer.create()
     @resizer.targetFilter = (el) =>
-      goog.dom.classes.has el, 'este-box'
+      goog.dom.classlist.contains el, 'este-box'
     @resizer.decorate @getElement()

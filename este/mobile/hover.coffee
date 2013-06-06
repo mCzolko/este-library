@@ -18,7 +18,7 @@ goog.provide 'este.mobile.Hover'
 goog.require 'este.Base'
 goog.require 'este.events.TapHandler'
 goog.require 'goog.dom'
-goog.require 'goog.dom.classes'
+goog.require 'goog.dom.classlist'
 
 class este.mobile.Hover extends este.Base
 
@@ -37,7 +37,7 @@ class este.mobile.Hover extends este.Base
   ###
   matcher: (node) ->
     return false if !node.tagName
-    node.tagName == 'A' || goog.dom.classes.has node, 'button'
+    node.tagName == 'A' || goog.dom.classlist.contains node, 'button'
 
   ###*
     @type {este.events.TapHandler}
@@ -93,7 +93,7 @@ class este.mobile.Hover extends este.Base
     @protected
   ###
   addHoverNow: (target) ->
-    goog.dom.classes.add target, 'e-mobile-hover'
+    goog.dom.classlist.add target, 'e-mobile-hover'
 
   ###*
     @param {Node} target
@@ -101,7 +101,7 @@ class este.mobile.Hover extends este.Base
   ###
   addHoverScrollAfterWhile: (target) ->
     @hoverScrollTimeout = setTimeout =>
-      goog.dom.classes.add target, 'e-mobile-hover-scroll'
+      goog.dom.classlist.add target, 'e-mobile-hover-scroll'
     , 250
 
   ###*
@@ -129,7 +129,7 @@ class este.mobile.Hover extends este.Base
   removeHoverState: (target) ->
     clearTimeout @hoverScrollTimeout
     return if !target
-    goog.dom.classes.remove target, 'e-mobile-hover', 'e-mobile-hover-scroll'
+    goog.dom.classlist.remove target, 'e-mobile-hover', 'e-mobile-hover-scroll'
 
   ###*
     @param {Node} node

@@ -24,12 +24,15 @@ suite 'este.events.MatchedHandler', ->
       arrange 1
       target =
         tagName: 'A'
+        nodeType: 1
         parentNode:
           tagName: 'LI'
           className: 'someClass'
+          nodeType: 1
           parentNode:
             tagName: 'UL'
             id: 'someId'
+            nodeType: 1
       goog.events.listen handler, 'click', (e) ->
         assert.equal e.target, target
         assert.equal e.id, '123'

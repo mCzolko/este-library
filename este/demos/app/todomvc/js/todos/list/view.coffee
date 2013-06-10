@@ -70,15 +70,13 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
     @override
   ###
   registerEvents: ->
-    @on
-      '#new-todo-form submit': @onNewTodoSubmit
-      '#toggle-all click': @onToggleAllClick
-      '#clear-completed click': @onClearCompletedClick
-      '.toggle click': @bindModel @onToggleClick
-      '.destroy click': @bindModel @onDestroyClick
-      'label dblclick': @bindModel @onLabelDblclick
-      '.edit blur': @bindModel @onEditEnd
-      '.edit': [goog.events.KeyCodes.ENTER, @bindModel @onEditEnd]
+    @on '#new-todo-form', 'submit', @onNewTodoSubmit
+    @on '#toggle-all', 'click', @onToggleAllClick
+    @on '#clear-completed', 'click', @onClearCompletedClick
+    @on '.toggle', 'click', @bindModel @onToggleClick
+    @on '.destroy', 'click', @bindModel @onDestroyClick
+    @on 'label', 'dblclick', @bindModel @onLabelDblclick
+    @on '.edit', ['focusout', goog.events.KeyCodes.ENTER ], @bindModel @onEditEnd
 
   ###*
     @param {este.events.SubmitEvent} e

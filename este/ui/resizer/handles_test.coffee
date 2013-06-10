@@ -305,14 +305,3 @@ suite 'este.ui.resizer.Handles', ->
       handles.horizontal.__style.cursor = 'foo'
       goog.events.fireListeners dragger, 'start', false, {}
       assert.equal invisibleOverlay.getElement().style.cursor, 'foo'
-
-
-
-
-
-
-
-
-
-
-

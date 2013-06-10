@@ -19,7 +19,7 @@ class este.demos.app.layout.bla.View extends este.app.View
     @override
   ###
   registerEvents: ->
-    @on @getElement(), 'div click': @onDivClick
+    @on 'div', 'click', @onDivClick
 
   ###*
     @override

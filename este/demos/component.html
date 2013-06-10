@@ -5,21 +5,11 @@
   <title>este.ui.Component</title>
   <link href='css/default.css' rel='stylesheet'>
   <style>
-    #component {
-      border: solid 1px #ccc;
-      padding: 1em;
-    }
-    #component .box {
+    .box, #tap, #swipe-right {
       background-color: #ff8c55;
-      margin: 1em;
-    }
-    #tap {
-      background-color: #ff8c55;
-      font-size: 2em;
+      padding: 0 .7em;
       display: inline-block;
-    }
-    p {
-      padding: .3em 1em;
+      margin: .1em 0 1em;
     }
   </style>
   <script src='../../../closure-library/closure/goog/base.js'></script>
@@ -34,67 +24,92 @@
   <div id="component">
     <p>
       este.ui.Component provides event delegation with simple CSS selector filter for these events:
-      <ul>
-        <li>click, mousedown etc.</li>
-        <li>keys via goog.events.KeyHandler</li>
-        <li>focus and blur</li>
-        <li>tap via este.events.TapHandler</li>
-        <li>submit with form2json serialization</li>
-      </ul>
-      Open console to see logs.
     </p>
-    <fieldset>
-      <input id="someInput" type="text" placeholder="press enter here">
-    </fieldset>
+    <ul>
+      <li>click, mousedown and other DOM event types</li>
+      <li>tap, swipeleft, swiperight, swipeup, swipedown</li>
+      <li>key or any keyCode from goog.events.KeyCodes</li>
+      <li>focusin, focusout</li>
+      <li>submit (with form2json serialization)</li>
+      <li>input</li>
+      <li>mousewheel</li>
+    </ul>
+    <h2>Examples:</h2>
+    <p class='click-on-me'>
+      Click on me.
+    </p>
+    <p>
+      <input id="some-input" type="text" placeholder="press enter here">
+    </p>
     <div class='box'>
       <p>
-        Box with <em>inline element, note how inner mouseovers/mouseouts are ignored</em>. It's real mouseenter/mouseleave event delegation.
+        Box with <em>inline element, note how inner mouseovers/mouseouts are ignored</em>.
+        <br>
+        It behaves like mouseenter/mouseleave events.
       </p>
     </div>
-    <div id="tap">tap me</div>
-    <h3>Form</h3>
+    <br>
+    <!-- Why touch-action: github.com/Polymer/PointerEvents#basic-usage -->
+    <div touch-action="none" id="tap">
+      <p>
+        tap me
+      </p>
+    </div>
+    <div touch-action="pan-y" id="swipe-right" class="disable-select">
+      <p>
+        swipe right me
+      </p>
+    </div>
     <form class="some-form">
-      <fieldset>
-        <label>
-          name
-          <input name="name" type="text">
-        </label>
-        <label>
-          surname
-          <input name="surname" type="text">
-        </label>
-        <button>submit</button>
-      </fieldset>
+      <label>
+        name
+        <input name="name" type="text">
+      </label>
+      <label>
+        surname
+        <input name="surname" type="text">
+      </label>
+      <button>submit</button>
     </form>
   </div>
+  <p>
+    Show console to see logs.
+  </p>
+  <button id="dispose">dispose</button>
   <script>
-    este.dev.Monitor.create()
+    este.dev.Monitor.create();
 
-    var component = new este.ui.Component
-    component.enterDocument = function() {
+    var CustomComponent = function() {};
+    goog.inherits(CustomComponent, este.ui.Component);
+
+    var logEvent = function(e) {
+      var selector = [e.target.tagName.toLowerCase()];
+      if (e.target.id)
+        selector.push('#', e.target.id);
+      if (e.target.className)
+        selector.push('.', e.target.className);
+      console.log(e.type, selector.join(''));
+    };
+
+    CustomComponent.prototype.enterDocument = function() {
       goog.base(this, 'enterDocument')
-      this.on(document.querySelector('h1'), 'click', function() {
-        alert('h1 clicked')
-      })
-      this.on('.box', ['mouseover', 'mouseout'], function(e) {
-        console.log(e.type, e.target.tagName)
-      })
-      this.on('#someInput', goog.events.KeyCodes.ENTER, function(e) {
-        console.log(e.type, e.target.tagName, e.keyCode)
-      })
-      this.on('#someInput', ['focus', 'blur'], function(e) {
-        console.log(e.type, e.target.tagName)
-      })
-      this.on('#tap', 'tap', function(e) {
-        console.log(e.type, e.target.tagName)
-      })
-      this.on('.some-form', 'submit', function(e) {
-        e.preventDefault()
-        console.log(e.type, e.target.tagName, e.json)
-      })
-    }
+      this.on(document.querySelector('.click-on-me'), 'click', logEvent);
+      this.on('#some-input', [
+        goog.events.KeyCodes.ENTER,
+        'focusin', 'focusout',
+        'input'
+      ], logEvent);
+      this.on('.box', ['mouseover', 'mouseout'], logEvent);
+      this.on('#tap', 'tap', logEvent);
+      this.on('#swipe-right', 'swiperight', logEvent);
+      this.on('.some-form', 'submit', logEvent);
+    };
 
-    component.decorate(document.getElementById('component'))
+    var component = new CustomComponent;
+    component.decorate(document.getElementById('component'));
 
+    document.querySelector('#dispose').onclick = function() {
+      component.dispose();
+    };
   </script>
 </body>

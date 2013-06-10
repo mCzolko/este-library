@@ -1,42 +1,37 @@
 ###*
-  @fileoverview Add several usefull events related features.
+  @fileoverview este.ui.Components provides easy event delegation and synthetic
+  events registration. For example, if you want to use bubbling focus/blur, you
+  have to instantiate goog.events.FocusHandler in enterDocument method, and
+  dispose it in exitDocument. With este.ui.Component, you don't have to write
+  this boilerplate code. For easy event delegation, replace event src with
+  matching string selector.
+
+  Supported synthetic (with bubbling) events:
+    - tap, swipeleft, swiperight, swipeup, swipedown
+    - focusin, focusout
+    - input
+    - submit
+    - key or number from goog.events.KeyCodes enumeration
+
+  Examples:
+    this.registerEvents ->
+      this.on this.getElement(), 'click', this.onClick
+      this.on '.box', 'tap', this.onBoxTap
+      this.on 'input', 'focusin', this.onInputFocus
+      this.on this.boxElement, 'tap', this.onTap
+      this.on '.button', 'swipeleft', this.onButtonSwipeleft
+      this.on '#new-todo-form', 'submit', this.onNewTodoFormSubmit
+      this.on '.toggle', 'dblclick', this.onToggleDblclick
+      this.on '.new-post', goog.events.KeyCodes.ENTER, this.onNewCommentKeyEnter
   @see ../demos/component.html
-
-  Features
-    on/off aliases for getHandler().listen, getHandler().unlisten
-    on is allowed only if component is in document (because exitDocument)
-    event delegation for
-      DOM events
-      key (keyHandler)
-      focus blur
-      tap
-      submit
-
-  Example
-    registerEvents: ->
-      this.on
-        '#new-todo-form submit': this.onNewTodoSubmit
-        '#toggle-all tap': this.onToggleAllTap
-        '#clear-completed tap': this.onClearCompletedTap
-        '.toggle tap': this.bindModel this.onToggleTap
-        '.destroy tap': this.bindModel this.onDestroyTap
-        'label dblclick': this.bindModel this.onLabelDblclick
-        '.edit blur': this.bindModel this.onEditEnd
-        '.edit': [goog.events.KeyCodes.ENTER, this.bindModel this.onEditEnd]
 ###
 goog.provide 'este.ui.Component'
 
 goog.require 'este.dom'
 goog.require 'este.dom.merge'
-goog.require 'este.events.Delegation'
-goog.require 'este.events.SubmitHandler'
-goog.require 'este.events.TapHandler'
+goog.require 'este.events.EventHandler'
 goog.require 'goog.asserts'
 goog.require 'goog.dom.classlist'
-goog.require 'goog.events.KeyCodes'
-goog.require 'goog.events.KeyHandler'
-goog.require 'goog.object'
-goog.require 'goog.string'
 goog.require 'goog.ui.Component'
 
 class este.ui.Component extends goog.ui.Component
@@ -50,219 +45,135 @@ class este.ui.Component extends goog.ui.Component
     super domHelper
 
   ###*
-    @type {Array.<este.events.Delegation>}
+    @param {Function} fn
+    @param {number} keyCode
+    @param {*} handler
+    @return {Function}
     @protected
   ###
-  delegations: null
+  @wrapListenerForKeyHandlerKeyFilter: (fn, keyCode, handler) ->
+    (e) ->
+      return if e.keyCode != keyCode
+      fn.call handler, e
 
   ###*
-    @type {goog.events.KeyHandler}
+    @param {Function} fn
+    @param {string} selector
+    @param {string|number} type
+    @return {Function}
     @protected
   ###
-  keyHandler: null
+  @wrapListenerForEventDelegation: (fn, selector, type) ->
+    matcher = (node) ->
+      goog.dom.isElement(node) && este.dom.match node, selector
+    (e) ->
+      target = goog.dom.getAncestor e.target, matcher, true
+      return if !target || este.dom.isMouseHoverEventWithinElement e, target
+      e.originalTarget = e.target
+      e.target = target
+      fn.call @, e
 
   ###*
-    @type {este.events.TapHandler}
-    @protected
+    @type {este.events.EventHandler}
+    @private
   ###
-  tapHandler: null
+  esteHandler_: null
 
   ###*
-    @type {este.events.SubmitHandler}
-    @protected
-  ###
-  submitHandler: null
-
-  ###*
-    @override
-  ###
-  enterDocument: ->
-    super()
-    @delegations = []
-    @registerEvents()
-    return
-
-  ###*
-    @protected
-  ###
-  registerEvents: ->
-
-  ###*
-    @override
-  ###
-  exitDocument: ->
-    super()
-    delegation.dispose() for delegation in @delegations
-    @keyHandler?.dispose()
-    @tapHandler?.dispose()
-    @submitHandler?.dispose()
-    @keyHandler = @tapHandler = @submitHandler = null
-    return
-
-  ###*
-    Examples:
-      on getElement(), 'click', onDivClick
-      on 'div', 'click', onDivClick
-      on 'div click', onDivClick
-      on
-        'div click': onDivClick
-      on content,
-        'div click': onDivClick
-
-    @param {goog.events.EventTarget|EventTarget|string|Object.<string, Function|Array>}
-      src Event source.
-    @param {string|Array.<string>|number|Object.<string, Function|Array>=} type
-      Event type to listen for or array of event types or key code number.
-    @param {Function|Object=} fn Optional callback function to be used as
-      the listener or an object with handleEvent function.
+    @param {goog.events.ListenableType|string} src Event source.
+    @param {string|number|!Array.<string|number>} type Event type to listen for
+      or array of event types.
+    @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
     @param {Object=} handler Object in whose scope to call the listener.
     @protected
   ###
   on: (src, type, fn, capture, handler) ->
-    goog.asserts.assert @isInDocument(),
-      'This method can be called only if component is in document.'
-
-    if goog.isString src
-      switch arguments.length
-        when 3
-          `fn = /** @type {Function} */ (fn)`
-          @on src + ' ' + type, fn
-        when 2
-          @on @getElement(), goog.object.create src, type
+    goog.asserts.assert @isInDocument(), "Use registerEvents method to ensure
+      events are registered in enterDocument. @on has to be called only in
+      enterDocument method, because exitDocument will @off it."
+    if goog.isArray type
+      @on src, t, fn, capture, handler for t in type
       return
-
-    switch arguments.length
-      when 1
-        @on @getElement(), src
-        return
-      when 2
-        `type = /** @type {Object.<string, Function|Array>} */ (type)`
-        `src = /** @type {Element} */ (src)`
-        @delegate type, src
-        return
-      else
-        `src = /** @type {EventTarget|goog.events.EventTarget} */ (src)`
-        `type = /** @type {string|Array.<string>} */ (type)`
-        @getHandler().listen src, type, fn, capture, handler
-        return
+    useEventDelegation = goog.isString src
+    if goog.isString src
+      selector = src
+      src = @getElement()
+    if goog.dom.isElement(src) && goog.isNumber type
+      fn = Component.wrapListenerForKeyHandlerKeyFilter fn, type, @
+      type = 'key'
+    if useEventDelegation
+      # assert to make compiler happy about selector is string number
+      goog.asserts.assertString selector
+      fn = Component.wrapListenerForEventDelegation fn, selector, type
+    # assert to make compiler happy about type is not number
+    goog.asserts.assertString type
+    @getHandler().listen src, type, fn, capture, handler
+    return
 
   ###*
-    Just alias for getHandler().unlisten.
-    @param {goog.events.EventTarget|EventTarget} src Event source.
-    @param {string|Array.<string>} type Event type to listen for or array of
-      event types.
-    @param {Function|Object=} fn Optional callback function to be used as
-      the listener or an object with handleEvent function.
+    @param {goog.events.ListenableType|string} src Event source.
+    @param {string|number|!Array.<string|number>} type Event type to listen for
+      or array of event types.
+    @param {Function} fn Optional callback function to be used as the listener.
+    @param {boolean=} capture Optional whether to use capture phase.
+    @param {Object=} handler Object in whose scope to call the listener.
+    @protected
+  ###
+  once: (src, type, fn, capture, handler) ->
+    throw Error 'not yet implemented'
+    # goog.asserts.assert @isInDocument(), "Use registerEvents method to ensure
+    #   events are registered in enterDocument. @on has to be called only in
+    #   enterDocument method, because exitDocument will @off it."
+    # if goog.isArray type
+    #   @once src, t, fn, capture, handler for t in type
+    #   return
+    # # assert to make compiler happy about type is not number
+    # goog.asserts.assertString type
+    # @getHandler().listenOnce src, type, fn, capture, handler
+
+  ###*
+    @param {goog.events.ListenableType|string} src Event source.
+    @param {string|number|!Array.<string|number>} type Event type to listen for
+      or array of event types.
+    @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
     @param {Object=} handler Object in whose scope to call the listener.
     @protected
   ###
   off: (src, type, fn, capture, handler) ->
-    @getHandler().unlisten src, type, fn, capture, handler
+    throw Error 'not yet implemented'
+    # if goog.isArray type
+    #   @off src, t, fn, capture, handler for t in type
+    #   return
+    # # assert to make compiler happy about type is not number
+    # goog.asserts.assertString type
+    # @getHandler().listenOnce src, type, fn, capture, handler
 
   ###*
-    @param {Object.<string, Function|Array>} object
-    @param {Element=} el
-    @protected
+    @override
   ###
-  delegate: (object, el = @getElement()) ->
-    for key, value of object
-      chunks = (goog.string.trim goog.string.normalizeSpaces key).split ' '
-      selector = chunks[0]
-      type = chunks[1] || value[0]
-      # is keyCode for KeyHander
-      if goog.string.isNumeric type
-        type = Number(type)
-      else
-        type = type.split ',' if ~type.indexOf ','
-      fn = if chunks[1] then value else value[1]
-      @delegateType selector, type, fn, el
+  getHandler: ->
+    @esteHandler_ ?= new este.events.EventHandler @
+
+  ###*
+    @override
+  ###
+  enterDocument: ->
+    super
+    @registerEvents()
     return
 
   ###*
-    @param {string} selector
-    @param {string|Array.<string>|number} type
-    @param {Function} fn
-    @param {Element} el
-    @protected
+    @override
   ###
-  delegateType: (selector, type, fn, el) ->
-    if type == 'tap'
-      @delegateTapEvents selector, fn, el
-    else if type == 'submit'
-      @delegateSubmitEvents selector, fn, el
-    else if typeof type == 'number'
-      @delegateKeyEvents selector, type, fn, el
-    else
-      @delegateDomEvents selector, type, fn, el
+  exitDocument: ->
+    @esteHandler_?.removeAll()
+    super()
+    return
 
   ###*
-    @param {string} selector
-    @param {Function} fn
-    @param {Element} el
+    Should be overridden by subclasses.
     @protected
   ###
-  delegateTapEvents: (selector, fn, el) ->
-    @tapHandler ?= new este.events.TapHandler el
-    @on @tapHandler, 'tap', (e) ->
-      @callDelegateCallbackIfMatched selector, e, fn
-
-  ###*
-    @param {string} selector
-    @param {Function} fn
-    @param {Element} el
-    @protected
-  ###
-  delegateSubmitEvents: (selector, fn, el) ->
-    @submitHandler ?= new este.events.SubmitHandler el
-    @on @submitHandler, 'submit', (e) ->
-      @callDelegateCallbackIfMatched selector, e, fn
-
-  ###*
-    @param {string} selector
-    @param {number} keyCode
-    @param {Function} fn
-    @param {Element} el
-    @protected
-  ###
-  delegateKeyEvents: (selector, keyCode, fn, el) ->
-    @keyHandler ?= new goog.events.KeyHandler el
-    @on @keyHandler, 'key', (e) ->
-      return if e.keyCode != keyCode
-      @callDelegateCallbackIfMatched selector, e, fn
-
-  ###*
-    @param {string} selector
-    @param {string|Array.<string>} events
-    @param {Function} fn
-    @param {Element} el
-    @protected
-  ###
-  delegateDomEvents: (selector, events, fn, el) ->
-    matcher = @createSelectorMatcher selector
-    delegation = este.events.Delegation.create el, events, matcher
-    @delegations.push delegation
-    @on delegation, events, fn
-
-  ###*
-    @param {string} selector
-    @param {goog.events.BrowserEvent} e
-    @param {Function} fn
-    @protected
-  ###
-  callDelegateCallbackIfMatched: (selector, e, fn) ->
-    matcher = @createSelectorMatcher selector
-    target = goog.dom.getAncestor e.target, matcher, true
-    return if !target
-    e.originTarget = e.target
-    e.target = target
-    fn.call @, e
-
-  ###*
-    @param {string} selector
-    @return {function(Node): boolean}
-    @protected
-  ###
-  createSelectorMatcher: (selector) ->
-    (el) -> este.dom.match el, selector
+  registerEvents: ->

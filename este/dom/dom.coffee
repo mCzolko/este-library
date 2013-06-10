@@ -349,17 +349,25 @@ goog.scope ->
   `var _ = este.dom`
 
   ###*
-    ex. <a class='foo'></a>, 'a.foo'
+    Check if node matches given simple selector. Only tag and class are
+    supported now.
+    Examples:
+      este.dom.match el, 'button'
+      este.dom.match el, '.box'
+      este.dom.match el, '*'
     @param {Node} node
     @param {string} simpleSelector
-    @return {boolean}
+    @return {boolean} Whether the given element matches the selector.
   ###
   _.match = (node, simpleSelector) ->
+    return true if simpleSelector == '*'
+    return false if node.nodeType != goog.dom.NodeType.ELEMENT
     queryParts = _.getQueryParts simpleSelector
     for part in queryParts
       return false if part.tag && part.tag != '*' &&
-        node.tagName?.toLowerCase() != part.tag.toLowerCase()
-      return false if part.id && node.id != part.id
+        node.tagName.toLowerCase() != part.tag.toLowerCase()
+      return false if part.id &&
+        node.id != part.id
       for className in part.classes
         `node = /** @type {Element} */ (node)`
         return false if !goog.dom.classlist.contains node, className
@@ -543,5 +551,16 @@ goog.scope ->
     invalidField = form.elements[error.key]
     goog.dom.classlist.add invalidField, 'e-dom-field-error'
     este.dom.focus invalidField
+
+  ###*
+    For mousehover (mouseenter, mouseleave) detection.
+    @param {goog.events.BrowserEvent} e
+    @param {Node} target
+    @return {boolean}
+  ###
+  _.isMouseHoverEventWithinElement = (e, target) ->
+    e.type in ['mouseover', 'mouseout'] &&
+    !!e.relatedTarget &&
+    goog.dom.contains target, e.relatedTarget
 
   return

@@ -29,7 +29,7 @@ class este.Base extends goog.events.EventTarget
 
   ###*
     Alias for .listen.
-    @param {goog.events.EventTarget|EventTarget} src Event source.
+    @param {goog.events.ListenableType} src Event source.
     @param {string|Array.<string>} type Event type to listen for or array of
       event types.
     @param {Function|Object=} fn Optional callback function to be used as
@@ -43,7 +43,7 @@ class este.Base extends goog.events.EventTarget
 
   ###*
     Alias for .listenOnce.
-    @param {goog.events.EventTarget|EventTarget} src Event source.
+    @param {goog.events.ListenableType} src Event source.
     @param {string|Array.<string>} type Event type to listen for or array of
       event types.
     @param {Function|Object=} fn Optional callback function to be used as
@@ -57,7 +57,7 @@ class este.Base extends goog.events.EventTarget
 
   ###*
     Alias for .unlisten.
-    @param {goog.events.EventTarget|EventTarget} src Event source.
+    @param {goog.events.ListenableType} src Event source.
     @param {string|Array.<string>} type Event type to listen for or array of
       event types.
     @param {Function|Object=} fn Optional callback function to be used as

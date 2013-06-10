@@ -89,10 +89,10 @@ class este.events.EventHandler extends goog.events.EventHandler
     handler.dispose()
 
   @removeHandlersWithoutListeners: ->
-    EventHandler.handlers = goog.object.map EventHandler.handlers, (v, k) ->
-      return if v.hasListener()
+    EventHandler.handlers = goog.object.filter EventHandler.handlers, (v, k) ->
+      return true if v.hasListener()
       v.dispose()
-      true
+      false
 
   ###*
     @param {goog.events.ListenableType} src

@@ -361,7 +361,7 @@ goog.scope ->
   ###
   _.match = (node, simpleSelector) ->
     return true if simpleSelector == '*'
-    return false if node.nodeType != goog.dom.NodeType.ELEMENT
+    return false if !goog.dom.isElement node
     queryParts = _.getQueryParts simpleSelector
     for part in queryParts
       return false if part.tag && part.tag != '*' &&

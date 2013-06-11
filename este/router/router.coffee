@@ -51,7 +51,6 @@ class este.Router extends este.Base
   constructor: (@history, @tapHandler) ->
     super()
     @routes = []
-    @visitedTokens = []
 
   ###*
     If true, tapHandler will not change url.
@@ -82,12 +81,6 @@ class este.Router extends este.Base
     @protected
   ###
   ignoreNextOnHistoryNavigate: false
-
-  ###*
-    @type {Array.<string>}
-    @protected
-  ###
-  visitedTokens: null
 
   ###*
     @param {string} path
@@ -155,6 +148,7 @@ class este.Router extends este.Base
       item.path == path
 
   ###*
+    Suppress default anchor redirecting behaviour.
     @param {goog.events.BrowserEvent} e
     @protected
   ###
@@ -169,6 +163,7 @@ class este.Router extends este.Base
     @protected
   ###
   onTapHandlerTap: (e) ->
+    # tap can be click event on desktop
     return if e.clickEvent && !este.dom.isRealMouseClick e.clickEvent
     if @isBackButton e
       este.mobile.back()
@@ -186,7 +181,6 @@ class este.Router extends este.Base
   ###
   onHistoryNavigate: (e) ->
     token = este.string.stripSlashHashPrefixes e.token
-    goog.array.insert @visitedTokens, token
     if @ignoreNextOnHistoryNavigate
       @ignoreNextOnHistoryNavigate = false
       return
@@ -200,7 +194,7 @@ class este.Router extends este.Base
   tryGetToken: (e) ->
     token = ''
     goog.dom.getAncestor e.target, (node) =>
-      return false if node.nodeType != goog.dom.NodeType.ELEMENT
+      return false if !goog.dom.isElement node
       return true if node.hasAttribute 'e-router-ignore'
       return true if node.getAttribute('href')?.indexOf('http') == 0
       # http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml?showone=Protocol#Protocol
@@ -216,12 +210,10 @@ class este.Router extends este.Base
     @protected
   ###
   isBackButton: (e) ->
+    return false if goog.global.history?.length == 1
     !!goog.dom.getAncestor e.target, (node) =>
-      return false if node.nodeType != goog.dom.NodeType.ELEMENT
-      return false if !node.hasAttribute 'e-router-back-button'
-      href = node.getAttribute 'href'
-      token = este.string.stripSlashHashPrefixes href
-      goog.array.contains @visitedTokens, token
+      return false if !goog.dom.isElement node
+      node.hasAttribute 'e-router-back-button'
     , true
 
   ###*

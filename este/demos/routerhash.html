@@ -36,9 +36,8 @@
   </p>
   <p>Router ignores <a href="http://google.com">link</a> with scheme and
     <a e-router-ignore href="/">link</a> with 'e-router-ignore' attribute.</p>
-  <p><a e-router-back-button href="#/">Back link</a> simulates browser back
-    button, but only when its href was yet visited. This ensures that
-    back link will not redirect out of app.</p>
+  <p><a e-router-back-button href="#/">Back</a> is browser back button simulation.
+    If there is no previous history item, then anchor href is used.</p>
   <div id="kittens" class="section">
     <img src="http://farm4.static.flickr.com/3045/2481490798_bba0c585b4.jpg">
   </div>
@@ -52,34 +51,34 @@
     <img src="http://farm1.static.flickr.com/146/421093356_6bbefa304e.jpg">
   </div>
   <script>
-    este.dev.Monitor.create()
+    este.dev.Monitor.create();
 
-    var router = este.router.create(document.body, true)
-    var cur = 'kittens'
+    var router = este.router.create(document.body, true);
+    var cur = 'kittens';
 
     var updateUI = function(token) {
-      console.log('token: ' + token)
+      console.log('token: ' + token);
 
-      var id = token
-      var next = document.getElementById(token)
-      if (!next) return
+      var id = token;
+      var next = document.getElementById(token);
+      if (!next) return;
 
-      document.getElementById(cur).className = 'section'
-      next.className = 'section active'
-      cur = id
+      document.getElementById(cur).className = 'section';
+      next.className = 'section active';
+      cur = id;
 
-      var anchors = document.getElementsByTagName('a')
+      var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
-        anchors[i].className = ''
-      el = document.querySelector('*[href="#/' + token + '"]')
-      el.className = 'shown'
-    }
+        anchors[i].className = '';
+      el = document.querySelector('*[href="#/' + token + '"]');
+      el.className = 'shown';
+    };
 
     router.add('#/:token?', function(params) {
-      var token = params.token || 'kittens'
-      updateUI(token)
-    })
-    router.start()
+      var token = params.token || 'kittens';
+      updateUI(token);
+    });
+    router.start();
 
   </script>
 </body>

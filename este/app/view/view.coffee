@@ -3,14 +3,14 @@
 ###
 goog.provide 'este.app.View'
 
-goog.require 'este.ui.View'
+goog.require 'este.ui.Component'
 goog.require 'goog.dom.classlist'
 
-class este.app.View extends este.ui.View
+class este.app.View extends este.ui.Component
 
   ###*
     @constructor
-    @extends {este.ui.View}
+    @extends {este.ui.Component}
   ###
   constructor: ->
     super()
@@ -31,6 +31,7 @@ class este.app.View extends este.ui.View
   redirect: null
 
   ###*
+    View has to remember its scroll position.
     @type {goog.math.Coordinate}
   ###
   scroll: null

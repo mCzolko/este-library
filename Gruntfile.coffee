@@ -88,20 +88,10 @@ module.exports = (grunt) ->
           '--define=goog.DEBUG=false'
         ]
 
-      todomvc:
+      all:
         options:
-          namespace: 'este.demos.app.todomvc.start'
-          outputFilePath: 'build/app_todomvc.js'
-
-      simple:
-        options:
-          namespace: 'este.demos.app.simple.start'
-          outputFilePath: 'build/app_simple.js'
-
-      layout:
-        options:
-          namespace: 'este.demos.app.layout.start'
-          outputFilePath: 'build/app_layout.js'
+          namespace: '*'
+          outputFilePath: 'build/all.js'
 
     release:
       options:

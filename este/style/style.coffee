@@ -30,9 +30,8 @@ goog.scope ->
   ###
   _.isVisible = (element) ->
     ancestors = este.dom.getAncestors element
-    `var doc = /** @type {Document} */ (ancestors[ancestors.length - 1])`
-    return false if doc != element.ownerDocument
     goog.array.every ancestors, (el) ->
+      goog.dom.isElement(el) &&
       _.getComputedStyle(el, 'display') != 'none'
 
   return

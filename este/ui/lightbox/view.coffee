@@ -62,18 +62,26 @@ class este.ui.lightbox.View extends este.ui.Component
     @override
   ###
   registerEvents: ->
-    @on '.e-ui-lightbox-close tap', @close
-    @on '.e-ui-lightbox-previous tap', @moveLeft
-    @on '.e-ui-lightbox-next tap', @moveRight
+    @on '.e-ui-lightbox-close', 'click', @close
+    @on '.e-ui-lightbox-previous', 'click', @moveLeft
+    @on '.e-ui-lightbox-next', 'click', @moveRight
     @on '*', goog.events.KeyCodes.ESC, @close
-    @on '*', goog.events.KeyCodes.LEFT, @moveLeft
-    @on '*', goog.events.KeyCodes.UP, @moveLeft
-    @on '*', goog.events.KeyCodes.RIGHT, @moveRight
-    @on '*', goog.events.KeyCodes.DOWN, @moveRight
-    @on '*', goog.events.KeyCodes.HOME, @moveStart
-    @on '*', goog.events.KeyCodes.PAGE_UP, @moveStart
-    @on '*', goog.events.KeyCodes.END, @moveEnd
-    @on '*', goog.events.KeyCodes.PAGE_DOWN, @moveEnd
+    @on '*', [
+      goog.events.KeyCodes.LEFT
+      goog.events.KeyCodes.UP
+    ], @moveLeft
+    @on '*', [
+      goog.events.KeyCodes.RIGHT
+      goog.events.KeyCodes.DOWN
+    ], @moveRight
+    @on '*', [
+      goog.events.KeyCodes.HOME
+      goog.events.KeyCodes.PAGE_UP
+    ], @moveStart
+    @on '*', [
+      goog.events.KeyCodes.END
+      goog.events.KeyCodes.PAGE_DOWN
+    ], @moveEnd
 
   ###*
     @protected

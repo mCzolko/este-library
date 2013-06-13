@@ -19,6 +19,7 @@ class este.ui.FieldReset extends este.ui.Component
   constructor: (element) ->
     @inputHandler = new goog.events.InputHandler element
     @resetBtn = goog.dom.createDom 'div', 'e-ui-fieldreset'
+    @resetBtn.setAttribute 'touch-action', 'none'
     @decorate element
 
   ###*
@@ -50,7 +51,7 @@ class este.ui.FieldReset extends este.ui.Component
   enterDocument: ->
     super()
     @on @inputHandler, 'input', @onInputHandlerInput
-    @on '.e-ui-fieldreset tap', @onResetBtnTap
+    @on '.e-ui-fieldreset', 'tap', @onResetBtnTap
     @update()
     return
 

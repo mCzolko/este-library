@@ -26,9 +26,7 @@ class este.ui.lightbox.Lightbox extends este.ui.Component
   ###
   registerEvents: ->
     @on @, este.ui.lightbox.View.EventType.CLOSE, @onViewClose
-    @on
-      'a click': @onAnchorClick
-      'a tap': @onAnchorTap
+    @on 'a', 'click', @onAnchorClick
     return
 
   ###*
@@ -45,13 +43,6 @@ class este.ui.lightbox.Lightbox extends este.ui.Component
   onAnchorClick: (e) ->
     return if !@isLightboxAnchor e.target
     e.preventDefault()
-
-  ###*
-    @param {goog.events.BrowserEvent} e
-    @protected
-  ###
-  onAnchorTap: (e) ->
-    return if !@isLightboxAnchor e.target
     @showView e.target
 
   ###*

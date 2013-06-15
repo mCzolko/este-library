@@ -34,6 +34,7 @@
       # note how bindModel is used
       this.on '.box', 'tap', this.bindModel this.onBoxTap
   @see ../demos/component.html
+  @see ../demos/app/todomvc/js/todos/list/view.coffee
 ###
 goog.provide 'este.ui.Component'
 
@@ -117,19 +118,24 @@ class este.ui.Component extends goog.ui.Component
     if goog.isArray type
       @on src, t, fn, capture, handler for t in type
       return
+
     useEventDelegation = goog.isString src
-    if goog.isString src
+    if useEventDelegation
       selector = src
       src = @getElement()
-    if goog.dom.isElement(src) && goog.isNumber type
-      fn = Component.wrapListenerForKeyHandlerKeyFilter fn, type, @
+
+    isKeyEventType = goog.dom.isElement(src) && goog.isNumber type
+    if isKeyEventType
+      `var keyCode = /** @type {number} */ (type)`
+      fn = Component.wrapListenerForKeyHandlerKeyFilter fn, keyCode, @
       type = 'key'
+
     if useEventDelegation
       # assert to make compiler happy about selector is string number
       goog.asserts.assertString selector
       fn = Component.wrapListenerForEventDelegation fn, selector, type
-    # assert to make compiler happy about type is not number
-    goog.asserts.assertString type
+    `type = /** @type {string} */ (type)`
+    `src = /** @type {goog.events.ListenableType} */ (src)`
     @getHandler().listen src, type, fn, capture, handler
     return
 

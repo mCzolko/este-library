@@ -12,18 +12,19 @@ suite 'este.ui.Component', ->
       assert.instanceOf component, Component
 
   suite 'on', ->
-    test 'should throw exception if called before enterDocument', (done) ->
-      try
-        el = document.createElement 'div'
-        component.on el, 'foo', ->
-      catch e
-        done()
+    suite 'should throw exception if called', ->
+      test 'before enterDocument', (done) ->
+        try
+          el = document.createElement 'div'
+          component.on el, 'foo', ->
+        catch e
+          done()
 
-    test 'should not throw exception if called after enterDocument', (done) ->
-      el = document.createElement 'div'
-      component.enterDocument()
-      component.on el, 'foo', ->
-      done()
+      test 'after enterDocument', (done) ->
+        el = document.createElement 'div'
+        component.enterDocument()
+        component.on el, 'foo', ->
+        done()
 
   suite 'registerEvents', ->
     test 'should be called from enterDocument', (done) ->

@@ -110,11 +110,13 @@ class este.events.EventHandler extends goog.events.EventHandler
     if goog.isArray type
       @listen src, t, opt_fn, opt_capture, opt_handler for t in type
       return @
-    # assert to make compiler happy about type is not null
-    goog.asserts.assertString type
+
+    `type = /** @type {string} */ (type)`
     handlerClass = EventHandler.getHandlerClass src, type
+
     if handlerClass
       src = EventHandler.lazyCreateHandler src, handlerClass
+
     super src, type, opt_fn, opt_capture, opt_handler
 
   ###*
@@ -124,15 +126,18 @@ class este.events.EventHandler extends goog.events.EventHandler
     if goog.isArray type
       @listen src, t, opt_fn, opt_capture, opt_handler for t in type
       return @
-    # assert to make compiler happy about type is not null
-    goog.asserts.assertString type
+
+    `type = /** @type {string} */ (type)`
     handlerClass = EventHandler.getHandlerClass src, type
     originalSrc = null
+
     if handlerClass
       originalSrc = src
       src = EventHandler.getHandler src, handlerClass
       return @ if !src
+
     super src, type, opt_fn, opt_capture, opt_handler
+
     if handlerClass && !src.hasListener()
       EventHandler.removeHandler originalSrc, handlerClass
     @

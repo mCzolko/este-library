@@ -7,7 +7,7 @@
   <style>
     .box, #tap, #swipe-right {
       background-color: #ff8c55;
-      padding: 0 .7em;
+      padding: 0 1.3em;
       display: inline-block;
       margin: .1em 0 1em;
     }
@@ -34,9 +34,12 @@
       <li>input</li>
       <li>mousewheel</li>
     </ul>
-    <h2>Examples:</h2>
+    <h2>Some examples:</h2>
     <p class='click-on-me'>
       Click on me.
+    </p>
+    <p class='click-on-me-once'>
+      Click on me once.
     </p>
     <p>
       <input id="some-input" type="text" placeholder="press enter here">
@@ -73,8 +76,11 @@
     </form>
   </div>
   <p>
-    Show console to see logs.
+    Open console to see logs.
   </p>
+  <button id="off">off</button>
+  <button id="enterDocument">enterDocument</button>
+  <button id="exitDocument">exitDocument</button>
   <button id="dispose">dispose</button>
   <script>
     este.dev.Monitor.create();
@@ -93,7 +99,21 @@
 
     CustomComponent.prototype.enterDocument = function() {
       goog.base(this, 'enterDocument')
-      this.on(document.querySelector('.click-on-me'), 'click', logEvent);
+      this.on('.click-on-me', 'click', logEvent);
+      this.once('.click-on-me-once', 'click', logEvent);
+      this.on('#some-input', [
+        goog.events.KeyCodes.ENTER,
+        'focusin', 'focusout',
+        'input'
+      ], logEvent);
+      this.on('.box', ['mouseover', 'mouseout'], logEvent);
+      this.on('#tap', 'tap', logEvent);
+      this.on('#swipe-right', 'swiperight', logEvent);
+      this.on('.some-form', 'submit', logEvent);
+
+      // yet registered listeners are ignored
+      this.on('.click-on-me', 'click', logEvent);
+      this.once('.click-on-me-once', 'click', logEvent);
       this.on('#some-input', [
         goog.events.KeyCodes.ENTER,
         'focusin', 'focusout',
@@ -107,6 +127,28 @@
 
     var component = new CustomComponent;
     component.decorate(document.getElementById('component'));
+
+    document.querySelector('#off').onclick = function() {
+      component.off('.click-on-me', 'click', logEvent);
+      component.off('.click-on-me-once', 'click', logEvent);
+      component.off('#some-input', [
+        goog.events.KeyCodes.ENTER,
+        'focusin', 'focusout',
+        'input'
+      ], logEvent);
+      component.off('.box', ['mouseover', 'mouseout'], logEvent);
+      component.off('#tap', 'tap', logEvent);
+      component.off('#swipe-right', 'swiperight', logEvent);
+      component.off('.some-form', 'submit', logEvent);
+    };
+
+    document.querySelector('#enterDocument').onclick = function() {
+      component.enterDocument();
+    };
+
+    document.querySelector('#exitDocument').onclick = function() {
+      component.exitDocument();
+    };
 
     document.querySelector('#dispose').onclick = function() {
       component.dispose();

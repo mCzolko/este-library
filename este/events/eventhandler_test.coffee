@@ -10,7 +10,6 @@ suite 'este.events.EventHandler', ->
     el = document.createElement 'div'
 
   teardown ->
-    # TODO: removeAll
     EventHandler.handlers = {}
 
   suite 'constructor', ->
@@ -90,8 +89,19 @@ suite 'este.events.EventHandler', ->
       handler.listen el, 'focusout', onOut
       focusHandler = goog.object.getAnyValue este.events.EventHandler.handlers
       focusHandler.dispose = ->
-        count = goog.object.getCount este.events.EventHandler.handlers
-        assert.equal count, 0
+        assert.isTrue goog.object.isEmpty este.events.EventHandler.handlers
         done()
       handler.unlisten el, 'focusin', onIn
       handler.unlisten el, 'focusout', onOut
+
+  suite 'removeAll', ->
+    test 'should work', ->
+      handler.listen el, 'submit', ->
+      handler.listen el, 'focusin', ->
+      handler.listen el, 'focusout', ->
+      handler.listen el, 'input', ->
+      handler.listen el, 'key', ->
+      handler.listen el, 'mousewheel', ->
+      handler.listen el, 'click', ->
+      handler.removeAll()
+      assert.isTrue goog.object.isEmpty este.events.EventHandler.handlers

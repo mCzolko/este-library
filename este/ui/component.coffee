@@ -103,21 +103,37 @@ class este.ui.Component extends goog.ui.Component
   esteHandler_: null
 
   ###*
+    @type {Object}
+    @private
+  ###
+  componentListenables_: null
+
+  ###*
     @param {goog.events.ListenableType|string} src Event source.
     @param {string|number|!Array.<string|number>} type Event type to listen for
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
     @param {Object=} handler Object in whose scope to call the listener.
+    @param {boolean=} once
     @protected
   ###
-  on: (src, type, fn, capture, handler) ->
+  on: (src, type, fn, capture, handler, once) ->
     goog.asserts.assert @isInDocument(), "Use registerEvents method to ensure
       events are registered in enterDocument. @on has to be called only in
       enterDocument method, because exitDocument will @off it."
     if goog.isArray type
       @on src, t, fn, capture, handler for t in type
       return
+
+    id = @getComponentListenableId src, type, fn, capture, handler
+    return if @componentListenables_?[id]
+
+    if once
+      fn = do (src, type, fn, capture, handler) ->
+        (e) ->
+          @off src, type, fn, capture, handler
+          fn.call @, e
 
     useEventDelegation = goog.isString src
     if useEventDelegation
@@ -131,9 +147,12 @@ class este.ui.Component extends goog.ui.Component
       type = 'key'
 
     if useEventDelegation
-      # assert to make compiler happy about selector is string number
-      goog.asserts.assertString selector
+      `selector = /** @type {string} */ (selector)`
       fn = Component.wrapListenerForEventDelegation fn, selector, type
+
+    @componentListenables_ ?= {}
+    @componentListenables_[id] = [src, type, fn, capture, handler]
+
     `type = /** @type {string} */ (type)`
     `src = /** @type {goog.events.ListenableType} */ (src)`
     @getHandler().listen src, type, fn, capture, handler
@@ -149,16 +168,7 @@ class este.ui.Component extends goog.ui.Component
     @protected
   ###
   once: (src, type, fn, capture, handler) ->
-    throw Error 'not yet implemented'
-    # goog.asserts.assert @isInDocument(), "Use registerEvents method to ensure
-    #   events are registered in enterDocument. @on has to be called only in
-    #   enterDocument method, because exitDocument will @off it."
-    # if goog.isArray type
-    #   @once src, t, fn, capture, handler for t in type
-    #   return
-    # # assert to make compiler happy about type is not number
-    # goog.asserts.assertString type
-    # @getHandler().listenOnce src, type, fn, capture, handler
+    @on src, type, fn, capture, handler, true
 
   ###*
     @param {goog.events.ListenableType|string} src Event source.
@@ -170,19 +180,34 @@ class este.ui.Component extends goog.ui.Component
     @protected
   ###
   off: (src, type, fn, capture, handler) ->
-    throw Error 'not yet implemented'
-    # if goog.isArray type
-    #   @off src, t, fn, capture, handler for t in type
-    #   return
-    # # assert to make compiler happy about type is not number
-    # goog.asserts.assertString type
-    # @getHandler().listenOnce src, type, fn, capture, handler
+    if goog.isArray type
+      @off src, t, fn, capture, handler for t in type
+      return
+
+    id = @getComponentListenableId src, type, fn, capture, handler
+    listenable = @componentListenables_[id]
+    return if !listenable
+    @getHandler().unlisten.apply @getHandler(), listenable
+    delete @componentListenables_[id]
+    return
 
   ###*
     @override
   ###
   getHandler: ->
     @esteHandler_ ?= new este.events.EventHandler @
+
+  ###*
+    @protected
+  ###
+  getComponentListenableId: (src, type, fn, capture, handler) ->
+    [
+      if goog.isString(src) then src else goog.getUid src
+      type
+      goog.getUid fn
+      capture
+      if handler then goog.getUid(handler) else handler
+    ].join()
 
   ###*
     @override
@@ -203,6 +228,7 @@ class este.ui.Component extends goog.ui.Component
   ###
   exitDocument: ->
     @esteHandler_?.removeAll()
+    @componentListenables_ = null
     super()
     return
 

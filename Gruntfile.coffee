@@ -103,11 +103,18 @@ module.exports = (grunt) ->
         pushTags: true
         npm: false
 
+    'npm-contributors':
+      options:
+        file: 'package.json'
+        commit: true
+        commitMessage: 'Update contributors'
+
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-stylus'
   grunt.loadNpmTasks 'grunt-este'
+  grunt.loadNpmTasks 'grunt-npm'
   grunt.loadNpmTasks 'grunt-release'
 
   grunt.registerTask 'test', ->

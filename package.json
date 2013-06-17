@@ -33,5 +33,9 @@
   "engines": {
     "node": "v0.8.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "contributors": [
+    "Steida <daniel@steigerwald.cz>",
+    "Matěj Koubík <matej@koubik.name>"
+  ]
 }

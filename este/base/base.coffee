@@ -70,6 +70,7 @@ class este.Base extends goog.events.EventTarget
     @getHandler().unlisten src, type, fn, capture, handler
 
   ###*
+    Add parent for dispatch event.
     @param {este.Base} parent
     @protected
   ###
@@ -77,6 +78,7 @@ class este.Base extends goog.events.EventTarget
     goog.array.insert @getParents(), parent
 
   ###*
+    Remove parent for dispatch event.
     @param {este.Base} parent
     @return {boolean} True if a parent was removed.
     @protected
@@ -85,6 +87,7 @@ class este.Base extends goog.events.EventTarget
     goog.array.remove @getParents(), parent
 
   ###*
+    Return dispatch event parents.
     @return {Array.<este.Base>}
     @protected
   ###
@@ -98,6 +101,9 @@ class este.Base extends goog.events.EventTarget
     @handler_ ?= new goog.events.EventHandler @
 
   ###*
+    Dispatch event on instance itself and also on its parents. Useful when one
+    model is placed in several collection. It enabled multi-parent events
+    bubbling.
     @override
   ###
   dispatchEvent: (e) ->

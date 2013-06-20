@@ -78,14 +78,13 @@ class este.Base extends goog.events.EventTarget
 
   ###*
     @param {este.Base} parent
-    @return {boolean} True if an element was removed.
+    @return {boolean} True if a parent was removed.
     @protected
   ###
   removeParent: (parent) ->
     goog.array.remove @getParents(), parent
 
   ###*
-    Return clone of the parents.
     @return {Array.<este.Base>}
     @protected
   ###

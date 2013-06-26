@@ -119,9 +119,6 @@ class este.ui.Component extends goog.ui.Component
     @protected
   ###
   on: (src, type, fn, capture, handler, once) ->
-    goog.asserts.assert @isInDocument(), "Use registerEvents method to ensure
-      events are registered in enterDocument. @on has to be called only in
-      enterDocument method, because exitDocument will @off it."
     if goog.isArray type
       @on src, t, fn, capture, handler for t in type
       return

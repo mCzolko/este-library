@@ -13,55 +13,6 @@ suite 'este.ui.Component', ->
     test 'should work', ->
       assert.instanceOf component, Component
 
-  suite 'on', ->
-    suite 'should throw exception if called', ->
-      test 'before enterDocument', (done) ->
-        try
-          component.on el, 'foo', ->
-        catch e
-          done()
-
-      test 'after exitDocument', (done) ->
-        try
-          component.enterDocument()
-          component.exitDocument()
-          component.on el, 'foo', ->
-        catch e
-          done()
-
-    test 'should not throw exception if called after enterDocument', ->
-      component.enterDocument()
-      component.on el, 'foo', ->
-
-  suite 'once', ->
-    suite 'should throw exception if called', ->
-      test 'before enterDocument', (done) ->
-        try
-          component.once el, 'foo', ->
-        catch e
-          done()
-
-      test 'after exitDocument', (done) ->
-        try
-          component.enterDocument()
-          component.exitDocument()
-          component.once el, 'foo', ->
-        catch e
-          done()
-
-    suite 'should not throw exception if called', ->
-      test 'after enterDocument', ->
-        component.enterDocument()
-        component.once el, 'foo', ->
-
-    test 'should work', ->
-      count = 0
-      component.enterDocument()
-      component.once el, 'click', -> count++
-      goog.events.fireListeners el, 'click', false, type: 'click'
-      goog.events.fireListeners el, 'click', false, type: 'click'
-      assert.equal count, 1
-
   suite 'off', ->
     test 'should work on element', ->
       count = 0

@@ -109,6 +109,8 @@ module.exports = (grunt) ->
         commit: true
         commitMessage: 'Update contributors'
 
+    # 'buildReact':
+
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
@@ -129,3 +131,16 @@ module.exports = (grunt) ->
       'esteUnitTests'
       'esteBuilder'
     ]
+
+  grunt.registerTask 'incorporateReact', ->
+    src = grunt.file.read 'bower_components/react/react.min.js'
+    desc = """
+      ###*
+        @fileoverview Facebook React UI library incorporated into Este.
+        Copyright 2013 Facebook, Inc.
+      ###
+      goog.provide 'este.ui.react'
+
+      goog.globalEval #{JSON.stringify src: src}['src']
+    """
+    grunt.file.write 'este/ui/react.coffee', desc

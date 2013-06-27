@@ -1,7 +1,7 @@
 {
   "name": "este-library",
   "version": "3.2.1",
-  "description": "Library for github.com/Steida/este.git",
+  "description": "Library for github.com/steida/este.git",
   "author": "Daniel Steigerwald <daniel@steigerwald.cz>",
   "private": true,
   "keywords": [
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Steida/este-library.git"
+    "url": "https://github.com/steida/este-library.git"
   },
   "dependencies": {},
   "devDependencies": {

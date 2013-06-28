@@ -6,6 +6,7 @@ goog.provide 'este.demos.app.layout.foo.View'
 goog.require 'este.app.View'
 goog.require 'este.demos.app.layout.foo.templates'
 goog.require 'este.ui.Resizer'
+goog.require 'goog.dom.classlist'
 
 class este.demos.app.layout.foo.View extends este.app.View
 
@@ -28,7 +29,7 @@ class este.demos.app.layout.foo.View extends este.app.View
   enterDocument: ->
     super()
     @update()
-    @createResiser()
+    @createResizer()
     return
 
   ###*
@@ -48,7 +49,7 @@ class este.demos.app.layout.foo.View extends este.app.View
   ###*
     @protected
   ###
-  createResiser: ->
+  createResizer: ->
     @resizer = este.ui.Resizer.create()
     @resizer.targetFilter = (el) =>
       goog.dom.classlist.contains el, 'este-box'

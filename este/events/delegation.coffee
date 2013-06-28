@@ -1,5 +1,7 @@
 ###*
-  @fileoverview Simple and useful event delegation.
+  @fileoverview Simple and useful event delegation. This is special low level
+  component. For general usage este.ui.Component is preferred.
+
   @see ../demos/delegation.html
 ###
 goog.provide 'este.events.Delegation'
@@ -81,7 +83,7 @@ class este.events.Delegation extends este.Base
     element = e.target
     target = null
 
-    while element
+    while goog.dom.isElement element
       if !targetMatched
         targetMatched = @targetFilter element
         target = element

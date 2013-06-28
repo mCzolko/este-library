@@ -26,6 +26,7 @@ suite 'este.events.Delegation', ->
         type: 'click'
         target:
           className: 'target'
+          nodeType: 1
           parentNode:
             className: 'parent'
 
@@ -36,12 +37,15 @@ suite 'este.events.Delegation', ->
       goog.events.fireListeners element, 'click', false,
         type: 'click'
         target:
+          nodeType: 1
           className: 'target'
 
     test 'on element inside el with className .target and with parent className .parent', (done) ->
       target =
+        nodeType: 1
         className: 'target'
         parentNode:
+          nodeType: 1
           className: 'parent'
       goog.events.listen delegation, 'click', (e) ->
         assert.equal e.target, target, 'target should be updated'
@@ -49,6 +53,7 @@ suite 'este.events.Delegation', ->
       goog.events.fireListeners element, 'click', false,
         type: 'click'
         target:
+          nodeType: 1
           parentNode: target
 
   suite 'should not dispatch click', ->

@@ -271,7 +271,14 @@ class este.Model extends este.Base
     keys = (key for key, value of @schema when value?['validators'])
     values = @get keys
     `values = /** @type {Object} */ (values)`
-    @getErrors values
+    allErrors = @getErrors(values) || []
+    for key, value of @attributes
+      continue if !value || !goog.isFunction value.validate
+      errors = value.validate()
+      continue if not errors
+      allErrors.push.apply allErrors, errors
+    return allErrors if allErrors.length
+    null
 
   ###*
     Prefix because http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
@@ -371,7 +378,8 @@ class este.Model extends este.Base
         validator.key = key
         validator.value = value
         continue if not validator.isValidable()
-        errors.push validator if not validator.validate value
+        continue if validator.validate value
+        errors.push validator
     return errors if errors.length
     null
 

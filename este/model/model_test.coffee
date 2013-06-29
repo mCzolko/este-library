@@ -352,6 +352,20 @@ suite 'este.Model', ->
         assert.equal errors[0].key, 'lastName'
         assert.equal errors[0].value, undefined
 
+    suite 'inner validate', ->
+      test 'should return correct errors', ->
+        a = new este.Model
+        b = new este.Model
+        b.schema =
+          'title': 'validators': [este.validators.required()]
+        a.set 'b', b
+        errors = a.validate()
+        assert.lengthOf errors, 1
+
+        a.remove 'b'
+        errors = a.validate()
+        assert.isNull errors
+
   suite 'idAttribute', ->
     test 'should allow to define alternate id', ->
       person = new Person

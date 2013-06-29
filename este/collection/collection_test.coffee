@@ -463,3 +463,34 @@ suite 'este.Collection', ->
       assert.equal collection.getLength(), 1
       assert.deepEqual collection.toJson(true),
         ['b': 2, 'bb': 2.5]
+
+  suite 'validate', ->
+    test 'should validate collection items', ->
+      collection.add 1
+      collection.add null
+      a = new este.Model
+      a.schema =
+        'title': 'validators': [este.validators.required()]
+      b = new este.Model
+      b.schema =
+        'title': 'validators': [este.validators.required()]
+      collection.add a
+      collection.add b
+      errors = collection.validate()
+      assert.lengthOf errors, 2
+
+      collection.clear()
+      errors = collection.validate()
+      assert.isNull errors
+
+    test 'should be validable on model', ->
+      a = new este.Model
+      collection = new este.Collection
+      a.set 'collection', collection
+      b = new este.Model
+      b.schema =
+        'title': 'validators': [este.validators.required()]
+      collection.add b
+
+      errors = a.validate()
+      assert.lengthOf errors, 1

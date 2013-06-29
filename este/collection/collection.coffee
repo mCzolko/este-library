@@ -243,6 +243,19 @@ class este.Collection extends este.Base
     return
 
   ###*
+    @return {Array.<este.validators.Base>}
+  ###
+  validate: ->
+    allErrors = []
+    @each (item) ->
+      return if !item || !goog.isFunction item.validate
+      errors = item.validate()
+      return if !errors
+      allErrors.push.apply allErrors, errors
+    return allErrors if allErrors.length
+    null
+
+  ###*
     @param {Array} added
     @protected
   ###

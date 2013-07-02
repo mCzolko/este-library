@@ -77,15 +77,17 @@ module.exports = (grunt) ->
         root: depsDirs
         depsPath: depsPath
         compilerFlags: [
-          # you will love advanced compilation with verbose warning level
+          # You will love advanced compilation with verbose warning level.
           '--output_wrapper="(function(){%output%})();"'
           '--compilation_level="ADVANCED_OPTIMIZATIONS"'
           '--warning_level="VERBOSE"'
-          # remove code for ancient browsers (IE<8, very old Gecko/Webkit)
+          # Remove code for ancient browsers (IE<8, very old Gecko/Webkit).
           '--define=goog.net.XmlHttp.ASSUME_NATIVE_XHR=true'
           '--define=este.json.SUPPORTS_NATIVE_JSON=true'
           '--define=goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS=true'
           '--define=goog.DEBUG=false'
+          # Externs. They allow us to use thirdparty code without [] syntax.
+          '--externs=externs/react/react-3.3.js'
         ]
 
       all:
@@ -135,10 +137,13 @@ module.exports = (grunt) ->
     desc = """
       ###*
         @fileoverview Facebook React UI library incorporated into Este.
+        @see http://facebook.github.io/react
         Copyright 2013 Facebook, Inc.
       ###
-      goog.provide 'este.ui.react'
+      goog.provide 'este.thirdParty.react'
 
-      goog.globalEval #{JSON.stringify src: src}['src']
+      goog.globalEval #{JSON.stringify src}
+      # A little help for compiler dead code removal. Prevents src duplication.
+      goog.globalEval ''
     """
-    grunt.file.write 'este/ui/react.coffee', desc
+    grunt.file.write 'este/third_party/react.coffee', desc

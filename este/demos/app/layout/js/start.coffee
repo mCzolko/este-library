@@ -10,15 +10,11 @@ goog.require 'este.demos.app.layout.bla.Presenter'
 goog.require 'este.demos.app.layout.contacts.Presenter'
 goog.require 'este.demos.app.layout.foo.Presenter'
 goog.require 'este.demos.app.layout.home.Presenter'
-goog.require 'este.dev.Monitor.create'
 
 ###*
   @param {Object} data JSON from server
 ###
 este.demos.app.layout.start = (data) ->
-
-  if goog.DEBUG
-    este.dev.Monitor.create()
 
   layoutApp = este.app.create 'layout-app', true
 

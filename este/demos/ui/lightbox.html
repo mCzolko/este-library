@@ -8,8 +8,7 @@
   <script src='../../../../closure-library/closure/goog/base.js'></script>
   <script src='../../../../../client/deps.js'></script>
   <script>
-    goog.require('este.dev.Monitor.create')
-    goog.require('este.ui.lightbox.create')
+    goog.require('este.ui.lightbox.create');
   </script>
 </head>
 <body>
@@ -48,8 +47,6 @@
   </div>
   <button>dispose</button>
   <script>
-    este.dev.Monitor.create();
-
     var lightbox = este.ui.lightbox.create();
 
     document.querySelector('button').onclick = function(e) {

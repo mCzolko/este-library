@@ -21,8 +21,7 @@
   <script src='../../../closure-library/closure/goog/base.js'></script>
   <script src='../../../../client/deps.js'></script>
   <script>
-    goog.require('este.dev.Monitor.create')
-    goog.require('este.History')
+    goog.require('este.History');
   </script>
 </head>
 <body>
@@ -46,43 +45,41 @@
     <img src='http://farm1.static.flickr.com/146/421093356_6bbefa304e.jpg'>
   </div>
   <script>
-    este.dev.Monitor.create()
+    var esteHistory = new este.History;
+    var cur = 'kittens';
 
-    var esteHistory = new este.History
-    var cur = 'kittens'
-
-    console.log('HTML5 enabled: ' + esteHistory.html5historyEnabled)
+    console.log('HTML5 enabled: ' + esteHistory.html5historyEnabled);
 
     var updateUI = function(e) {
-      var token = e.token || 'kittens'
-      console.log('token: ' + token)
+      var token = e.token || 'kittens';
+      console.log('token: ' + token);
 
-      var id = token
-      var next = document.getElementById(id)
-      if (!next) return
+      var id = token;
+      var next = document.getElementById(id);
+      if (!next) return;
 
-      document.getElementById(cur).className = 'section'
-      next.className = 'section active'
-      cur = id
+      document.getElementById(cur).className = 'section';
+      next.className = 'section active';
+      cur = id;
 
-      var anchors = document.getElementsByTagName('a')
+      var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
-        anchors[i].className = ''
-      el = document.querySelector('*[href="' + id + '"]')
-      el.className = 'shown'
+        anchors[i].className = '';
+      el = document.querySelector('*[href="' + id + '"]');
+      el.className = 'shown';
     }
 
-    goog.events.listen(esteHistory, 'navigate', updateUI)
-    esteHistory.setEnabled()
+    goog.events.listen(esteHistory, 'navigate', updateUI);
+    esteHistory.setEnabled();
 
-    var links = document.getElementById('links')
+    var links = document.getElementById('links');
     goog.events.listen(links, 'click', function(e) {
       if (e.target.tagName != 'A')
-        return
-      e.preventDefault()
-      var token = e.target.getAttribute('href')
-      esteHistory.setToken(token)
-    })
+        return;
+      e.preventDefault();
+      var token = e.target.getAttribute('href');
+      esteHistory.setToken(token);
+    });
 
   </script>
 </body>

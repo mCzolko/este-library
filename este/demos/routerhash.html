@@ -21,9 +21,8 @@
   <script src="../../../closure-library/closure/goog/base.js"></script>
   <script src="../../../../client/deps.js"></script>
   <script>
-    goog.require('este.dev.Monitor.create')
-    goog.require('goog.Uri')
-    goog.require('este.router.create')
+    goog.require('este.router.create');
+    goog.require('goog.Uri');
   </script>
 </head>
 <body>
@@ -51,8 +50,6 @@
     <img src="http://farm1.static.flickr.com/146/421093356_6bbefa304e.jpg">
   </div>
   <script>
-    este.dev.Monitor.create();
-
     var router = este.router.create(document.body, true);
     var cur = 'kittens';
 

@@ -6,14 +6,9 @@ goog.provide 'este.demos.app.todomvc.start'
 
 goog.require 'este.app.create'
 goog.require 'este.demos.app.todomvc.todos.list.Presenter'
-goog.require 'este.dev.Monitor.create'
 goog.require 'este.storage.Local'
 
 este.demos.app.todomvc.start = ->
-
-  # shows total registered listeners count in bottom right corner
-  if goog.DEBUG
-    este.dev.Monitor.create()
 
   todoApp = este.app.create 'todoapp', true
   todoApp.storage = new este.storage.Local 'todos-este'

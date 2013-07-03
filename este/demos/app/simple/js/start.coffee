@@ -9,15 +9,11 @@ goog.require 'este.demos.app.simple.error.Presenter'
 goog.require 'este.demos.app.simple.products.detail.Presenter'
 goog.require 'este.demos.app.simple.products.list.Presenter'
 goog.require 'este.demos.app.simple.timeout.Presenter'
-goog.require 'este.dev.Monitor.create'
 
 ###*
   @param {Object} data JSON from server
 ###
 este.demos.app.simple.start = (data) ->
-
-  if goog.DEBUG
-    este.dev.Monitor.create()
 
   simpleApp = este.app.create 'simple-app',
     forceHash: true

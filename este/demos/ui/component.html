@@ -15,7 +15,6 @@
   <script src='../../../../closure-library/closure/goog/base.js'></script>
   <script src='../../../../../client/deps.js'></script>
   <script>
-    goog.require('este.dev.Monitor.create');
     goog.require('este.ui.Component');
   </script>
 </head>
@@ -83,8 +82,6 @@
   <button id="exitDocument">exitDocument</button>
   <button id="dispose">dispose</button>
   <script>
-    este.dev.Monitor.create();
-
     var CustomComponent = function() {};
     goog.inherits(CustomComponent, este.ui.Component);
 

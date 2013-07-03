@@ -137,7 +137,7 @@ class este.History extends este.Base
     else
       # workaround: hidden input created in history via doc.write does not work
       input = goog.dom.createDom 'input', style: 'display: none'
-      `input = /** @type {HTMLInputElement} */ (input)`
+      input = (`/** @type {HTMLInputElement} */`) input
       document.body.appendChild input
       @history = new goog.History false, undefined, input
 

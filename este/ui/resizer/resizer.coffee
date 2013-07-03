@@ -145,7 +145,7 @@ class este.ui.Resizer extends este.ui.Component
     @protected
   ###
   onDragStart: (e) ->
-    `var el = /** @type {Element} */ (e.element)`
+    el = (`/** @type {Element} */`) e.element
     @activeElementSize = goog.style.getContentBoxSize el
     @dragging = true
 

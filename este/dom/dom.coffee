@@ -35,7 +35,7 @@ goog.scope ->
       return false if part.id &&
         node.id != part.id
       for className in part.classes
-        `node = /** @type {Element} */ (node)`
+        node = (`/** @type {Element} */`) node
         return false if !goog.dom.classlist.contains node, className
     true
 
@@ -97,7 +97,7 @@ goog.scope ->
     node = e.target
     while node && node.nodeType == 1
       for className, callback of object
-        `node = /** @type {Element} */ (node)`
+        node = (`/** @type {Element} */`) node
         if goog.dom.classlist.contains node, className
           callback node
           return true
@@ -112,7 +112,7 @@ goog.scope ->
     @return {Object}
   ###
   _.serializeForm = (form) ->
-    `form = /** @type {HTMLFormElement} */ (form)`
+    form = (`/** @type {HTMLFormElement} */`) form
     object = goog.dom.forms.getFormDataMap(form).toObject()
     este.object.normalizeOneItemArrayValues object
 
@@ -127,7 +127,7 @@ goog.scope ->
     @return {?string}
   ###
   _.getSingleFormValueByName = (form, name) ->
-    `form = /** @type {HTMLFormElement} */ (form)`
+    form = (`/** @type {HTMLFormElement} */`) form
     value = goog.dom.forms.getValueByName form, name
     return value if !goog.isArray value
     return null if value.length == 0
@@ -141,7 +141,7 @@ goog.scope ->
     indexes = []
     parent = null
     loop
-      `parent = /** @type {Element} */ (element.parentNode)`
+      parent = (`/** @type {Element} */`) element.parentNode
       break if !parent || parent.nodeType != 1
       index = goog.array.indexOf parent.childNodes, element
       indexes.push index

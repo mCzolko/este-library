@@ -24,7 +24,6 @@ class este.storage.Rest extends este.storage.Base
     super namespace, version
     @namespace = namespace.replace ':version', @version
     @queryParams = queryParams ? null
-    `this.xhrOptions = /** @type {goog.labs.net.xhr.Options} */ (this.xhrOptions)`
 
   ###*
     @type {Object}

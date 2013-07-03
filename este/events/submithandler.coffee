@@ -69,12 +69,12 @@ class este.events.SubmitHandler extends este.Base
     @protected
   ###
   handleEvent: (e) ->
+    target = (`/** @type {Element} */`) e.target
     if e.type == 'focusin'
-      form = goog.dom.getAncestorByTagNameAndClass e.target, 'form'
+      form = goog.dom.getAncestorByTagNameAndClass target, 'form'
       @on form, 'submit', @ if form
       return
     e.preventDefault()
-    `var target = /** @type {Element} */ (e.target)`
     json = este.dom.serializeForm target
     submitEvent = new este.events.SubmitEvent json, @activeElement, e
     @dispatchEvent submitEvent

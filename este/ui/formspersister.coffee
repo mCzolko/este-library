@@ -61,8 +61,7 @@ class este.ui.FormsPersister extends este.ui.Component
     path = @getElementDomPath()
     data = @storage.get path.join()
     return if !data
-    `data = /** @type {Object} */ (data)`
-    @retrieve data
+    @retrieve (`/** @type {Object} */`) data
     return
 
   ###*
@@ -120,7 +119,7 @@ class este.ui.FormsPersister extends este.ui.Component
     @protected
   ###
   onFocusin: (e) ->
-    `var target = /** @type {Element} */ (e.target)`
+    target = (`/** @type {Element} */`) e.target
     return if !(target.tagName in ['INPUT', 'TEXTAREA'])
     @registerInputHander target
 
@@ -139,16 +138,14 @@ class este.ui.FormsPersister extends este.ui.Component
     @protected
   ###
   onFieldInput: (e) ->
-    `var target = /** @type {Element} */ (e.target)`
-    @storeField target
+    @storeField (`/** @type {Element} */`) e.target
 
   ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
   onChange: (e) ->
-    `var target = /** @type {Element} */ (e.target)`
-    @storeField target
+    @storeField (`/** @type {Element} */`) e.target
 
   ###*
     @param {Element} field

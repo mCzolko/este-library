@@ -37,7 +37,7 @@ class este.mobile.Hover extends este.Base
   ###
   matcher: (node) ->
     return false if !node.tagName
-    `node = /** @type {Element} */(node)`
+    node = (`/** @type {Element} */`) node
     node.tagName == 'A' || goog.dom.classlist.contains node, 'button'
 
   ###*
@@ -94,7 +94,7 @@ class este.mobile.Hover extends este.Base
     @protected
   ###
   addHoverNow: (target) ->
-    `target = /** @type {Element} */(target)`
+    target = (`/** @type {Element} */`) target
     goog.dom.classlist.add target, 'e-mobile-hover'
 
   ###*
@@ -103,7 +103,7 @@ class este.mobile.Hover extends este.Base
   ###
   addHoverScrollAfterWhile: (target) ->
     @hoverScrollTimeout = setTimeout =>
-      `target = /** @type {Element} */(target)`
+      target = (`/** @type {Element} */`) target
       goog.dom.classlist.add target, 'e-mobile-hover-scroll'
     , 250
 
@@ -132,7 +132,7 @@ class este.mobile.Hover extends este.Base
   removeHoverState: (target) ->
     clearTimeout @hoverScrollTimeout
     return if !target
-    `target = /** @type {Element} */(target)`
+    target = (`/** @type {Element} */`) target
     goog.dom.classlist.remove target, 'e-mobile-hover'
     goog.dom.classlist.remove target, 'e-mobile-hover-scroll'
 

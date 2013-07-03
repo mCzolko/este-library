@@ -111,7 +111,7 @@ class este.events.EventHandler extends goog.events.EventHandler
       @listen src, t, opt_fn, opt_capture, opt_handler for t in type
       return @
 
-    `type = /** @type {string} */ (type)`
+    type = (`/** @type {string} */`) type
     handlerClass = EventHandler.getHandlerClass src, type
 
     if handlerClass
@@ -127,7 +127,7 @@ class este.events.EventHandler extends goog.events.EventHandler
       @listen src, t, opt_fn, opt_capture, opt_handler for t in type
       return @
 
-    `type = /** @type {string} */ (type)`
+    type = (`/** @type {string} */`) type
     handlerClass = EventHandler.getHandlerClass src, type
     originalSrc = null
 

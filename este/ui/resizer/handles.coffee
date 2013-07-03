@@ -178,8 +178,8 @@ class este.ui.resizer.Handles extends este.ui.Component
   ###
   onDrag: (e) ->
     mouseCoord = new goog.math.Coordinate e.clientX, e.clientY
-    `var dragMouseStart = /** @type {!goog.math.Coordinate} */ (this.dragMouseStart)`
-    difference = goog.math.Coordinate.difference mouseCoord, dragMouseStart
+    difference = goog.math.Coordinate.difference mouseCoord,
+      (`/** @type {!goog.math.Coordinate} */`) @dragMouseStart
     @dispatchEvent
       element: @getElement()
       vertical: @activeHandle == @vertical

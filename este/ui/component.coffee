@@ -94,7 +94,7 @@ class este.ui.Component extends goog.ui.Component
     parent = goog.dom.getAncestor el, (node) ->
       goog.dom.isElement(node) && node.hasAttribute 'e-model-cid'
     , true
-    `/** @type {Element} */ (parent)`
+    (`/** @type {Element} */`) parent
 
   ###*
     @type {este.events.EventHandler}
@@ -139,19 +139,19 @@ class este.ui.Component extends goog.ui.Component
 
     isKeyEventType = goog.dom.isElement(src) && goog.isNumber type
     if isKeyEventType
-      `var keyCode = /** @type {number} */ (type)`
+      keyCode = (`/** @type {number} */`) type
       fn = Component.wrapListenerForKeyHandlerKeyFilter fn, keyCode, @
       type = 'key'
 
     if useEventDelegation
-      `selector = /** @type {string} */ (selector)`
+      selector = (`/** @type {string} */`) selector
       fn = Component.wrapListenerForEventDelegation fn, selector, type
 
     @componentListenables_ ?= {}
     @componentListenables_[id] = [src, type, fn, capture, handler]
 
-    `type = /** @type {string} */ (type)`
-    `src = /** @type {goog.events.ListenableType} */ (src)`
+    type = (`/** @type {string} */`) type
+    src = (`/** @type {goog.events.ListenableType} */`) src
     @getHandler().listen src, type, fn, capture, handler
     return
 

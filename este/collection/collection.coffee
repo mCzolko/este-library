@@ -144,7 +144,7 @@ class este.Collection extends este.Base
   ###
   at: (index) ->
     model = @array[index]
-    `/** @type {este.Model} */ (model)`
+    (`/** @type {este.Model} */`) model
 
   ###*
     @return {number}
@@ -173,7 +173,7 @@ class este.Collection extends este.Base
   ###
   find: (fn) ->
     model = goog.array.find @array, fn
-    `/** @type {este.Model} */ (model)`
+    (`/** @type {este.Model} */`) model
 
   ###*
     Find item by Id.

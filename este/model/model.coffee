@@ -269,8 +269,7 @@ class este.Model extends este.Base
   ###
   validate: ->
     keys = (key for key, value of @schema when value?['validators'])
-    values = @get keys
-    `values = /** @type {Object} */ (values)`
+    values = (`/** @type {Object} */`) @get keys
     allErrors = @getErrors(values) || []
     for key, value of @attributes
       continue if !value || !goog.isFunction value.validate

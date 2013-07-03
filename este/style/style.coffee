@@ -18,7 +18,7 @@ goog.scope ->
     @return {string}
   ###
   _.getComputedStyle = (element, stylePropertyName) ->
-    `element = /** @type {Element} */ (element)`
+    element = (`/** @type {Element} */`) element
     if goog.userAgent.IE
       goog.style.getCascadedStyle element, stylePropertyName
     else

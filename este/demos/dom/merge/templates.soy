@@ -1,0 +1,21 @@
+{namespace este.demos.dom.merge.templates autoescape="contextual"}
+
+/**
+ * @param name
+ * @param description
+ */
+{template .form}
+  <form id='form'>
+    <label>
+      name<br>
+      <input name='name' placeholder="Joe" value='{$name}'>
+      {if not $name}
+        <span>*</span>
+      {/if}
+    </label>
+    <label>
+      description<br>
+      <textarea style='font-size: {$description.length}px' name='description'>{$description}</textarea>
+    </label>
+  </form>
+{/template}

@@ -20,13 +20,13 @@ este.demos.react.todoApp = este.react.create (`/** @lends {React.ReactComponent.
         @input
           'onKeyUp': @onKeyUp
           'value': @state['text']
-        @button "Add #{@state['items'].length + 1}"
+        @button "Add ##{@state['items'].length + 1}"
       ]
       if @state['items'].length
         @p @i "#{@state['items'].length} items."
       @p "
-        Try to click on any list item, change its content, then add next item.
-        You can see how content is preserved during DOM update."
+        Based on Facebook React library. Try and see how DOM state
+        is preserved during change."
     ]
 
   onFormSubmit: (e) ->

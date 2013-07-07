@@ -7,10 +7,13 @@ goog.provide 'este.demos.react.start'
 goog.require 'este.demos.react.todoApp'
 goog.require 'este.react'
 
-este.demos.react.start = ->
+###*
+  @param {string} selector
+###
+este.demos.react.start = (selector) ->
 
   todoApp = este.demos.react.todoApp()
-  parentElement = document.querySelector '#component'
+  parentElement = document.querySelector selector
   este.react.render todoApp, parentElement
 
 # ensures the symbol will be visible after compiler renaming

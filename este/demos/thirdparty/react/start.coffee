@@ -31,7 +31,7 @@ este.demos.thirdparty.react.start = ->
             'onKeyUp': @onKeyUp.bind @
             'value': @state['text']
             'autoFocus': true
-          React.DOM.button null, "Add #{@state['items'].length + 1}"
+          React.DOM.button null, "Add ##{@state['items'].length + 1}"
         ]
       ]
 

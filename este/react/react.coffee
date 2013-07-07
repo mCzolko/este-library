@@ -27,10 +27,11 @@ goog.scope ->
   ###*
     Render React component.
     @param {React.ReactComponent} component
-    @param {Element} parentElement
+    @param {Element} container
+    @return {React.ReactComponent} Component instance rendered in container.
   ###
-  _.render = (component, parentElement) ->
-    React.renderComponent component, parentElement
+  _.render = (component, container) ->
+    React.renderComponent component, container
 
   ###*
     Copy React.DOM methods into React component prototype.

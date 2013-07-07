@@ -62,15 +62,32 @@ React.ReactComponent.prototype.state;
 React.ReactComponent.prototype.refs;
 
 /**
- * @param {Object} nextState
+ * @param {Object} nextProps
  */
-React.ReactComponent.prototype.setState = function(nextState) {};
+React.ReactComponent.prototype.setProps = function(nextProps) {};
 
 /**
- * @param {Object} nextState
+ * @return {Element}
+ * @protected
  */
-React.ReactComponent.prototype.replaceState = function(nextState) {};
+React.ReactComponent.prototype.getDOMNode = function() {};
 
+/**
+ * @param {Object} nextProps
+ * @protected
+ */
+React.ReactComponent.prototype.replaceProps = function(nextProps) {};
+
+/**
+ * @param {React.ReactComponent} targetComponent
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.ReactComponent.prototype.transferPropsTo = function(targetComponent) {};
+
+/**
+ * @protected
+ */
 React.ReactComponent.prototype.forceUpdate = function() {};
 
 /**
@@ -78,6 +95,18 @@ React.ReactComponent.prototype.forceUpdate = function() {};
  * @protected
  */
 React.ReactComponent.prototype.getInitialState = function() {};
+
+/**
+ * @param {Object} nextState
+ * @protected
+ */
+React.ReactComponent.prototype.setState = function(nextState) {};
+
+/**
+ * @param {Object} nextState
+ * @protected
+ */
+React.ReactComponent.prototype.replaceState = function(nextState) {};
 
 /**
  * @param {Element} element
@@ -128,31 +157,6 @@ React.ReactComponent.prototype.componentDidUpdate = function(
  * @protected
  */
 React.ReactComponent.prototype.componentWillUnmount = function() {};
-
-/**
- * @return {Element}
- * @protected
- */
-React.ReactComponent.prototype.getDOMNode = function() {};
-
-/**
- * @param {Object} nextProps
- * @protected
- */
-React.ReactComponent.prototype.setProps = function(nextProps) {};
-
-/**
- * @param {Object} nextProps
- * @protected
- */
-React.ReactComponent.prototype.replaceProps = function(nextProps) {};
-
-/**
- * @param {React.ReactComponent} targetComponent
- * @return {React.ReactComponent}
- * @protected
- */
-React.ReactComponent.prototype.transferPropsTo = function(targetComponent) {};
 
 /**
  * @type {Object}

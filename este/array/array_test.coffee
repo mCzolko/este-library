@@ -14,3 +14,13 @@ suite 'este.array', ->
         item == 2
       assert.isFalse removed
       assert.lengthOf array, 1
+
+  suite 'removeUndefined', ->
+    test 'should remove undefined values from array', ->
+      array = [0, 1]
+      este.array.removeUndefined array
+      assert.deepEqual array, [0, 1]
+
+      array = [0, undefined]
+      este.array.removeUndefined array
+      assert.deepEqual array, [0]

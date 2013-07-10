@@ -60,6 +60,16 @@ suite 'este.react.create', ->
         improvedFactory = improve factory
         improvedFactory.call context, 'Text'
 
+      test 'for zero', (done) ->
+        factory = (p_props, p_children) ->
+          assert.lengthOf arguments, 2
+          assert.isNull p_props
+          assert.equal p_children, 0
+          assert.equal @, context
+          done()
+        improvedFactory = improve factory
+        improvedFactory.call context, 0
+
       test 'for instance', (done) ->
         instance = new Function
         factory = (p_props, p_children) ->
@@ -115,17 +125,3 @@ suite 'este.react.create', ->
           done()
         improvedFactory = improve factory
         improvedFactory.call context, ['1', ['2', '3'], [['4', undefined]]]
-
-    test 'should stringify numbers and booleans for children array', (done) ->
-      factory = (p_props, p_children) ->
-        assert.deepEqual p_children, ['1', 'true']
-        done()
-      improvedFactory = improve factory
-      improvedFactory.call context, [1, true]
-
-    test 'should stringify numbers and booleans for children item', (done) ->
-      factory = (p_props, p_children) ->
-        assert.equal p_children, '1'
-        done()
-      improvedFactory = improve factory
-      improvedFactory.call context, [1]

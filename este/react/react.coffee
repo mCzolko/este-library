@@ -74,14 +74,8 @@ goog.scope ->
         goog.asserts.assertArray children
         children = goog.array.flatten children
         este.array.removeUndefined children
-        children = goog.array.map children, (item) ->
-          return item.toString() if typeof item in ['number', 'boolean']
-          item
-      else if typeof children in ['number', 'boolean']
-        children = children.toString()
-      # TODO: Remove number/boolean toString once React support it.
 
-      if children
+      if children?
         factory.call @, props, children
       else
         factory.call @, props

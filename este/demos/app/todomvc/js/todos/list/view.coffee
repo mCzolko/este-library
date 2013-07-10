@@ -4,7 +4,7 @@
 goog.provide 'este.demos.app.todomvc.todos.list.View'
 
 goog.require 'este.app.View'
-goog.require 'este.demos.app.todomvc.todos.list.templates'
+goog.require 'este.demos.app.todomvc.todos.list.react'
 goog.require 'goog.i18n.pluralRules'
 
 class este.demos.app.todomvc.todos.list.View extends este.app.View
@@ -16,44 +16,10 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   constructor: ->
     super()
 
-  # Localization messages for goog.i18n.pluralRules.
-  # estejs.tumblr.com/post/35639619128/este-js-localization-cheat-sheet
-
   ###*
-    @desc Zero items left.
-    @protected
+    @type {string}
   ###
-  @MSG_ZERO_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc One item left.
-    @protected
-  ###
-  @MSG_ONE_ITEMLEFT: goog.getMsg 'item left'
-
-  ###*
-    @desc Two items left.
-    @protected
-  ###
-  @MSG_TWO_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Few items left.
-    @protected
-  ###
-  @MSG_FEW_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Many items left.
-    @protected
-  ###
-  @MSG_MANY_ITEMLEFT: goog.getMsg 'items left'
-
-  ###*
-    @desc Other items left.
-    @protected
-  ###
-  @MSG_OTHER_ITEMLEFT: goog.getMsg 'items left'
+  filter: ''
 
   ###*
     @type {este.demos.app.todomvc.todos.Collection}
@@ -61,22 +27,22 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   todos: null
 
   ###*
-    @type {string}
+    @type {React.ReactComponent}
     @protected
   ###
-  filter: ''
+  react: null
 
   ###*
     @override
   ###
   registerEvents: ->
-    @on '#new-todo-form', 'submit', @onNewTodoSubmit
-    @on '#toggle-all', 'click', @onToggleAllClick
-    @on '#clear-completed', 'click', @onClearCompletedClick
+    @on '.new-todo-form', 'submit', @onNewTodoSubmit
+    @on '.toggle-all', 'click', @onToggleAllClick
+    @on '.clear-completed', 'click', @onClearCompletedClick
     @on '.toggle', 'click', @bindModel @onToggleClick
     @on '.destroy', 'click', @bindModel @onDestroyClick
     @on 'label', 'dblclick', @bindModel @onLabelDblclick
-    @on '.edit', ['focusout', goog.events.KeyCodes.ENTER ], @bindModel @onEditEnd
+    @on '.edit', ['focusout', goog.events.KeyCodes.ENTER], @bindModel @onEditEnd
 
   ###*
     @param {este.events.SubmitEvent} e
@@ -142,52 +108,75 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
       'editing': false
 
   ###*
+    This method is called when view is shown and when todos collection is
+    changed.
     @override
   ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
   update: ->
-    json = @getJsonForTemplate()
-    html = este.demos.app.todomvc.todos.list.templates.element json
-    este.dom.merge @getElement(), html
-
-  ###*
-    @return {Object}
-    @protected
-  ###
-  getJsonForTemplate: ->
     length = @todos.getLength()
     remainingCount = @todos.getRemainingCount()
 
-    doneCount: length - remainingCount
-    filter: @filter
-    itemsLocalized: @getLocalizedItems remainingCount
-    remainingCount: remainingCount
-    todos: @todos.filterByState @filter
-    showMainAndFooter: !!length
+    props =
+      'doneCount': length - remainingCount
+      'filter': @filter
+      'itemsLeftLocalized': @getItemsLeftLocalized remainingCount
+      'showBodyAndFooter': length > 0
+      'remainingCount': remainingCount
+      'todos': @todos.filterByState @filter
+
+    if !@react
+      @react = este.demos.app.todomvc.todos.list.react props
+      este.react.render @react, @getElement()
+      return
+    @react.setProps props
 
   ###*
+    This method allows us to define plural translations for every language.
     @param {number} remainingCount
-    @return {string}
+    @return {string} Localized string.
     @protected
+    @see estejs.tumblr.com/post/35639619128/este-js-localization-cheat-sheet
   ###
-  getLocalizedItems: (remainingCount) ->
+  getItemsLeftLocalized: (remainingCount) ->
     switch goog.i18n.pluralRules.select remainingCount
-      when goog.i18n.pluralRules.Keyword.ONE
-        View.MSG_ONE_ITEMLEFT
       when goog.i18n.pluralRules.Keyword.ZERO
-        View.MSG_ZERO_ITEMLEFT
+        ###*
+          @desc Zero items left.
+          @protected
+        ###
+        View.MSG_ZERO_ITEMLEFT = goog.getMsg 'items left'
+
+      when goog.i18n.pluralRules.Keyword.ONE
+        ###*
+          @desc One item left.
+          @protected
+        ###
+        View.MSG_ONE_ITEMLEFT = goog.getMsg 'item left'
+
       when goog.i18n.pluralRules.Keyword.TWO
-        View.MSG_TWO_ITEMLEFT
+        ###*
+          @desc Two items left.
+          @protected
+        ###
+        View.MSG_TWO_ITEMLEFT = goog.getMsg 'items left'
+
       when goog.i18n.pluralRules.Keyword.FEW
-        View.MSG_FEW_ITEMLEFT
+        ###*
+          @desc Few items left.
+          @protected
+        ###
+        View.MSG_FEW_ITEMLEFT = goog.getMsg 'items left'
+
       when goog.i18n.pluralRules.Keyword.MANY
-        View.MSG_MANY_ITEMLEFT
+        ###*
+          @desc Many items left.
+          @protected
+        ###
+        View.MSG_MANY_ITEMLEFT = goog.getMsg 'items left'
+
       else
-        View.MSG_OTHER_ITEMLEFT
+        ###*
+          @desc Other items left.
+          @protected
+        ###
+        View.MSG_OTHER_ITEMLEFT = goog.getMsg 'items left'

@@ -92,7 +92,9 @@ class este.ui.Component extends goog.ui.Component
   ###
   @getParentElementWithClientId: (el) ->
     parent = goog.dom.getAncestor el, (node) ->
-      goog.dom.isElement(node) && node.hasAttribute 'e-model-cid'
+      goog.dom.isElement(node) && (
+        node.hasAttribute('e-model-cid') ||
+        node.hasAttribute('data-e-model-cid'))
     , true
     (`/** @type {Element} */`) parent
 
@@ -239,7 +241,7 @@ class este.ui.Component extends goog.ui.Component
     (e) ->
       el = Component.getParentElementWithClientId e.target
       if el
-        cid = el.getAttribute 'e-model-cid'
+        cid = el.getAttribute('e-model-cid') || el.getAttribute 'data-e-model-cid'
         model = @findModelOnInstanceByClientId cid
       fn.call @, model, el, e
 

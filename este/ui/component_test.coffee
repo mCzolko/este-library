@@ -31,7 +31,7 @@ suite 'este.ui.Component', ->
 
   suite 'bindModel', ->
     suite 'on component with collection', ->
-      test 'should work', (done) ->
+      test 'should work for e-model-cid', (done) ->
         component.collection = new este.Collection
         component.collection.findByClientId = -> 'foo'
         original = (model, el, e) ->
@@ -48,8 +48,25 @@ suite 'este.ui.Component', ->
         event = target: target
         wrapped.call component, event
 
+      test 'should work for data-e-model-cid', (done) ->
+        component.collection = new este.Collection
+        component.collection.findByClientId = -> 'foo'
+        original = (model, el, e) ->
+          assert.equal model, 'foo'
+          assert.equal el, target
+          assert.equal e, event
+          done()
+        wrapped = component.bindModel original
+        target =
+          nodeType: 1
+          attributes: 'data-e-model-cid': '123'
+          hasAttribute: (name) -> name of @attributes
+          getAttribute: (name) -> @attributes[name]
+        event = target: target
+        wrapped.call component, event
+
     suite 'on component with model', ->
-      test 'should work', (done) ->
+      test 'should work for e-model-cid', (done) ->
         component.model = new este.Model
         component.model.get = (attr) ->
           return '123' if attr == '_cid'
@@ -62,6 +79,24 @@ suite 'este.ui.Component', ->
         target =
           nodeType: 1
           attributes: 'e-model-cid': '123'
+          hasAttribute: (name) -> name of @attributes
+          getAttribute: (name) -> @attributes[name]
+        event = target: target
+        wrapped.call component, event
+
+      test 'should work for data-e-model-cid', (done) ->
+        component.model = new este.Model
+        component.model.get = (attr) ->
+          return '123' if attr == '_cid'
+        original = (model, el, e) ->
+          assert.equal model, component.model
+          assert.equal el, target
+          assert.equal e, event
+          done()
+        wrapped = component.bindModel original
+        target =
+          nodeType: 1
+          attributes: 'data-e-model-cid': '123'
           hasAttribute: (name) -> name of @attributes
           getAttribute: (name) -> @attributes[name]
         event = target: target

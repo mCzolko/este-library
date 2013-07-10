@@ -9,21 +9,17 @@ goog.require 'este.router.create'
 
 ###*
   @param {string|Element} element
-  @param {boolean|{
+  @param {{
     forceHash: (boolean|undefined),
     scrollingOnHistory: (boolean|undefined)
-  }=} arg
+  }=} opt_options
   @return {este.App}
 ###
-este.app.create = (element, arg = false) ->
+este.app.create = (element, opt_options) ->
   options =
     forceHash: true
     scrollingOnHistory: true
-
-  if typeof arg == 'object'
-    goog.mixin options, arg
-  else
-    options.forceHash = arg
+  goog.mixin options, opt_options if opt_options
 
   element = goog.dom.getElement element
   router = este.router.create element, options.forceHash

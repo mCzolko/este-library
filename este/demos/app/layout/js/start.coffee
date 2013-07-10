@@ -16,16 +16,14 @@ goog.require 'este.demos.app.layout.home.Presenter'
 ###
 este.demos.app.layout.start = (data) ->
 
-  layoutApp = este.app.create 'layout-app', true
-
-  layoutApp.addRoutes
+  app = este.app.create 'layout-app', forceHash: true
+  app.addRoutes
     '/': new este.demos.app.layout.home.Presenter
     '/about': new este.demos.app.layout.about.Presenter
     '/contacts': new este.demos.app.layout.contacts.Presenter
     '/home/bla': new este.demos.app.layout.bla.Presenter
     '/home/foo': new este.demos.app.layout.foo.Presenter
-
-  layoutApp.start()
+  app.run()
 
 # ensures the symbol will be visible after compiler renaming
 goog.exportSymbol 'este.demos.app.layout.start', este.demos.app.layout.start

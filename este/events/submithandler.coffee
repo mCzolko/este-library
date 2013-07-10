@@ -32,7 +32,7 @@ class este.events.SubmitHandler extends este.Base
     @on @actionHandler, 'action', @onActionHandlerAction
     # IE doesn't bubble submit event, but focusin with lazy submit registration
     # workarounds it well.
-    eventType = if goog.userAgent.IE && !goog.userAgent.isDocumentMode 9
+    eventType = if goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher 9
       'focusin'
     else
       'submit'

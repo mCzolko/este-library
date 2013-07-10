@@ -1,24 +1,12 @@
 ###*
-  @fileoverview este.app.Presenter orchestrates model/collection, view,
-  and storage. Presenter has load method, which is used for model/collection
-  loading. You can use este.storage.Local, este.storage.Rest, or implement your
-  own storage. Load method has to return goog.result.Result object. este.App
-  calls presenter's show method, when presenter is loaded and if loading was
-  not canceled. Show method will render este.app.View, and if view is yet
-  rendered, then call just enterDocument method. If presenter is going to be
-  hide, then este.App will call presenter's hide method. Hide method calls
-  este.app.View's exitDocument method. Show method also call screen's show
-  method, which is used for orchestrating DOM elements. Presenter's constructor
-  should instance model/collection and view.
+  @fileoverview Presenter orchestrates model/collection loading and view
+  showing. Every presenter is associated with some url. When url is matched,
+  este.App will call presenter's load method and pass parsed url parameters.
+  Load method has to return goog.result.Result to signalize that data are
+  loaded. When data are loaded and user did't try to load another presenter
+  during loading, show method is called.
 
-  Example
-    Take a look at este.demos.app.todomvc.todos.list.Presenter demo.
-
-  Steps for creating your own presenter
-    - create model/collection
-    - create view
-    - instantiate them in constructor
-    - override load method
+  @see este.demos.app.todomvc.todos.list.Presenter
 ###
 goog.provide 'este.app.Presenter'
 
@@ -36,27 +24,37 @@ class este.app.Presenter extends este.Base
     super()
 
   ###*
+    Presenter's view. Should be created in constructor.
     @type {este.app.View}
-    @protected
   ###
   view: null
 
   ###*
+    Storage used for model persistence. By default defined on este.App, but we
+    can override it for concrete presenter.
     @type {este.storage.Base}
   ###
   storage: null
 
   ###*
+    Screen is used for view showing/hidding. By default defined on este.App,
+    but we can override it for concrete presenter.
     @type {este.app.screen.Base}
   ###
   screen: null
 
   ###*
+    This helper method allows us to generate URL for concrete presenter, so we
+    don't have to hardcode URLs in code. All URLs should be defined only at one
+    place. In app.start method.
+    Example: this.createUrl app.products.list.Presenter, 'id': 123
     @type {Function}
   ###
   createUrl: null
 
   ###*
+    Redirect to another presenter from code.
+    Example: this.redirect app.products.list.Presenter, 'id': 123
     @type {Function}
   ###
   redirect: null

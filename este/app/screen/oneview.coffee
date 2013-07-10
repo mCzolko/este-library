@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Simple view manager. It just switch view's elements without
+  @fileoverview Simple view manager. It switchs view's elements without any
   fancy animation. Use it for desktop, or old mobile devices, where fx is slow,
   and overflowed elements needs JS touch workaround because
   -webkit-overflow-scrolling: touch css does not work. Therefore, use simple

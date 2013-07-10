@@ -1,5 +1,10 @@
 ###*
-  @fileoverview este.App sets createUrl and redirect methods automatically.
+  @fileoverview View for este.App. It should watches user actions and delegate
+  them on view model. este.app.Presenter should watch model changes, persist
+  them, then rerender view. For view rendering, we can use Closure Template or
+  Facebook react.
+
+  @see este.demos.app.todomvc.todos.list.View
 ###
 goog.provide 'este.app.View'
 
@@ -16,22 +21,29 @@ class este.app.View extends este.ui.Component
     super()
 
   ###*
+    Optional view element className.
     @type {string}
   ###
   className: ''
 
   ###*
+    This helper method allows us to generate URL for concrete presenter, so we
+    don't have to hardcode URLs in code. All URLs should be defined only at one
+    place. In app.start method.
+    Example: this.createUrl app.products.list.Presenter, 'id': 123
     @type {Function}
   ###
   createUrl: null
 
   ###*
+    Redirect to another presenter from code.
+    Example: this.redirect app.products.list.Presenter, 'id': 123
     @type {Function}
   ###
   redirect: null
 
   ###*
-    View has to remember its scroll position.
+    Scroll position for Este app screen.
     @type {goog.math.Coordinate}
   ###
   scroll: null
@@ -44,3 +56,17 @@ class este.app.View extends este.ui.Component
     goog.dom.classlist.add @getElement(), 'e-app-view'
     goog.dom.classlist.add @getElement(), @className if @className
     return
+
+  ###*
+    @override
+  ###
+  enterDocument: ->
+    super()
+    @update()
+    return
+
+  ###*
+    Use this method for element DOM update. We can use Closure Templates or
+    Facebook React. This method should be overridden.
+  ###
+  update: ->

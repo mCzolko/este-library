@@ -1,17 +1,30 @@
 ###*
-  @fileoverview Este MVC applications.
-  - routing with views
-  - sitemap defined in one place, URL's are not hardcored in source code
-  - scrolling on history, same behaviour as native browser has
-  - awesome pending navigation with UI blocking rendering until data is loaded
-  - forget about low-level XHR, use este.storage.Local|Rest storages instead
-  - mobile and desktop ready, write one app for all devices
-    - este.events.TapHandler facade for touch and mouse based devices
-    - este.app.screen.* with graceful degradation for old iPhones and Androids
-  - the fastest template rendering via Closure Templates
-  - unique mergeHtml which does partial innerHTML update out of the box
+  @fileoverview Este MVC application.
+
+  Features:
+  - routes with hashchange or pushState url projection
+  - support for mobile, desktop, tablet
   - powerfull events delegation
-  - and much more :)
+  - designed with medium.com/joys-of-javascript/4353246f4480 in mind
+
+  Building pieces:
+  - este.App
+  - este.app.Presenter
+  - este.app.View
+  - este.app.Screen
+  - Closure Templates or Facebook React
+
+  Example:
+  <pre>
+
+  # create todoApp on element with id 'todo-app'
+  todoApp = este.app.create 'todo-app'
+  todoApp.storage = new este.storage.Local 'todos-este'
+  todoApp.addRoutes
+    '/:filter?': new app.todos.list.Presenter
+  todoApp.start()
+
+  </pre>
 
   @see ../demos/app/layout/index.html
   @see ../demos/app/simple/index.html
@@ -154,15 +167,22 @@ class este.App extends este.Base
     return
 
   ###*
-    Starts app.
+    Run application.
   ###
-  start: ->
+  run: ->
     goog.asserts.assert @routes && @routes.length,
       'At least one route has to be defined.'
     if !@urlProjectionEnabled
       @load @routes[0].presenter
       return
     @startRouter()
+
+  ###*
+    Start is deprecated because it clashed with app.start namespace.
+    @deprecated Use run method instead.
+  ###
+  start: ->
+    @run()
 
   ###*
     @param {function(new:este.app.Presenter)} presenterClass

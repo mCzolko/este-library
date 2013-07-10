@@ -1,5 +1,5 @@
 ###*
-  @fileoverview Factory to create right este app screen for concrete device.
+  @fileoverview Factory to create screen for concrete device.
 ###
 goog.provide 'este.app.screen.create'
 

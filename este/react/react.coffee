@@ -5,8 +5,8 @@ goog.provide 'este.react'
 goog.provide 'este.react.create'
 goog.provide 'este.react.render'
 
+goog.require 'este.array'
 goog.require 'este.thirdParty.react'
-goog.require 'goog.array'
 goog.require 'goog.asserts'
 goog.require 'goog.object'
 
@@ -72,7 +72,14 @@ goog.scope ->
 
       if goog.isArray children
         goog.asserts.assertArray children
-        children = _.filterNotExisting children
+        children = goog.array.flatten children
+        este.array.removeUndefined children
+        children = goog.array.map children, (item) ->
+          return item.toString() if typeof item in ['number', 'boolean']
+          item
+      else if typeof children in ['number', 'boolean']
+        children = children.toString()
+      # TODO: Remove number/boolean toString once React support it.
 
       if children
         factory.call @, props, children
@@ -89,13 +96,5 @@ goog.scope ->
       if goog.isFunction value
         value = goog.bind value, context
       value
-
-  ###*
-    @param {Array} children
-    @return {Array}
-    @private
-  ###
-  _.filterNotExisting = (children) ->
-    goog.array.filter children, (item) -> item?
 
   return

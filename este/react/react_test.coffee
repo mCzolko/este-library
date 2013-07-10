@@ -93,17 +93,39 @@ suite 'este.react.create', ->
           onClick: handler
         , children
 
-    suite 'should filter children non existent items', ->
+    suite 'should remove undefined values from children', ->
       test 'for children', (done) ->
         factory = (p_props, p_children) ->
-          assert.lengthOf p_children, 1
+          assert.lengthOf p_children, 2
           done()
         improvedFactory = improve factory
-        improvedFactory.call context, [null, undefined, '']
+        improvedFactory.call context, [0, undefined, '']
 
       test 'for props and children', (done) ->
         factory = (p_props, p_children) ->
-          assert.lengthOf p_children, 1
+          assert.lengthOf p_children, 2
           done()
         improvedFactory = improve factory
-        improvedFactory.call context, props, [null, undefined, '']
+        improvedFactory.call context, props, [0, undefined, '']
+
+    suite 'should flatten children', ->
+      test 'for children', (done) ->
+        factory = (p_props, p_children) ->
+          assert.deepEqual p_children, ['1', '2', '3', '4']
+          done()
+        improvedFactory = improve factory
+        improvedFactory.call context, ['1', ['2', '3'], [['4', undefined]]]
+
+    test 'should stringify numbers and booleans for children array', (done) ->
+      factory = (p_props, p_children) ->
+        assert.deepEqual p_children, ['1', 'true']
+        done()
+      improvedFactory = improve factory
+      improvedFactory.call context, [1, true]
+
+    test 'should stringify numbers and booleans for children item', (done) ->
+      factory = (p_props, p_children) ->
+        assert.equal p_children, '1'
+        done()
+      improvedFactory = improve factory
+      improvedFactory.call context, [1]

@@ -17,13 +17,6 @@ class este.demos.app.layout.contacts.View extends este.app.View
   ###*
     @override
   ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
   update: ->
     @getElement().innerHTML = 'Contacts content.'
+    return

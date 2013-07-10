@@ -17,13 +17,6 @@ class este.demos.app.layout.home.View extends este.app.View
   ###*
     @override
   ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
   update: ->
     @getElement().innerHTML = 'Home content.'
+    return

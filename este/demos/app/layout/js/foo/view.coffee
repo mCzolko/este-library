@@ -41,10 +41,11 @@ class este.demos.app.layout.foo.View extends este.app.View
     return
 
   ###*
-    @protected
+    @override
   ###
   update: ->
     @getElement().innerHTML = este.demos.app.layout.foo.templates.element()
+    return
 
   ###*
     @protected

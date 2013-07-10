@@ -25,14 +25,6 @@ class este.demos.app.simple.products.list.View extends este.app.View
   ###*
     @override
   ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
   update: ->
     window['console']['log'] "products rendered"
     links = for product in @products.toJson()
@@ -45,3 +37,4 @@ class este.demos.app.simple.products.list.View extends este.app.View
       timeoutHref: @createUrl este.demos.app.simple.timeout.Presenter
       errorHref: @createUrl este.demos.app.simple.error.Presenter
     @getElement().innerHTML = html
+    return

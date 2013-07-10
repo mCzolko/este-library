@@ -22,22 +22,15 @@ class este.demos.app.layout.bla.View extends este.app.View
     @on 'div', 'click', @onDivClick
 
   ###*
-    @override
-  ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
-  update: ->
-    @getElement().innerHTML = este.demos.app.layout.bla.templates.element()
-
-  ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
   onDivClick: (e) ->
     alert '.este-content clicked'
+
+  ###*
+    @override
+  ###
+  update: ->
+    @getElement().innerHTML = este.demos.app.layout.bla.templates.element()
+    return

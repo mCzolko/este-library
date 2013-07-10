@@ -28,26 +28,19 @@ class este.demos.app.simple.products.detail.View extends este.app.View
     @on 'button', 'click', @onButtonClick
 
   ###*
-    @override
-  ###
-  enterDocument: ->
-    super()
-    @update()
-    return
-
-  ###*
-    @protected
-  ###
-  update: ->
-    window['console']['log'] "product with id #{@params['id']} rendered"
-    html = este.demos.app.simple.products.detail.templates.element
-      id: @params['id']
-    @getElement().innerHTML = html
-
-  ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
   onButtonClick: (e) ->
     # explicit redirection example
     @redirect este.demos.app.simple.products.list.Presenter
+
+  ###*
+    @override
+  ###
+  update: ->
+    window['console']['log'] "product with id #{@params['id']} rendered"
+    html = este.demos.app.simple.products.detail.templates.element
+      id: @params['id']
+    @getElement().innerHTML = html
+    return

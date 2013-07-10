@@ -37,6 +37,7 @@
   <script src="../../../../../client/deps.js"></script>
   <script>
     goog.require('este.events.GestureHandler');
+    goog.require('goog.dom');
   </script>
   <script src="http://localhost:35729/livereload.js"></script>
 </head>
@@ -58,8 +59,6 @@
   </div>
   <h3>Try tap, swipeleft, swiperight</h3>
   <div touch-action="pan-y" id="rows" class="disable-select"></div>
-  <p>Dispose all handlers.</p>
-  <button id="dispose">dispose</button>
   <script>
     var rows = document.querySelector('#rows');
     var box = document.querySelector('#box');
@@ -97,13 +96,6 @@
       var id = row.getAttribute('data-rowid');
       console.log(e);
       //alert(e.type + ' on row with id: ' + id);
-    });
-
-    // dispose
-    var disposeBtn = document.getElementById('dispose');
-    goog.events.listenOnce(disposeBtn, 'click', function() {
-      boxGestureHandler.dispose();
-      rowsGestureHandler.dispose();
     });
 
   </script>

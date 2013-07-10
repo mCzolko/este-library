@@ -80,7 +80,6 @@
   <button id="off">off</button>
   <button id="enterDocument">enterDocument</button>
   <button id="exitDocument">exitDocument</button>
-  <button id="dispose">dispose</button>
   <script>
     var CustomComponent = function() {};
     goog.inherits(CustomComponent, este.ui.Component);
@@ -145,10 +144,6 @@
 
     document.querySelector('#exitDocument').onclick = function() {
       component.exitDocument();
-    };
-
-    document.querySelector('#dispose').onclick = function() {
-      component.dispose();
     };
   </script>
 </body>

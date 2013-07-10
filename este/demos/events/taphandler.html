@@ -20,9 +20,9 @@
 </head>
 <body>
   <h1>este.events.TapHandler</h1>
-  <button id='dispose'>dispose</button>
   <p>
-    <b>Update: use este.events.GestureHandler</b>
+    Update: This class is <b>deprecated</b>. Use este.events.GestureHandler
+    instead.
   </p>
   <p>Just list of paragraphs to have scrollable content.</p>
   <p>On desktop, nothing interesting. On mobile, it enables tap event, which is
@@ -52,11 +52,6 @@
       if (e.target.tagName != 'P')
         return;
       alert(e.target.innerHTML);
-    });
-
-    var disposeBtn = document.getElementById('dispose');
-    goog.events.listenOnce(disposeBtn, 'click', function() {
-      handler.dispose();
     });
 
   </script>

@@ -14,8 +14,8 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
     @extends {este.app.Presenter}
   ###
   constructor: ->
-    super()
     @products = new este.demos.app.simple.products.Collection
+    super()
     @view = new este.demos.app.simple.products.list.View @products
 
   ###*

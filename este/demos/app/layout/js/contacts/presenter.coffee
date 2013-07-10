@@ -14,6 +14,6 @@ class este.demos.app.layout.contacts.Presenter extends este.app.Presenter
     @extends {este.app.Presenter}
   ###
   constructor: ->
+    super()
     @view = new este.demos.app.layout.layouts.master.View
       content: new este.demos.app.layout.contacts.View
-    super()

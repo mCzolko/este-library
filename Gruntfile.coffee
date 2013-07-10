@@ -42,18 +42,6 @@ module.exports = (grunt) ->
           ext: '.js'
         ]
 
-    coffeelint:
-      all:
-        options:
-          no_backticks:
-            level: 'ignore'
-          max_line_length:
-            level: 'ignore'
-        files: [
-          expand: true
-          src: 'este/**/*.coffee'
-        ]
-
     esteTemplates:
       all:
         src: 'este/**/*.soy'
@@ -111,7 +99,6 @@ module.exports = (grunt) ->
         commit: true
         commitMessage: 'Update contributors'
 
-  grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-stylus'
@@ -125,7 +112,6 @@ module.exports = (grunt) ->
       'stylus'
       'coffee'
       'coffee2closure'
-      'coffeelint'
       'esteTemplates'
       'esteDeps'
       'esteUnitTests'

@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>este.Router html5</title>
-  <link href="css/default.css" rel="stylesheet">
+  <link href="../css/default.css" rel="stylesheet">
   <style>
     a {
       color: blue;
@@ -18,8 +18,8 @@
       font-weight: bold
     }
   </style>
-  <script src="../../../closure-library/closure/goog/base.js"></script>
-  <script src="../../../../client/deps.js"></script>
+  <script src="../../../../closure-library/closure/goog/base.js"></script>
+  <script src="../../../../../client/deps.js"></script>
   <script>
     goog.require('este.router.create');
     goog.require('goog.Uri');
@@ -28,10 +28,10 @@
 <body>
   <h1>este.Router html5</h1>
   <p id="links">
-    <a href="kittens" title="Kittens">Kittens</a> |
-    <a href="puppies" title="Puppies">Puppies</a> |
-    <a href="pandas" title="Pandas">Pandas</a> |
-    <a href="bucket" title="Bucket">Bucket</a>
+    <a href="/kittens" title="Kittens">Kittens</a> |
+    <a href="/puppies" title="Puppies">Puppies</a> |
+    <a href="/pandas" title="Pandas">Pandas</a> |
+    <a href="/bucket" title="Bucket">Bucket</a>
   </p>
   <p>Router ignores <a href="http://google.com">link</a> with scheme and
     <a e-router-ignore href="/">link</a> with 'e-router-ignore' attribute.</p>
@@ -67,7 +67,7 @@
       var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
         anchors[i].className = '';
-      el = document.querySelector('*[href="' + token + '"]');
+      el = document.querySelector('*[href="/' + token + '"]');
       el.className = 'shown';
     }
 

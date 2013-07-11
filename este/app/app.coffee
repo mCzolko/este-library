@@ -26,6 +26,10 @@
 
   </pre>
 
+  Inspirated from article: Beyond pushState — building single page applications
+  @see https://medium.com/joys-of-javascript/4353246f4480
+
+  App demos:
   @see ../demos/app/layout/index.html
   @see ../demos/app/simple/index.html
   @see ../demos/app/todomvc/index.html
@@ -244,7 +248,7 @@ class este.App extends este.Base
     @protected
   ###
   startRouter: ->
-    @router.silentTapHandler = true
+    @router.navigateImmediately = false
     @router.start()
 
   ###*

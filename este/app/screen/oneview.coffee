@@ -22,10 +22,6 @@ class este.app.screen.OneView extends este.app.screen.Base
   ###
   constructor: (@scrollingOnHistory) ->
     super()
-    # With OneView, only window/body can be scrollable. OneView is intented for
-    # old devices where elements with overflow are unscrollable, and
-    # -webkit-overflow-scrolling: touch does not work
-    este.events.TapHandler.addScrollable document.body
     goog.dom.classlist.add document.documentElement, 'e-app-screen-oneview'
 
   ###*

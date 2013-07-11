@@ -28,6 +28,11 @@
   <a e-router-ignore href='/foo'
   </pre>
 
+  Touch devices support.
+  For touch devices support remember to render links with 'touch-action'
+  attribute. It enables Google Polymer PointerEvents.
+  @see http://www.polymer-project.org/platform/pointer-events.html
+
   @see ../demos/routerhash.html
   @see ../demos/routerhtml5.html
 ###
@@ -44,19 +49,20 @@ class este.Router extends este.Base
 
   ###*
     @param {este.History} history
-    @param {este.events.TapHandler} tapHandler
+    @param {este.events.GestureHandler} gestureHandler
     @constructor
     @extends {este.Base}
   ###
-  constructor: (@history, @tapHandler) ->
+  constructor: (@history, @gestureHandler) ->
     super()
     @routes = []
 
   ###*
-    If true, tapHandler will not change url.
+    By default router will change url immediately. With this option we can
+    disable this behaviour. It's useful for async routing in este.App.
     @type {boolean}
   ###
-  silentTapHandler: false
+  navigateImmediately: true
 
   ###*
     @type {este.History}
@@ -65,10 +71,10 @@ class este.Router extends este.Base
   history: null
 
   ###*
-    @type {este.events.TapHandler}
+    @type {este.events.GestureHandler}
     @protected
   ###
-  tapHandler: null
+  gestureHandler: null
 
   ###*
     @type {Array.<este.router.Route>}
@@ -113,8 +119,8 @@ class este.Router extends este.Base
     Start router.
   ###
   start: ->
-    @on @tapHandler.getElement(), 'click', @onTapHandlerElementClick
-    @on @tapHandler, 'tap', @onTapHandlerTap
+    @on @gestureHandler.getElement(), 'click', @onGestureHandlerElementClick
+    @on @gestureHandler, 'tap', @onGestureHandlerTap
     @on @history, 'navigate', @onHistoryNavigate
     @history.setEnabled true
     return
@@ -152,28 +158,42 @@ class este.Router extends este.Base
     @param {goog.events.BrowserEvent} e
     @protected
   ###
-  onTapHandlerElementClick: (e) ->
+  onGestureHandlerElementClick: (e) ->
     return if !este.dom.isRealMouseClick e
     token = @tryGetToken e
     return if !token
     e.preventDefault()
+    # Delegate click to tap handler if target has no touch action attribute.
+    if !@targetHasTouchActionAttribute (`/** @type {Element} */`) e.target
+      @onGestureHandlerTap e, token
+
+  ###*
+    @param {Element} element
+    @return {boolean}
+    @protected
+  ###
+  targetHasTouchActionAttribute: (element) ->
+    !!goog.dom.getAncestor element, (item) ->
+      item.hasAttribute && item.hasAttribute 'touch-action'
+    , true
 
   ###*
     @param {goog.events.BrowserEvent} e
+    @param {string=} token
     @protected
   ###
-  onTapHandlerTap: (e) ->
-    # tap can be click event on desktop
-    return if e.clickEvent && !este.dom.isRealMouseClick e.clickEvent
+  onGestureHandlerTap: (e, token) ->
     if @isBackButton e
       este.mobile.back()
       return
-    token = @tryGetToken e
+
+    token ?= @tryGetToken e
     return if !token
-    if @silentTapHandler
-      @processRoutes token, false
+
+    if @navigateImmediately
+      @navigate token
       return
-    @navigate token
+    @processRoutes token, false
 
   ###*
     @param {goog.history.Event} e
@@ -237,6 +257,6 @@ class este.Router extends este.Base
   ###
   disposeInternal: ->
     @history.dispose()
-    @tapHandler.dispose()
+    @gestureHandler.dispose()
     super()
     return

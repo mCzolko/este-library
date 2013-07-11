@@ -89,9 +89,9 @@ suite 'este.App', ->
         app.start()
 
     suite 'with default urlEnabled', ->
-      test 'should start router in TapHandler silent mode', (done) ->
+      test 'should start router with navigateImmediately disabled', (done) ->
         router.start = ->
-          assert.isTrue router.silentTapHandler
+          assert.isFalse router.navigateImmediately
           done()
         app.start()
 

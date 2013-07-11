@@ -4,7 +4,7 @@
 ###
 goog.provide 'este.router.create'
 
-goog.require 'este.events.TapHandler'
+goog.require 'este.events.GestureHandler'
 goog.require 'este.History'
 goog.require 'este.Router'
 
@@ -16,5 +16,5 @@ goog.require 'este.Router'
 ###
 este.router.create = (element = document.body, forceHash, pathPrefix) ->
   history = new este.History forceHash, pathPrefix
-  tapHandler = new este.events.TapHandler element
-  new este.Router history, tapHandler
+  gestureHandler = new este.events.GestureHandler element
+  new este.Router history, gestureHandler

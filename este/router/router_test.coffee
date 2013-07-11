@@ -2,7 +2,7 @@ suite 'este.Router', ->
 
   Router = este.Router
   history = null
-  tapHandler = null
+  gestureHandler = null
   router = null
 
   setup ->
@@ -12,11 +12,11 @@ suite 'este.Router', ->
       dispose: ->
       setEnabled: ->
       addEventListener: ->
-    tapHandler =
+    gestureHandler =
       dispose: ->
       addEventListener: ->
       getElement: -> document.createElement 'div'
-    router = new Router history, tapHandler
+    router = new Router history, gestureHandler
 
   dispatchHistoryNavigateEvent = (token, isNavigation = true) ->
     goog.events.fireListeners history, 'navigate', false,
@@ -24,8 +24,8 @@ suite 'este.Router', ->
       token: token
       isNavigation: isNavigation
 
-  dispatchTapHandlerTapEvent = (target) ->
-    goog.events.fireListeners tapHandler, 'tap', false,
+  dispatchGestureHandlerTapEvent = (target) ->
+    goog.events.fireListeners gestureHandler, 'tap', false,
       type: 'tap'
       target: target
       preventDefault: ->
@@ -47,8 +47,8 @@ suite 'este.Router', ->
         done()
       router.dispose()
 
-    test 'should call tapHandler.dispose', (done) ->
-      tapHandler.dispose = ->
+    test 'should call gestureHandler.dispose', (done) ->
+      gestureHandler.dispose = ->
         done()
       router.dispose()
 
@@ -103,7 +103,7 @@ suite 'este.Router', ->
         dispatchHistoryNavigateEvent 'foo'
         assert.equal count, 2
 
-  suite 'routing via tapHandler tap event', ->
+  suite 'routing via gestureHandler tap event', ->
     suite 'show should work', ->
       testRoute = (path, token) ->
         test "path: '#{path}', token: '#{token}'", (done) ->
@@ -117,7 +117,7 @@ suite 'este.Router', ->
             assert.isTrue setTokenCalled
             done()
           router.start()
-          dispatchTapHandlerTapEvent
+          dispatchGestureHandlerTapEvent
             nodeType: 1
             hasAttribute: ->
             getAttribute: (name) ->
@@ -130,7 +130,7 @@ suite 'este.Router', ->
     suite 'show should work, but should not call history.setToken', ->
       testRoute = (path, token) ->
         test "path: '#{path}', token: '#{token}'", (done) ->
-          router.silentTapHandler = true
+          router.navigateImmediately = false
 
           setTokenCalled = false
           fn = history.setToken
@@ -142,7 +142,7 @@ suite 'este.Router', ->
             assert.isFalse setTokenCalled
             done()
           router.start()
-          dispatchTapHandlerTapEvent
+          dispatchGestureHandlerTapEvent
             nodeType: 1
             hasAttribute: ->
             getAttribute: (name) ->
@@ -158,7 +158,7 @@ suite 'este.Router', ->
           router.add path, ->
             done()
           router.start()
-          dispatchTapHandlerTapEvent
+          dispatchGestureHandlerTapEvent
             nodeType: 1
             hasAttribute: ->
             getAttribute: ->
@@ -178,7 +178,7 @@ suite 'este.Router', ->
           router.add path, (->), hide: ->
             done()
           router.start()
-          dispatchTapHandlerTapEvent
+          dispatchGestureHandlerTapEvent
             nodeType: 1
             hasAttribute: ->
             getAttribute: (name) ->

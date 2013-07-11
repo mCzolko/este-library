@@ -33,6 +33,7 @@ class este.events.GestureHandler extends este.Base
       @registerPolymerPointerGesturesEvents()
       return
     @on @element, 'click', @onElementClick
+
   ###*
     @enum {string}
   ###
@@ -102,6 +103,12 @@ class este.events.GestureHandler extends este.Base
     @protected
   ###
   trackEndEvent: null
+
+  ###*
+    @return {Element}
+  ###
+  getElement: ->
+    @element
 
   ###*
     @protected

@@ -1,12 +1,5 @@
 ###*
-  @fileoverview Bubbled submit event. You can use activeElement property to
-  distinguish which submit button caused form submit. If form submit is caused
-  by enter key in text input field, then first submit button in document is
-  used. This is default DOM behaviour hard to override without ugly hacks.
-  Ex.
-  # default submit button has to be first in DOM
-  <input type="submit" name="save" value="save song">
-  <input type="submit" name="delete" value="delete song">
+  @fileoverview Wrapper for submit event with fix for IE8.
   @see ../demos/submithandler.html
 ###
 goog.provide 'este.events.SubmitEvent'
@@ -16,7 +9,6 @@ goog.provide 'este.events.SubmitHandler.EventType'
 goog.require 'este.Base'
 goog.require 'este.dom'
 goog.require 'goog.events.BrowserEvent'
-goog.require 'goog.events.ActionHandler'
 goog.require 'goog.userAgent'
 
 class este.events.SubmitHandler extends este.Base
@@ -28,8 +20,6 @@ class este.events.SubmitHandler extends este.Base
   ###
   constructor: (node = document) ->
     super()
-    @actionHandler = new goog.events.ActionHandler node
-    @on @actionHandler, 'action', @onActionHandlerAction
     # IE doesn't bubble submit event, but focusin with lazy submit registration
     # workarounds it well.
     eventType = if goog.userAgent.IE && !goog.userAgent.isDocumentModeOrHigher 9
@@ -45,26 +35,6 @@ class este.events.SubmitHandler extends este.Base
     SUBMIT: 'submit'
 
   ###*
-    @type {Node|Element}
-  ###
-  activeElement: null
-
-  ###*
-    @type {goog.events.ActionHandler}
-    @protected
-  ###
-  actionHandler: null
-
-  ###*
-    Enter on input field will fire click event on first submit button in
-    document. So put
-    @param {goog.events.ActionEvent} e
-    @protected
-  ###
-  onActionHandlerAction: (e) ->
-    @activeElement = e.target
-
-  ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
@@ -76,16 +46,8 @@ class este.events.SubmitHandler extends este.Base
       return
     e.preventDefault()
     json = este.dom.serializeForm target
-    submitEvent = new este.events.SubmitEvent json, @activeElement, e
+    submitEvent = new este.events.SubmitEvent json, e
     @dispatchEvent submitEvent
-
-  ###*
-    @override
-  ###
-  disposeInternal: ->
-    @actionHandler.dispose()
-    super()
-    return
 
 ###*
   @fileoverview este.events.SubmitEvent.
@@ -94,20 +56,14 @@ class este.events.SubmitEvent extends goog.events.BrowserEvent
 
   ###*
     @param {Object} json
-    @param {Node|Element} activeElement
     @param {goog.events.BrowserEvent} browserEvent
     @constructor
     @extends {goog.events.BrowserEvent}
   ###
-  constructor: (@json, @activeElement, browserEvent) ->
+  constructor: (@json, browserEvent) ->
     super browserEvent
 
   ###*
     @type {Object}
   ###
   json: null
-
-  ###*
-    @type {Node|Element}
-  ###
-  activeElement: null

@@ -74,21 +74,10 @@ goog.scope ->
         , 0
       return
 
-  ###*
-    Propagate various useful features for mobile development.
-  ###
-  _.propagateDevices = ->
-    enable = goog.dom.classlist.enable
-    html = document.documentElement
-    enable html, 'e-mobile', goog.userAgent.MOBILE
-    enable html, 'e-mobile-off', !goog.userAgent.MOBILE
-    enable html, 'e-mobile-iphone', goog.labs.userAgent.platform.isIphone()
-
   ###
     Default mobile support behaviour.
   ###
   _.init = ->
-    este.mobile.propagateDevices()
     return if !goog.userAgent.MOBILE
     este.mobile.hideAddressBar()
     este.mobile.hideFixedPositionedOnFocus()

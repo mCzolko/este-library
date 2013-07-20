@@ -16,10 +16,13 @@
     // Is automatically overriden for browsers (IE, Gecko, Win Chrome) with
     // scrollbars with real width.
     right 0
+    // Always overflow scroll for touch devices.
+    overflow scroll
     // Overflow none to have same look before and after scrollbars lazy
     // decoration. It will be changed to scroll after decoration.
-    overflow none
-    // Always prefer native scrollbars on mobile and tabled devices.
+    html.e-ua-device-desktop &
+      overflow none
+    // Always prefer native scrollbars on touch devices.
     overflow-scrolling touch
 
     // Apple Lion+ shows zero width scrollbars over content so hide them.

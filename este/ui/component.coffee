@@ -33,6 +33,7 @@
     this.registerEvents ->
       # note how bindModel is used
       this.on '.box', 'tap', this.bindModel this.onBoxTap
+
   @see ../demos/component.html
   @see ../demos/app/todomvc/js/todos/list/view.coffee
 ###
@@ -44,6 +45,7 @@ goog.require 'este.dom.merge'
 goog.require 'este.events.EventHandler'
 goog.require 'este.Model'
 goog.require 'goog.asserts'
+goog.require 'goog.dom.classlist'
 goog.require 'goog.ui.Component'
 
 class este.ui.Component extends goog.ui.Component

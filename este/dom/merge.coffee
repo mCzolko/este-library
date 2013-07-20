@@ -1,10 +1,9 @@
 ###*
   @fileoverview Non destructive innerHTML update. Preserve form fields states,
   prevents images flickering, changes only changed nodes.
-  EXPERIMENTAL STUFF
-  This is just simple naive workaround. We are waiting for polymer-project.org
-  to be ready for production. We could evolve this approach with
-  goog.string.html.HtmlParser etc., it's good enough right now.
+
+  UPDATE:
+    Facebook React is what este.merge was supposed to be. Use 'este.react'.
 
   How does it work
     element is clonned (without content)

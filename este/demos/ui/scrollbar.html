@@ -40,7 +40,7 @@
   <button onclick="addContent('vertical', true)">add content</button>
   <h2>Horizontal</h2>
   <p>
-    Horizontal scrollbar is always visible. People do not expect horizontally
+    Horizontal scrollbar is <b>always visible</b>. People do not expect horizontally
     content to be scrollable.
   </p>
   <div class="horizontal este-scrollbar">
@@ -51,7 +51,7 @@
   <button onclick="addContent('horizontal', true)">add content</button>
   <h2>Both</h2>
   <p>
-    Pure Mac Mountain Lion style. Scrollbars are shown <b>only on scroll</b>
+    Mac Mountain Lion style. Scrollbars are <b>shown only on scroll</b>
     and do not overlap itself in right bottom corner.
   </p>
   <div class="both">
@@ -99,6 +99,12 @@
         var p = document.createElement('p');
         p.innerHTML = i + 1;
         content.appendChild(p);
+
+        if (selector != 'both') continue;
+        if ((i + 1) % 8 == 0) {
+          var br = document.createElement('br');
+          content.appendChild(br);
+        }
       };
       if (!scrollToEnd) return;
       scrollToEndSmoothly(content);
@@ -137,4 +143,5 @@
     }
 
   </script>
+  <script src="http://localhost:35729/livereload.js"></script>
 </body>

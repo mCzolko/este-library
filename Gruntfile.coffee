@@ -142,6 +142,6 @@ module.exports = (grunt) ->
       goog.globalEval #{JSON.stringify src}
       # Hint for compiler dead code removal. Prevents src duplication.
       # GZip probably can't reduce such a long string.
-      goog.globalEval ''
+      goog.globalEval ';'
     """
-    grunt.file.write 'este/third_party/react.coffee', desc
+    grunt.file.write 'este/thirdparty/react.coffee', desc

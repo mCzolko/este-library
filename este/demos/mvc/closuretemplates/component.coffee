@@ -36,14 +36,9 @@ class este.demos.mvc.closureTemplates.Component extends este.ui.Component
   enterDocument: ->
     super()
     @update()
-    return
-
-  ###*
-    @override
-  ###
-  registerEvents: ->
     @on '.new-todo', 'submit', @onNewTodoSubmit
     @on @todos, 'update', @onTodosUpdate
+    return
 
   ###*
     @param {este.events.SubmitEvent} e

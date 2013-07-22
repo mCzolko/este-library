@@ -33,12 +33,14 @@ class este.app.screen.OneView extends este.app.screen.Base
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     # In ideal world, we would save doc scroll position in show method before
     # showing next view, but Chrome has a nasty bug(feature?) which returns
     # zero scroll on history forward. So prefered not so as elegant approach is
     # to save scroll position immediatelly after scroll.
     @on window, 'scroll', @onWindowScroll if @scrollingOnHistory
+    return
 
   ###*
     @param {goog.events.BrowserEvent} e

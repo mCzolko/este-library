@@ -18,8 +18,10 @@ class este.demos.app.layout.bla.View extends este.app.View
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     @on 'div', 'click', @onDivClick
+    return
 
   ###*
     @param {goog.events.BrowserEvent} e

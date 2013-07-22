@@ -61,7 +61,8 @@ class este.ui.lightbox.View extends este.ui.Component
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     @on '.e-ui-lightbox-close', 'click', @close
     @on '.e-ui-lightbox-previous', 'click', @moveLeft
     @on '.e-ui-lightbox-next', 'click', @moveRight
@@ -82,6 +83,7 @@ class este.ui.lightbox.View extends este.ui.Component
       goog.events.KeyCodes.END
       goog.events.KeyCodes.PAGE_DOWN
     ], @moveEnd
+    return
 
   ###*
     @protected

@@ -20,7 +20,8 @@
     - key or number from goog.events.KeyCodes enumeration
 
   Examples:
-    this.registerEvents ->
+    this.enterDocument ->
+      super()
       this.on this.getElement(), 'click', this.onClick
       this.on '.box', 'tap', this.onBoxTap
       this.on 'input', 'focusin', this.onInputFocus
@@ -29,10 +30,13 @@
       this.on '#new-todo-form', 'submit', this.onNewTodoFormSubmit
       this.on '.toggle', 'dblclick', this.onToggleDblclick
       this.on '.new-post', goog.events.KeyCodes.ENTER, this.onNewCommentKeyEnter
+      return
 
-    this.registerEvents ->
+    this.enterDocument ->
+      super()
       # note how bindModel is used
       this.on '.box', 'tap', this.bindModel this.onBoxTap
+      return
 
   @see ../demos/component.html
   @see ../demos/app/todomvc/js/todos/list/view.coffee
@@ -209,20 +213,6 @@ class este.ui.Component extends goog.ui.Component
       capture
       if handler then goog.getUid(handler) else handler
     ].join()
-
-  ###*
-    @override
-  ###
-  enterDocument: ->
-    super
-    @registerEvents()
-    return
-
-  ###*
-    Should be overridden by subclasses.
-    @protected
-  ###
-  registerEvents: ->
 
   ###*
     @override

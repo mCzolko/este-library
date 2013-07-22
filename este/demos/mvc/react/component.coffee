@@ -55,14 +55,9 @@ class este.demos.mvc.react.Component extends este.ui.Component
   enterDocument: ->
     super()
     @update()
-    return
-
-  ###*
-    @override
-  ###
-  registerEvents: ->
     @on '.new-todo', 'submit', @onNewTodoSubmit
     @on @todos, 'update', @onTodosUpdate
+    return
 
   ###*
     @protected

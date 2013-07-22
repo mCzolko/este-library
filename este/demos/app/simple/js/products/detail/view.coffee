@@ -24,8 +24,10 @@ class este.demos.app.simple.products.detail.View extends este.app.View
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     @on 'button', 'click', @onButtonClick
+    return
 
   ###*
     @param {goog.events.BrowserEvent} e

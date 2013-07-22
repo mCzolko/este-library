@@ -35,7 +35,8 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     @on '.new-todo-form', 'submit', @onNewTodoSubmit
     @on '.toggle-all', 'click', @onToggleAllClick
     @on '.clear-completed', 'click', @onClearCompletedClick
@@ -43,6 +44,7 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
     @on '.destroy', 'click', @bindModel @onDestroyClick
     @on 'label', 'dblclick', @bindModel @onLabelDblclick
     @on '.edit', ['focusout', goog.events.KeyCodes.ENTER], @bindModel @onEditEnd
+    return
 
   ###*
     @param {este.events.SubmitEvent} e

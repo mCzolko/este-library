@@ -23,12 +23,6 @@ suite 'este.ui.Component', ->
       goog.events.fireListeners el, 'click', false, type: 'click'
       assert.equal count, 0
 
-  suite 'registerEvents', ->
-    test 'should be called from enterDocument', (done) ->
-      component.registerEvents = ->
-        done()
-      component.enterDocument()
-
   suite 'bindModel', ->
     suite 'on component with collection', ->
       test 'should work for e-model-cid', (done) ->

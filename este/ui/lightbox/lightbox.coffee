@@ -24,7 +24,8 @@ class este.ui.lightbox.Lightbox extends este.ui.Component
   ###*
     @override
   ###
-  registerEvents: ->
+  enterDocument: ->
+    super()
     @on @, este.ui.lightbox.View.EventType.CLOSE, @onViewClose
     @on 'a', 'click', @onAnchorClick
     return

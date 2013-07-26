@@ -9,7 +9,7 @@ goog.require 'este.react'
 este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
 
   render: ->
-    # Div, because React doesn't support returning array of children yet.
+    # DIV, because React doesn't support returning array of children yet.
     @div [
       @createHeader()
       if @props['showBodyAndFooter'] then [
@@ -35,7 +35,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
   createMain: ->
     @section 'className': 'main', [
       @input
-        'defaultChecked': @props['remainingCount'] == 0
+        'checked': @props['remainingCount'] == 0
         'className': 'toggle-all'
         'type': 'checkbox'
       @label 'htmlFor': 'toggle-all', 'Mark all as complete'
@@ -55,7 +55,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
     @li props, [
       @div 'className': 'view', [
         @input
-          'defaultChecked': todo['completed']
+          'checked': todo['completed']
           'className': 'toggle'
           'type': 'checkbox'
         @label todo['title']

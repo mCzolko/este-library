@@ -70,6 +70,7 @@ class este.demos.mvc.react.Component extends este.ui.Component
       return
     @todos.add todo
     e.target.reset()
+    @react.refs['titleInput'].getDOMNode().focus()
 
   ###*
     @protected

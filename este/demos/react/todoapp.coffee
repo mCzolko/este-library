@@ -8,25 +8,27 @@ goog.require 'este.react'
 
 este.demos.react.todoApp = este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
 
-  getInitialState: ->
+  getDefaultProps: ->
     'items': []
     'text': ''
 
+  getInitialState: ->
+    'items': @props['items']
+    'text': @props['text']
+
   render: ->
     @div [
-      @h3 'TODO'
       este.demos.react.todoList 'items': @state['items']
+      if @state['items'].length
+        @p "#{@state['items'].length} items."
       @form 'onSubmit': @onFormSubmit, [
         @input
-          'onKeyUp': @onKeyUp
+          'onChange': @onChange
           'value': @state['text']
+          'autoFocus': true
+          'ref': 'textInput'
         @button "Add ##{@state['items'].length + 1}"
       ]
-      if @state['items'].length
-        @p @i "#{@state['items'].length} items."
-      @p "
-        Based on Facebook React library. Try and see how DOM state
-        is preserved during change."
     ]
 
   onFormSubmit: (e) ->
@@ -34,6 +36,7 @@ este.demos.react.todoApp = este.react.create (`/** @lends {React.ReactComponent.
     @setState
       'items': @state['items'].concat [@state['text']]
       'text': ''
+    @refs['textInput'].getDOMNode().focus()
 
-  onKeyUp: (e) ->
+  onChange: (e) ->
     @setState 'text': e.target.value

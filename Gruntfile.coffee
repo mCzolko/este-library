@@ -75,7 +75,7 @@ module.exports = (grunt) ->
           '--define=goog.style.GET_BOUNDING_CLIENT_RECT_ALWAYS_EXISTS=true'
           '--define=goog.DEBUG=false'
           # Externs. They allow us to use thirdparty code without [] syntax.
-          '--externs=externs/react/react-3.3.js'
+          '--externs=externs/react.js'
         ]
 
       all:

@@ -25,7 +25,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
       @h1 'todos'
       @form 'className': 'new-todo-form', [
         @input
-          'autofocus': true
+          'autoFocus': true
           'className': 'new-todo'
           'name': 'title'
           'placeholder': 'What needs to be done?'
@@ -35,30 +35,35 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
   createMain: ->
     @section 'className': 'main', [
       @input
-        'checked': @props['remainingCount'] == 0
+        'defaultChecked': @props['remainingCount'] == 0
         'className': 'toggle-all'
         'type': 'checkbox'
       @label 'htmlFor': 'toggle-all', 'Mark all as complete'
-      @ul 'className': 'todo-list', @props['todos'].map @createTodoItem, @
+      @ul 'className': 'todo-list',
+        @props['todos'].map @createTodoItem, @
     ]
 
   createTodoItem: (todo) ->
     props =
-      'className': [
-        if todo['completed'] then 'completed' else ''
-        if todo['editing'] then 'editing' else ''
-      ].join ' '
       'data-e-model-cid': todo['_cid']
+      'className': do ->
+        classNames = []
+        classNames.push 'completed' if todo['completed']
+        classNames.push 'editing' if todo['editing']
+        classNames.join ' '
+
     @li props, [
       @div 'className': 'view', [
         @input
-          'checked': todo['completed']
+          'defaultChecked': todo['completed']
           'className': 'toggle'
           'type': 'checkbox'
         @label todo['title']
         @button 'className': 'destroy'
       ]
-      @input 'className': 'edit', 'value': todo['title']
+      @input
+        'className': 'edit'
+        'defaultValue': todo['title']
     ]
 
   createFooter: ->

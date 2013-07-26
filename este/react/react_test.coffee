@@ -1,4 +1,4 @@
-suite 'este.react.create', ->
+suite 'este.react', ->
 
   improve = este.react.improve
 
@@ -80,28 +80,6 @@ suite 'este.react.create', ->
           done()
         improvedFactory = improve factory
         improvedFactory.call context, instance
-
-    suite 'should autobind handlers', ->
-      test 'for props', (done) ->
-        handler = ->
-          assert.equal @, context
-          done()
-        factory = (p_props, p_children) ->
-          p_props.onClick()
-        improvedFactory = improve factory
-        improvedFactory.call context,
-          onClick: handler
-
-      test 'for props and children', (done) ->
-        handler = ->
-          assert.equal @, context
-          done()
-        factory = (p_props, p_children) ->
-          p_props.onClick()
-        improvedFactory = improve factory
-        improvedFactory.call context,
-          onClick: handler
-        , children
 
     suite 'should remove undefined values from children', ->
       test 'for children', (done) ->

@@ -1,5 +1,7 @@
 ###*
-  @fileoverview Demo for Facebook React in Este.
+  @fileoverview Demo for Facebook React in Este. Note this demo demonstrates
+  plain React usage. React component is created via 'React.createClass' method.
+  For better syntax use 'este.react.create' factory method.
 ###
 
 goog.provide 'este.demos.thirdparty.react.start'
@@ -26,11 +28,12 @@ este.demos.thirdparty.react.start = ->
       React.DOM.div null, [
         React.DOM.h3 null, 'TODO'
         todoList 'items': @state['items']
-        React.DOM.form 'onSubmit': @onFormSubmit.bind(@), [
+        React.DOM.form 'onSubmit': @onFormSubmit, [
           React.DOM.input
-            'onKeyUp': @onKeyUp.bind @
+            'onChange': @onChange
             'value': @state['text']
             'autoFocus': true
+            'ref': 'input'
           React.DOM.button null, "Add ##{@state['items'].length + 1}"
         ]
       ]
@@ -40,8 +43,9 @@ este.demos.thirdparty.react.start = ->
       @setState
         'items': @state['items'].concat [@state['text']]
         'text': ''
+      @refs['input'].getDOMNode().focus()
 
-    onKeyUp: (e) ->
+    onChange: (e) ->
       @setState 'text': e.target.value
 
 

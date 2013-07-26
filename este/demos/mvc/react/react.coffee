@@ -12,8 +12,9 @@ este.demos.mvc.react.react = este.react.create (`/** @lends {React.ReactComponen
       @form 'className': 'new-todo', [
         @input
           'name': 'title'
-          'autofocus': true
+          'autoFocus': true
           'placeholder': @props['placeholder']
+          'ref': 'titleInput'
         @button @props['addButtonLabel']
       ]
       @ul @props['todos'].map (todo) =>

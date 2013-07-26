@@ -66,10 +66,6 @@ goog.scope ->
         children = props
         props = null
 
-      if props
-        goog.asserts.assertObject props
-        props = _.bindHandlers props, @
-
       if goog.isArray children
         goog.asserts.assertArray children
         children = goog.array.flatten children
@@ -79,16 +75,5 @@ goog.scope ->
         factory.call @, props, children
       else
         factory.call @, props
-
-  ###*
-    @param {Object} props
-    @param {*} context
-    @private
-  ###
-  _.bindHandlers = (props, context) ->
-    goog.object.map props, (value, key) ->
-      if goog.isFunction value
-        value = goog.bind value, context
-      value
 
   return

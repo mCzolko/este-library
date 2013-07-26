@@ -1,5 +1,5 @@
 /**
- * @fileoverview Externs for React 3.3
+ * @fileoverview Externs for React 0.4.0
  *
  * @see http://facebook.github.io/react/
  * @see http://facebook.github.io/react/docs/api.html
@@ -39,32 +39,56 @@ React.createClass = function(specification) {};
 React.renderComponent = function(container, mountPoint) {};
 
 /**
+ * @param {Element} container
+ */
+React.unmountAndReleaseReactRootNode = function(container) {};
+
+/**
+ * @param {React.ReactComponent} component
+ * @param {Function} callback
+ */
+React.renderComponentToString = function(component, callback) {};
+
+/**
  * @interface
  */
 React.ReactComponent = function() {};
 
 /**
  * @type {Object}
- * @protected
  */
 React.ReactComponent.prototype.props;
 
 /**
  * @type {Object}
- * @protected
  */
 React.ReactComponent.prototype.state;
 
 /**
  * @type {Object}
- * @protected
  */
 React.ReactComponent.prototype.refs;
+
+/**
+ * @type {Object}
+ * @protected
+ */
+React.ReactComponent.prototype.propTypes;
 
 /**
  * @param {Object} nextProps
  */
 React.ReactComponent.prototype.setProps = function(nextProps) {};
+
+/**
+ * @return {Object}
+ */
+React.ReactComponent.prototype.getInitialState = function() {};
+
+/**
+ * @return {Object}
+ */
+React.ReactComponent.prototype.getDefaultProps = function() {};
 
 /**
  * @return {Element}
@@ -89,12 +113,6 @@ React.ReactComponent.prototype.transferPropsTo = function(targetComponent) {};
  * @protected
  */
 React.ReactComponent.prototype.forceUpdate = function() {};
-
-/**
- * @return {Object}
- * @protected
- */
-React.ReactComponent.prototype.getInitialState = function() {};
 
 /**
  * @param {Object} nextState

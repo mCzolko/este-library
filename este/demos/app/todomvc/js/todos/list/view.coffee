@@ -101,6 +101,7 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
   onEditEnd: (model, el) ->
     edit = el.querySelector '.edit'
     title = goog.string.trim edit.value
+
     if !title
       @todos.remove model
       return

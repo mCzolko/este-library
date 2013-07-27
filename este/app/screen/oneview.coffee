@@ -8,7 +8,6 @@
 goog.provide 'este.app.screen.OneView'
 
 goog.require 'este.app.screen.Base'
-goog.require 'este.events.TapHandler'
 goog.require 'goog.dom'
 goog.require 'goog.dom.classlist'
 goog.require 'goog.userAgent'

@@ -1,0 +1,84 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>este.events.InfiniteScrollHandler</title>
+  <link href="../css/default.css" rel="stylesheet">
+  <style>
+    #container {
+      background: #f7f7f7;
+      width: 300px;
+      height: 150px;
+      border: 2px solid #d2d2d2;
+      margin-bottom: 20px;
+      overflow: auto;
+      padding: 10px 0;
+      transition: border 500ms ease-out;
+    }
+
+    #container.loading {
+      border: 2px solid #777;
+    }
+
+    #container ul {
+      padding: 0;
+      margin: 0;
+    }
+
+    #container li {
+      list-style: none;
+      border-bottom: 1px solid #aaa;
+      padding: 5px;
+      margin-bottom: 3px;
+    }
+
+  </style>
+  <script src="../../../../closure-library/closure/goog/base.js"></script>
+  <script src="../../../../../client/deps.js"></script>
+  <script>
+    goog.require('este.events.InfiniteScrollHandler');
+  </script>
+</head>
+<body>
+  <h1>este.events.InfiniteScrollHandler</h1>
+  <div id="container">
+    <ul></ul>
+  </div>
+  <script>
+
+    var MAX_ITEMS = 130;
+    var container = document.querySelector('#container');
+    var ul = document.querySelector('ul');
+
+    var handler = new este.events.InfiniteScrollHandler(container, load);
+    handler.threshold = 100;
+    handler.setEnabled(true);
+
+    addSomeItems();
+
+    function load(restart) {
+      console.log('load');
+      container.className = 'loading';
+
+      setTimeout(function() {
+        container.className = '';
+        if (ul.childNodes.length >= MAX_ITEMS) {
+          console.log('nothing to load');
+          return;
+        }
+        addSomeItems();
+        restart()
+        console.log('loaded');
+      }, 1300);
+    };
+
+    function addSomeItems() {
+      for (var i = 0; i < 10; i++) {
+        var li = document.createElement('li');
+        li.innerHTML = ul.childNodes.length + 1;
+        ul.appendChild(li);
+      }
+    }
+
+  </script>
+</body>

@@ -16,14 +16,6 @@ module.exports = (grunt) ->
           force: true
         src: 'este/**/*.{js,css}'
 
-    stylus:
-      all:
-        files: [
-          expand: true
-          src: 'este/**/*.styl'
-          ext: '.css'
-        ]
-
     coffee:
       all:
         options:

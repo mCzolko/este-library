@@ -93,7 +93,6 @@ module.exports = (grunt) ->
 
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-contrib-stylus'
   grunt.loadNpmTasks 'grunt-este'
   grunt.loadNpmTasks 'grunt-npm'
   grunt.loadNpmTasks 'grunt-release'
@@ -101,7 +100,6 @@ module.exports = (grunt) ->
   grunt.registerTask 'test', ->
     grunt.task.run [
       'clean'
-      'stylus'
       'coffee'
       'coffee2closure'
       'esteTemplates'

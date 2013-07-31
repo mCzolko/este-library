@@ -1,19 +1,14 @@
 ###*
   @fileoverview Getters for este.Model
+  @namespace este.model.getters
 ###
-
 goog.provide 'este.model.getters'
 
 goog.require 'goog.string'
 
-goog.scope ->
-  `var _ = este.model.getters`
-
-  ###*
-    @param {string} value
-    @return {number}
-  ###
-  _.parseInt = (value) ->
-    parseInt value, 10
-
-  return
+###*
+  @param {string} value
+  @return {number}
+###
+este.model.getters.parseInt = (value) ->
+  parseInt value, 10

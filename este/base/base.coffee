@@ -24,6 +24,7 @@ class este.Base extends goog.events.EventTarget
 
   ###*
     @type {Array.<este.Base>}
+    @private
   ###
   parents_: null
 

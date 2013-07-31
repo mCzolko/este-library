@@ -31,7 +31,8 @@ class este.net.ChunkedJsonp
     new ChunkedJsonp jsonpFactory, goog.string.getRandomString
 
   ###*
-    @type {number} http://support.microsoft.com/kb/208427
+    http://support.microsoft.com/kb/208427
+    @type {number}
   ###
   @MAX_CHUNK_SIZE: 1900
 

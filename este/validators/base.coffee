@@ -1,42 +1,6 @@
 ###*
   @fileoverview Abstract base class for validators.
-
   @see ../demos/validators.html
-
-  Example:
-  <pre>
-
-  class Person extends este.Model
-
-    constructor: (json) ->
-      super json
-
-    (at)getMsg = ->
-      (at)desc ...
-      Person.MSG_PERSON_NAME_REQUIRED = goog.getMsg 'Person name is required.'
-
-    defaults:
-      'name': ''
-      'age': 0
-      'gender': ''
-
-    schema:
-      'name':
-        validators: [
-          este.validators.required Person.getMsg
-          este.validators.range 3, 100
-          este.validators.exclusion ['Admin']
-        ]
-      'age':
-        validators: [
-          este.validators.range 0, 150
-        ]
-      'gender':
-        validators: [
-          este.validators.inclusion ['Male', 'Female']
-        ]
-
-  </pre>
 ###
 goog.provide 'este.validators.Base'
 

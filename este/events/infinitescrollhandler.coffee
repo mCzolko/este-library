@@ -23,7 +23,8 @@ class este.events.InfiniteScrollHandler extends este.Base
     LOAD: 'load'
 
   ###*
-    @type {number} Threshold in px.
+    Threshold in px.
+    @type {number}
   ###
   threshold: 0
 

@@ -32,7 +32,8 @@ class este.net.ChunkedPixelRequest
     new ChunkedPixelRequest uri, goog.string.getRandomString, srcCallback
 
   ###*
-    @type {number} http://support.microsoft.com/kb/208427
+    http://support.microsoft.com/kb/208427
+    @type {number}
   ###
   @MAX_CHUNK_SIZE: 1900
 

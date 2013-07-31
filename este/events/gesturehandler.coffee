@@ -62,27 +62,32 @@ class este.events.GestureHandler extends este.Base
   @CAN_USE_POLYMER: !goog.userAgent.IE || goog.userAgent.isVersionOrHigher 10
 
   ###*
-    @type {number} The number of pixels.
+    In pixels.
+    @type {number}
   ###
   swipeHorizontalThreshold: 75
 
   ###*
-    @type {number} The number of pixels.
+    In pixels.
+    @type {number}
   ###
   swipeVerticalThreshold: 30
 
   ###*
-    @type {number} The number of pixels.
+    In pixels.
+    @type {number}
   ###
   tapHysteresis: 10
 
   ###*
-    @type {number} Miliseconds.
+    In miliseconds.
+    @type {number}
   ###
   tapholdThreshold: 750
 
   ###*
-    @type {number} Miliseconds.
+    In miliseconds.
+    @type {number}
   ###
   doubleTapDurationThreshold: 200
 

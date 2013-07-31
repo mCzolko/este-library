@@ -77,11 +77,10 @@ class este.ui.Component extends goog.ui.Component
   ###*
     @param {Function} fn
     @param {string} selector
-    @param {string|number} type
     @return {Function}
     @protected
   ###
-  @wrapListenerForEventDelegation: (fn, selector, type) ->
+  @wrapListenerForEventDelegation: (fn, selector) ->
     matcher = (node) ->
       goog.dom.isElement(node) && este.dom.match node, selector
     (e) ->
@@ -118,7 +117,7 @@ class este.ui.Component extends goog.ui.Component
 
   ###*
     @param {goog.events.ListenableType|string} src Event source.
-    @param {string|number|!Array.<string|number>} type Event type to listen for
+    @param {string|number|Array.<string|number>} type Event type to listen for
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
@@ -153,7 +152,7 @@ class este.ui.Component extends goog.ui.Component
 
     if useEventDelegation
       selector = (`/** @type {string} */`) selector
-      fn = Component.wrapListenerForEventDelegation fn, selector, type
+      fn = Component.wrapListenerForEventDelegation fn, selector
 
     @componentListenables_ ?= {}
     @componentListenables_[id] = [src, type, fn, capture, handler]
@@ -165,7 +164,7 @@ class este.ui.Component extends goog.ui.Component
 
   ###*
     @param {goog.events.ListenableType|string} src Event source.
-    @param {string|number|!Array.<string|number>} type Event type to listen for
+    @param {string|number|Array.<string|number>} type Event type to listen for
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
@@ -177,7 +176,7 @@ class este.ui.Component extends goog.ui.Component
 
   ###*
     @param {goog.events.ListenableType|string} src Event source.
-    @param {string|number|!Array.<string|number>} type Event type to listen for
+    @param {string|number|Array.<string|number>} type Event type to listen for
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.

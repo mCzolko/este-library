@@ -1,5 +1,6 @@
 ###*
   @fileoverview DOM utils.
+  @namespace este.dom
 ###
 
 goog.provide 'este.dom'
@@ -11,225 +12,220 @@ goog.require 'goog.dom.classlist'
 goog.require 'goog.dom.forms'
 goog.require 'goog.string'
 
-goog.scope ->
-  `var _ = este.dom`
+###*
+  Check if node matches given simple selector. Only tag and class are
+  supported now.
+  Examples:
+    este.dom.match el, 'button'
+    este.dom.match el, '.box'
+    este.dom.match el, '*'
+  @param {Node} node
+  @param {string} simpleSelector
+  @return {boolean} Whether the given element matches the selector.
+###
+este.dom.match = (node, simpleSelector) ->
+  return true if simpleSelector == '*'
+  return false if !goog.dom.isElement node
+  queryParts = este.dom.getQueryParts simpleSelector
+  for part in queryParts
+    return false if part.tag && part.tag != '*' &&
+      node.tagName.toLowerCase() != part.tag.toLowerCase()
+    return false if part.id &&
+      node.id != part.id
+    for className in part.classes
+      node = (`/** @type {Element} */`) node
+      return false if !goog.dom.classlist.contains node, className
+  true
 
-  ###*
-    Check if node matches given simple selector. Only tag and class are
-    supported now.
-    Examples:
-      este.dom.match el, 'button'
-      este.dom.match el, '.box'
-      este.dom.match el, '*'
-    @param {Node} node
-    @param {string} simpleSelector
-    @return {boolean} Whether the given element matches the selector.
-  ###
-  _.match = (node, simpleSelector) ->
-    return true if simpleSelector == '*'
-    return false if !goog.dom.isElement node
-    queryParts = _.getQueryParts simpleSelector
-    for part in queryParts
-      return false if part.tag && part.tag != '*' &&
-        node.tagName.toLowerCase() != part.tag.toLowerCase()
-      return false if part.id &&
-        node.id != part.id
-      for className in part.classes
-        node = (`/** @type {Element} */`) node
-        return false if !goog.dom.classlist.contains node, className
-    true
+###*
+  Get node ancestors.
+  @param {Node} node
+  @param {boolean=} includeNode
+  @param {boolean=} stopOnBody
+  @return {Array.<Element>}
+###
+este.dom.getAncestors = (node, includeNode, stopOnBody) ->
+  elements = []
+  node = node.parentNode if !includeNode
+  while node
+    break if stopOnBody && node.tagName == 'BODY'
+    break if node.nodeType == goog.dom.NodeType.DOCUMENT
+    elements.push node
+    node = node.parentNode
+  elements
 
-  ###*
-    Get node ancestors.
-    @param {Node} node
-    @param {boolean=} includeNode
-    @param {boolean=} stopOnBody
-    @return {Array.<Element>}
-  ###
-  _.getAncestors = (node, includeNode, stopOnBody) ->
-    elements = []
-    node = node.parentNode if !includeNode
-    while node
-      break if stopOnBody && node.tagName == 'BODY'
-      break if node.nodeType == goog.dom.NodeType.DOCUMENT
-      elements.push node
-      node = node.parentNode
-    elements
+###*
+  @param {Array.<Element>} elements
+###
+este.dom.getDomPath = (elements) ->
+  path = []
+  for element in elements
+    path.push element.tagName.toUpperCase()
+    path.push '#', element.id if element.id
+    for className in goog.dom.classlist.get element
+      path.push '.', className
+    path.push ' '
+  path.pop()
+  path.join ''
 
-  ###*
-    @param {Array.<Element>} elements
-  ###
-  _.getDomPath = (elements) ->
-    path = []
-    for element in elements
-      path.push element.tagName.toUpperCase()
-      path.push '#', element.id if element.id
-      for className in goog.dom.classlist.get element
-        path.push '.', className
-      path.push ' '
-    path.pop()
-    path.join ''
-
-  ###*
-    @param {Element} newNode
-    @param {Element} refNode
-    @param {string} where Before, after, prepend, append.
-  ###
-  _.insert = (newNode, refNode, where) ->
-    switch where
-      when 'before'
-        goog.dom.insertSiblingBefore newNode, refNode
-      when 'after'
-        goog.dom.insertSiblingAfter newNode, refNode
-      when 'prepend'
-        goog.dom.insertChildAt refNode, newNode, 0
-      when 'append'
-        goog.dom.appendChild refNode, newNode
-    return
-
-  ###*
-    @param {goog.events.BrowserEvent} e
-    @param {Object.<string, Function>} object Key is className, value is
-      callback.
-    @return {boolean}
-  ###
-  _.onTargetWithClass = (e, object) ->
-    node = e.target
-    while node && node.nodeType == 1
-      for className, callback of object
-        node = (`/** @type {Element} */`) node
-        if goog.dom.classlist.contains node, className
-          callback node
-          return true
-      node = node.parentNode
-    false
-
-  ###*
-    Alias for goog.dom.forms.getFormDataMap(form).toObject().
-    getFormDataMap method always returns array which is not handy. That's why
-    this method normalize ['foo'] into 'foo'.
-    @param {Element} form
-    @return {Object}
-  ###
-  _.serializeForm = (form) ->
-    form = (`/** @type {HTMLFormElement} */`) form
-    object = goog.dom.forms.getFormDataMap(form).toObject()
-    este.object.normalizeOneItemArrayValues object
-
-  ###*
-    Returns a single value of a form element.
-
-    If there are more elements with given name, returns value of the first one.
-    If none is found, returns null.
-
-    @param {Element} form
-    @param {string} name
-    @return {?string}
-  ###
-  _.getSingleFormValueByName = (form, name) ->
-    form = (`/** @type {HTMLFormElement} */`) form
-    value = goog.dom.forms.getValueByName form, name
-    return value if !goog.isArray value
-    return null if value.length == 0
-    value[0]
-
-  ###*
-    @param {Element} element
-    @return {Array.<number>}
-  ###
-  _.getDomPathIndexes = (element) ->
-    indexes = []
-    parent = null
-    loop
-      parent = (`/** @type {Element} */`) element.parentNode
-      break if !parent || parent.nodeType != 1
-      index = goog.array.indexOf parent.childNodes, element
-      indexes.push index
-      element = parent
-    indexes.reverse()
-    indexes
-
-  ###*
-    @param {Array.<number>} path
-    @param {Document=} doc
-    @return {Element}
-  ###
-  _.getElementByDomPathIndex = (path, doc = document) ->
-    element = doc.documentElement
-    while path.length
-      index = path.shift()
-      element = element.childNodes[index]
-    element
-
-  ###*
-    @param {Element} el
-  ###
-  _.focus = (el) ->
-    try
-      el.focus()
-    catch e
-
-  ###*
-    @param {Element} el
-  ###
-  _.focusAsync = (el) ->
-    setTimeout ->
-      _.focus el
-    , 0
-
-  ###*
-    Hack to force blur.
-  ###
-  _.forceBlur = ->
-    setTimeout ->
-      input = goog.dom.createDom 'input',
-        # prevents scroll jumps
-        style: 'position: fixed; left: 0; top: 0'
-      document.body.appendChild input
-      input.focus()
-      document.body.removeChild input
-    , 0
-
-  ###*
-    @param {goog.events.BrowserEvent} e
-    @return {boolean}
-  ###
-  _.isRealMouseClick = (e) ->
-    e.isMouseActionButton() && !e.platformModifierKey
-
-  ###*
-    @param {Element} form
-    @param {boolean} lock
-  ###
-  _.lockForm = (form, lock) ->
-    field.disabled = lock for field in form.elements
-
-  ###*
-    @param {Element|Node} form
-    @param {Object} errors
-  ###
-  _.showErrorsOnForm = (form, errors) ->
-    for name, field of form.elements
-      goog.dom.classlist.remove field, 'e-dom-field-error'
-    return if not errors
-    error = errors[0]
-    alert error.getMsg()
-    invalidField = form.elements[error.key]
-    goog.dom.classlist.add invalidField, 'e-dom-field-error'
-    este.dom.focus invalidField
-
-  ###*
-    For mousehover (mouseenter, mouseleave) detection.
-    @param {goog.events.BrowserEvent} e
-    @param {Node} target
-    @return {boolean}
-  ###
-  _.isMouseHoverEventWithinElement = (e, target) ->
-    e.type in ['mouseover', 'mouseout'] &&
-    !!e.relatedTarget &&
-    goog.dom.contains target, e.relatedTarget
-
+###*
+  @param {Element} newNode
+  @param {Element} refNode
+  @param {string} where Before, after, prepend, append.
+###
+este.dom.insert = (newNode, refNode, where) ->
+  switch where
+    when 'before'
+      goog.dom.insertSiblingBefore newNode, refNode
+    when 'after'
+      goog.dom.insertSiblingAfter newNode, refNode
+    when 'prepend'
+      goog.dom.insertChildAt refNode, newNode, 0
+    when 'append'
+      goog.dom.appendChild refNode, newNode
   return
+
+###*
+  @param {goog.events.BrowserEvent} e
+  @param {Object.<string, Function>} object Key is className, value is
+    callback.
+  @return {boolean}
+###
+este.dom.onTargetWithClass = (e, object) ->
+  node = e.target
+  while node && node.nodeType == 1
+    for className, callback of object
+      node = (`/** @type {Element} */`) node
+      if goog.dom.classlist.contains node, className
+        callback node
+        return true
+    node = node.parentNode
+  false
+
+###*
+  Alias for goog.dom.forms.getFormDataMap(form).toObject().
+  getFormDataMap method always returns array which is not handy. That's why
+  this method normalize ['foo'] into 'foo'.
+  @param {Element} form
+  @return {Object}
+###
+este.dom.serializeForm = (form) ->
+  form = (`/** @type {HTMLFormElement} */`) form
+  object = goog.dom.forms.getFormDataMap(form).toObject()
+  este.object.normalizeOneItemArrayValues object
+
+###*
+  Returns a single value of a form element.
+
+  If there are more elements with given name, returns value of the first one.
+  If none is found, returns null.
+
+  @param {Element} form
+  @param {string} name
+  @return {?string}
+###
+este.dom.getSingleFormValueByName = (form, name) ->
+  form = (`/** @type {HTMLFormElement} */`) form
+  value = goog.dom.forms.getValueByName form, name
+  return value if !goog.isArray value
+  return null if value.length == 0
+  value[0]
+
+###*
+  @param {Element} element
+  @return {Array.<number>}
+###
+este.dom.getDomPathIndexes = (element) ->
+  indexes = []
+  parent = null
+  loop
+    parent = (`/** @type {Element} */`) element.parentNode
+    break if !parent || parent.nodeType != 1
+    index = goog.array.indexOf parent.childNodes, element
+    indexes.push index
+    element = parent
+  indexes.reverse()
+  indexes
+
+###*
+  @param {Array.<number>} path
+  @param {Document=} doc
+  @return {Element}
+###
+este.dom.getElementByDomPathIndex = (path, doc = document) ->
+  element = doc.documentElement
+  while path.length
+    index = path.shift()
+    element = element.childNodes[index]
+  element
+
+###*
+  @param {Element} el
+###
+este.dom.focus = (el) ->
+  try
+    el.focus()
+  catch e
+
+###*
+  @param {Element} el
+###
+este.dom.focusAsync = (el) ->
+  setTimeout ->
+    este.dom.focus el
+  , 0
+
+###*
+  Hack to force blur.
+###
+este.dom.forceBlur = ->
+  setTimeout ->
+    input = goog.dom.createDom 'input',
+      # prevents scroll jumps
+      style: 'position: fixed; left: 0; top: 0'
+    document.body.appendChild input
+    input.focus()
+    document.body.removeChild input
+  , 0
+
+###*
+  @param {goog.events.BrowserEvent} e
+  @return {boolean}
+###
+este.dom.isRealMouseClick = (e) ->
+  e.isMouseActionButton() && !e.platformModifierKey
+
+###*
+  @param {Element} form
+  @param {boolean} lock
+###
+este.dom.lockForm = (form, lock) ->
+  field.disabled = lock for field in form.elements
+
+###*
+  @param {Element|Node} form
+  @param {Object} errors
+###
+este.dom.showErrorsOnForm = (form, errors) ->
+  for name, field of form.elements
+    goog.dom.classlist.remove field, 'e-dom-field-error'
+  return if not errors
+  error = errors[0]
+  alert error.getMsg()
+  invalidField = form.elements[error.key]
+  goog.dom.classlist.add invalidField, 'e-dom-field-error'
+  este.dom.focus invalidField
+
+###*
+  For mousehover (mouseenter, mouseleave) detection.
+  @param {goog.events.BrowserEvent} e
+  @param {Node} target
+  @return {boolean}
+###
+este.dom.isMouseHoverEventWithinElement = (e, target) ->
+  e.type in ['mouseover', 'mouseout'] &&
+  !!e.relatedTarget &&
+  goog.dom.contains target, e.relatedTarget
 
 # Extracted from goog.dom.query.
 `

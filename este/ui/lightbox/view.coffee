@@ -136,7 +136,7 @@ class este.ui.lightbox.View extends este.ui.Component
   update: ->
     json = @getViewJson()
     html = este.ui.lightbox.templates.view json
-    este.dom.merge @getElement(), html
+    @getElement().innerHTML = html
 
   ###*
     @return {Object}

@@ -1,5 +1,8 @@
 ###*
-  @fileoverview este.events.InfiniteScrollHandler.
+  @fileoverview Class to detect scrollable content reaching scroll end. Then
+  'load' event is dispatched.
+
+  @see /demos/events/infinitescrollhandler.html
 ###
 goog.provide 'este.events.InfiniteScrollHandler'
 

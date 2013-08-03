@@ -2,7 +2,7 @@
   @fileoverview Simple and useful event delegation. This is special low level
   component. For general usage este.ui.Component is preferred.
 
-  @see ../demos/delegation.html
+  @see /demos/events/delegation.html
 ###
 goog.provide 'este.events.Delegation'
 goog.provide 'este.events.Delegation.create'

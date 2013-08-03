@@ -5,8 +5,6 @@
   Load method has to return goog.result.Result to signalize that data are
   loaded. When data are loaded and user did't try to load another presenter
   during loading, show method is called.
-
-  @see este.demos.app.todomvc.todos.list.Presenter
 ###
 goog.provide 'este.app.Presenter'
 

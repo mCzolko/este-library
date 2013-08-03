@@ -1,18 +1,15 @@
 ###*
-  @fileoverview Facebook React UI library incorporated into Este.
-  Supported browsers: all evergreen and IE9+. To support IE8, add
-  https://github.com/kriskowal/es5-shim.
+  @fileoverview Facebook React UI library incorporated into Este. Remember to
+  use externs for advanced compilation.
 
-  Learn React.
+  Supported browsers:
+
+  - all evergreen and IE9+.
+  - to support IE8, add [es5-shim](https://github.com/kriskowal/es5-shim)
+
+  @see /demos/thirdparty/react/index.html
   @see http://facebook.github.io/react
-
-  React demos:
-  @see bower_components/este-library/este/demos/thirdparty/react/index.html
-
-  Remember to use externs for advanced compilation demo.
   @see https://github.com/steida/este/blob/master/Gruntfile.coffee
-
-  Copyright 2013 Facebook, Inc.
 ###
 goog.provide 'este.thirdParty.react'
 

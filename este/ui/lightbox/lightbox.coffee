@@ -1,5 +1,7 @@
 ###*
   @fileoverview este.ui.lightbox.Lightbox.
+
+  @see /demos/ui/lightbox.html
 ###
 goog.provide 'este.ui.lightbox.Lightbox'
 

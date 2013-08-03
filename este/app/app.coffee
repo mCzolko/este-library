@@ -1,39 +1,32 @@
 ###*
-  @fileoverview Este MVC application.
+  @fileoverview Este MVC application. The base class for all Este client side
+  MVC applications. It has several unique features inspired by excellent
+  [Beyond pushState](https://medium.com/joys-of-javascript/4353246f4480)
+  article. Architecture is similar to Backbone. For views, Facebook React or
+  Closure Templates can be used.
 
-  Features:
-  - routes with hashchange or pushState url projection
-  - support for mobile, desktop, tablet
-  - powerfull events delegation
-  - designed with medium.com/joys-of-javascript/4353246f4480 in mind
+  Why yet another MVC framework?
 
-  Building pieces:
-  - este.App
-  - este.app.Presenter
-  - este.app.View
-  - este.app.Screen
-  - Closure Templates or Facebook React
+  - this one is build on top of the Google Closure, the most robust JS library
+  - statically typed CoffeeScript, beautiful syntax with code check now
+  - several nice UX features which other frameworks does not implement
+  - designed for mobile and tablets from inception
 
   Example:
-  <pre>
 
-  # create todoApp on element with id 'todo-app'
+  ```coffee
   todoApp = este.app.create 'todo-app'
   todoApp.storage = new este.storage.Local 'todos-este'
   todoApp.addRoutes
     '/:filter?': new app.todos.list.Presenter
   todoApp.start()
+  ```
 
-  </pre>
-
-  Inspirated from article: Beyond pushState — building single page applications
-  @see https://medium.com/joys-of-javascript/4353246f4480
-
-  App demos:
-  @see ../demos/app/layout/index.html
-  @see ../demos/app/simple/index.html
-  @see ../demos/app/todomvc/index.html
+  @see /demos/app/layout
+  @see /demos/app/simple
+  @see /demos/app/todomvc
 ###
+
 goog.provide 'este.App'
 goog.provide 'este.App.EventType'
 

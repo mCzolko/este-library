@@ -1,7 +1,7 @@
 ###*
   @fileoverview Forms persister. Persist form fields state into localStorage
   or session.
-  @see ../demos/formspersister.html
+  @see /demos/ui/formspersister.html
 ###
 
 goog.provide 'este.ui.FormsPersister'

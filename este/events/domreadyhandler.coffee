@@ -1,7 +1,5 @@
 ###*
-  @fileoverview DomReady ported from jQuery. IE workaround does not work in
-  frame so there is no need to inject document. Ready event is fired once.
-  Manually tested.
+  @fileoverview DomReady ported from jQuery. Manually tested.
 
   Warning: DomReady is antipattern and you should use only in case, when you
   don't have access to page HTML, for example when you write third party code.
@@ -9,7 +7,7 @@
   is one exception. If your SPA renders UI from start, and you want to prevent
   app blinking on app start, put app start() method directly in HEAD element
   right after app styles.
-  @see ../demos/domreadyhandler.html
+  @see /demos/events/domreadyhandler.html
 ###
 
 goog.provide 'este.events.domReady'

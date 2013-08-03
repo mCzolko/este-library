@@ -1,6 +1,8 @@
 ###*
   @fileoverview Router factory.
-  @see ../demos/router.html
+  @see /demos/router/routerhash.html
+  @see /demos/router/routerhashtouch.html
+  @see /demos/router/routerhtml5.html
 ###
 goog.provide 'este.router.create'
 

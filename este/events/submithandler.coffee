@@ -1,6 +1,7 @@
 ###*
   @fileoverview Wrapper for submit event with fix for IE8.
-  @see ../demos/submithandler.html
+
+  @see /demos/events/submithandler.html
 ###
 goog.provide 'este.events.SubmitEvent'
 goog.provide 'este.events.SubmitHandler'

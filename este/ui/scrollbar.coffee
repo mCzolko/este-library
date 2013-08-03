@@ -2,21 +2,23 @@
   @fileoverview OS X Mountain Lion style scrolling for web.
 
   Features:
-    - designed with obsession for UX details
-    - uses hidden native scrollbars to preserve native scroll momentum
-    - very customizable
-    - accessible: ARIA, keyboard
-    - CSS3 animations
-    - size of container can be dynamically adjusted and scrollbars will adapt
-    - declarativeness, lazy instantiation on mouseenter
-    - tested on: Chrome, Safari, Firefox, Internet Explorer 8+ (Mac, Win, iOS)
+
+  - designed with obsession for UX details
+  - uses hidden native scrollbars to preserve native scroll momentum
+  - very customizable
+  - accessible: ARIA, keyboard
+  - CSS3 animations
+  - size of container can be dynamically adjusted and scrollbars will adapt
+  - declarativeness, lazy instantiation on mouseenter
+  - tested on: Chrome, Safari, Firefox, Internet Explorer 8+ (Mac, Win, iOS)
 
   TODO:
-    Fix Mac Firefox on scroll overlay workaround.
-    Fix IE jump when scrollbar is clicked or on mouseenter at first shown.
-    Once IE<10 die, implement showTimeout and hideTimeout as CSS transition.
 
-  @see ../demos/ui/scrollbar.html
+  - fix Mac Firefox on scroll overlay workaround.
+  - fix IE jump when scrollbar is clicked or on mouseenter at first shown.
+  - once IE<10 die, implement showTimeout and hideTimeout as CSS transition.
+
+  @see /demos/ui/scrollbar.html
 ###
 goog.provide 'este.ui.Scrollbar'
 goog.provide 'este.ui.Scrollbar.lazyCreate'

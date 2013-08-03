@@ -1,5 +1,6 @@
 ###*
-  @fileoverview Default factory for este.App.
+  @fileoverview Factory for este.App.
+  @namespace este.app
 ###
 goog.provide 'este.app.create'
 

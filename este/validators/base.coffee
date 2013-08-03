@@ -1,6 +1,6 @@
 ###*
   @fileoverview Abstract base class for validators.
-  @see ../demos/validators.html
+  @see /demos/model/validators.html
 ###
 goog.provide 'este.validators.Base'
 

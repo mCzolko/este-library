@@ -1,6 +1,6 @@
 ###*
   @fileoverview Collection. Sorting & Filtering included.
-  @see ../demos/collection.html
+  @see /demos/model/collection.html
 ###
 
 goog.provide 'este.Collection'

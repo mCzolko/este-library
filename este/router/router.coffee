@@ -1,40 +1,46 @@
 ###*
-  @fileoverview hashchange/pushState router. It watches any element with href
-  attribute, and prevents default redirecting behaviour. But you can still use
+  @fileoverview hashchange/pushState router. It watches elements with href
+  attribute and prevents default redirecting behaviour. But you can still use
   right click and other ways to open link in new tab.
 
   Anchor with hashchange navigation. Slash is required to prevent scroll jumps
   when element with the same id as anchor href is matched.
-  <pre>
+
+  ```html
   <a href='#/about'>about</a>
-  </pre>
+  ```
 
   Anchor with pushState navigation.
-  <pre>
+
+  ```html
   <a href='/about'>about</a>
-  </pre>
+  ```
 
   Back button. It calls history.back(), but only when its href attribute was
   yet visited by router. This behavior ensures that back button works only
   within application. Ajax back button should not leave the application.
-  <pre>
+
+  ```html
   <a e-router-back-button href='#/home'>back</a>
-  </pre>
+  ```
 
   Ignored hrefs.
-  <pre>
-  <a href='http(s)://...'>
-  <a href='//...'>
-  <a e-router-ignore href='/foo'
-  </pre>
+
+  ```html
+  <a href='http(s)://...'>foo</a>
+  <a href='//...'>foo</a>
+  <a e-router-ignore href='/foo'>foo</a>
+  ```
 
   Touch devices support.
+
   For touch devices support remember to render links with 'touch-action'
   attribute. It enables Google Polymer PointerEvents.
-  @see http://www.polymer-project.org/platform/pointer-events.html
 
-  @see ../demos/routerhash.html
-  @see ../demos/routerhtml5.html
+  @see http://www.polymer-project.org/platform/pointer-events.html
+  @see /demos/router/routerhash.html
+  @see /demos/router/routerhashtouch.html
+  @see /demos/router/routerhtml5.html
 ###
 goog.provide 'este.Router'
 

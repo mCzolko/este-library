@@ -1,5 +1,6 @@
 ###*
   @fileoverview Object utils.
+  @namespace este.object
 ###
 
 goog.provide 'este.object'

@@ -1,5 +1,6 @@
 ###*
-  @fileoverview este.events.EventHandler.
+  @fileoverview Powerfull event delegation for este.ui.Component.
+  @see este.ui.Component
 ###
 goog.provide 'este.events.EventHandler'
 

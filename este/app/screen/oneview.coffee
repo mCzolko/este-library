@@ -1,9 +1,7 @@
 ###*
-  @fileoverview Simple view manager. It switchs view's elements without any
-  fancy animation. Use it for desktop, or old mobile devices, where fx is slow,
-  and overflowed elements needs JS touch workaround because
-  -webkit-overflow-scrolling: touch css does not work. Therefore, use simple
-  web/app design similar to jQueryMobile apps.
+  @fileoverview Simple view manager. It switches view elements without fancy
+  animation. Use it for desktop or old mobile devices, where FX is slow and
+  ```-webkit-overflow-scrolling: touch;``` does not work.
 ###
 goog.provide 'este.app.screen.OneView'
 

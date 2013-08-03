@@ -1,14 +1,10 @@
 ###*
-  @fileoverview Gestures handler based on Polymer PointerGestures. Polymer is
-  developed only for evergreen browsers, so additional support for IE < 10 is
-  provided.
+  @fileoverview Gestures handler build on top of the
+  [Polymer](http://www.polymer-project.org/)'s [PointerGestures](https://github.com/Polymer/PointerGestures).
+  This wrapper adds support for IE < 10 and fixes some UX bugs.
 
-  Why PointerGestures flick and tap isn't used directly?
-  TLDR; Because we need better UX.
-  https://groups.google.com/forum/?fromgroups=#!topic/polymer-dev/VCGlOaaI8u0
-
-  IE < 10 support
-    - tap event
+  @see /demos/events/gesturehandler.html
+  @see http://groups.google.com/forum/?fromgroups=#!topic/polymer-dev/VCGlOaaI8u0
 ###
 goog.provide 'este.events.GestureHandler'
 goog.provide 'este.events.GestureHandler.EventType'

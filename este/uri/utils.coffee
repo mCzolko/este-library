@@ -1,5 +1,6 @@
 ###*
   @fileoverview URI utils.
+  @namespace este.uri
 ###
 
 goog.provide 'este.uri.utils'

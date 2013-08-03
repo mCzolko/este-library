@@ -1,27 +1,32 @@
 ###*
-  @fileoverview Model with attributes and schema.
+  @fileoverview Base class for models with attributes and schema. Use model
+  instead of plain json object and you will be able to listen model changes,
+  validate model, and serialize/deserialize it.
 
-  Features
-    setters, getters, validators
-    model's change event with event bubbling
-    JSON serialization
+  Features:
+
+  - setters, getters, validators
+  - model's change event with event bubbling
+  - JSON serialization
 
   Why not plain objects?
-    - http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
-    - strings are better for uncompiled attributes from DOM or storage etc.
 
-  _cid
-    _cid is temporary session id. It's erased when you close your browser.
-    It's used for HTML rendering, it starts with ':'.
-    For local storage persistence is used este.storage.Local unique-enough ID.
+  - http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
+  - strings are better for uncompiled attributes from DOM or storage etc.
 
-  Notes
-    - to modify complex attribute: joe.get('items').add 'foo'
-    - how to define schema: see model_test.coffee
+  Client ID
 
-  @see ../demos/model.html
-  @see ../demos/app/todomvc/index.html
-  @see ../demos/app/todomvc/js/todos/model.coffee
+  _cid is temporary session id. It's erased when you close your browser.
+  It's used for HTML rendering, it starts with ':'. For local storage
+  persistence is used este.storage.Local unique-enough ID.
+
+  Notes:
+
+  - to modify complex attribute: joe.get('items').add 'foo'
+  - how to define schema: see model_test.coffee
+
+  @see /demos/model/model.html
+  @see /demos/app/todomvc/index.html
 ###
 
 goog.provide 'este.Model'

@@ -6,8 +6,8 @@
   to control navigate event dispatching separately. These ghost popstate events
   are filtered via location.href check.
 
-  @see ../demos/historyhtml5.html
-  @see ../demos/historyhash.html
+  @see /demos/history/historyhtml5.html
+  @see /demos/history/historyhash.html
 ###
 
 goog.provide 'este.History'

@@ -1,5 +1,13 @@
 ###*
-  @fileoverview este.app.Event.
+  @fileoverview Event class for este.App.
+
+  Este App event types:
+
+  - este.App.EventType.LOAD
+  - este.App.EventType.SHOW
+  - este.App.EventType.HIDE
+  - este.App.EventType.TIMEOUT
+  - este.App.EventType.ERROR
 ###
 goog.provide 'este.app.Event'
 

@@ -5,7 +5,7 @@
   is better, because works fine with native mobile scroll momentum.
 
   @deprecated Use este.events.GestureHandler instead.
-  @see ../demos/taphandler.html
+  @see /demos/taphandler.html
 ###
 goog.provide 'este.events.TapHandler'
 goog.provide 'este.events.TapHandler.EventType'

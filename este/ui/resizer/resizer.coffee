@@ -1,6 +1,6 @@
 ###*
-  @fileoverview
-  @see ../demos/resizer.html
+  @fileoverview Simple resizer for images, iframes, elements.
+  @see /demos/ui/resizer.html
 ###
 goog.provide 'este.ui.Resizer'
 

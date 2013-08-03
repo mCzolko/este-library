@@ -4,14 +4,15 @@
   provides alternative approach via este.events.TapHandler. It adds e-hover
   className for matched elements.
 
-  Desiderated behaviour:
-    'e-mobile-hover' class is applied immediately
-    'e-mobile-hover-scroll' class is applied after 250ms, which is usefull for
-      scrollable content, where we don't want to see 'hover' immediately.
-      It mimics native iOS behaviour on scrollable lists.
-    Hover state is removed after 750ms, because on anchors native context menu
-      is shown and that prevents touchend event to be dispatched. Previous
-      hover is removed too for sure.
+  Behaviour:
+
+  - 'e-mobile-hover' class is applied immediately
+  - 'e-mobile-hover-scroll' class is applied after 250ms, which is usefull for
+    scrollable content, where we don't want to see 'hover' immediately.
+    It mimics native iOS behaviour on scrollable lists.
+  - Hover state is removed after 750ms, because on anchors native context menu
+    is shown and that prevents touchend event to be dispatched. Previous
+    hover is removed too for sure.
 ###
 goog.provide 'este.mobile.Hover'
 

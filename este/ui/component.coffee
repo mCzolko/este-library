@@ -4,48 +4,48 @@
   have to instantiate goog.events.FocusHandler in enterDocument method, and
   dispose it in exitDocument. With este.ui.Component, you don't have to write
   this boilerplate code. For easy event delegation, replace event src with
-  matching string selector.
-
-  bindModel method is used for automatic element-model wiring via
-  'e-model-cid' attribute in soy template.
-  Example:
-    este-library/este/demos/app/todomvc/js/todos/list/view.coffee
-    este-library/este/demos/app/todomvc/js/todos/list/templates.soy
+  matching string selector. Note how bindModel method is used for automatic
+  element-model wiring via 'e-model-cid' attribute.
 
   Supported synthetic (with bubbling) events:
-    - tap, swipeleft, swiperight, swipeup, swipedown
-    - focusin, focusout
-    - input
-    - submit
-    - key or number from goog.events.KeyCodes enumeration
+
+  - tap, swipeleft, swiperight, swipeup, swipedown
+  - focusin, focusout
+  - input
+  - submit
+  - key or number from goog.events.KeyCodes enumeration
 
   Examples:
-    this.enterDocument ->
-      super()
-      this.on this.getElement(), 'click', this.onClick
-      this.on '.box', 'tap', this.onBoxTap
-      this.on 'input', 'focusin', this.onInputFocus
-      this.on this.boxElement, 'tap', this.onTap
-      this.on '.button', 'swipeleft', this.onButtonSwipeleft
-      this.on '#new-todo-form', 'submit', this.onNewTodoFormSubmit
-      this.on '.toggle', 'dblclick', this.onToggleDblclick
-      this.on '.new-post', goog.events.KeyCodes.ENTER, this.onNewCommentKeyEnter
-      return
 
-    this.enterDocument ->
-      super()
-      # note how bindModel is used
-      this.on '.box', 'tap', this.bindModel this.onBoxTap
-      return
+  ```coffee
+  this.enterDocument ->
+    super()
+    this.on this.getElement(), 'click', this.onClick
+    this.on '.box', 'tap', this.onBoxTap
+    this.on 'input', 'focusin', this.onInputFocus
+    this.on this.boxElement, 'tap', this.onTap
+    this.on '.button', 'swipeleft', this.onButtonSwipeleft
+    this.on '#new-todo-form', 'submit', this.onNewTodoFormSubmit
+    this.on '.toggle', 'dblclick', this.onToggleDblclick
+    this.on '.new-post', goog.events.KeyCodes.ENTER, this.onNewCommentKeyEnter
+    return
+  ```
 
-  @see ../demos/component.html
-  @see ../demos/app/todomvc/js/todos/list/view.coffee
+  ```coffee
+  this.enterDocument ->
+    super()
+    # note how bindModel is used
+    this.on '.box', 'tap', this.bindModel this.onBoxTap
+    return
+  ```
+
+  @see /demos/ui/component.html
+  @see /demos/app/todomvc/js/todos/list/view.coffee
 ###
 goog.provide 'este.ui.Component'
 
 goog.require 'este.Collection'
 goog.require 'este.dom'
-goog.require 'este.dom.merge'
 goog.require 'este.events.EventHandler'
 goog.require 'este.Model'
 goog.require 'goog.asserts'

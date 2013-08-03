@@ -1,5 +1,7 @@
 ###*
-  @fileoverview Factory for Lightbox.
+  @fileoverview Simple LightBox.
+
+  @see /demos/ui/lightbox.html
 ###
 goog.provide 'este.ui.lightbox.create'
 

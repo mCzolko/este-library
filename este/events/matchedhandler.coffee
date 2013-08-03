@@ -1,5 +1,8 @@
 ###*
-  @fileoverview Event matched by a simple selector, ex.:
+  @fileoverview Another special class for event delegation. You probably
+  don't need it.
+
+  ```coffee
   handler = new este.events.MatchedHandler el, [
     id: 123
     container: '.pw1001'
@@ -8,8 +11,9 @@
   , ..
   ]
   goog.events.listen handler, 'click', (e) ->
-    #e.id == 123
-    #e.childIndex = 1
+    # e.id == 123
+    # e.childIndex == 1
+  ```
 ###
 goog.provide 'este.events.MatchedHandler'
 goog.provide 'este.events.MatchedHandler.create'

@@ -1,6 +1,6 @@
 ###*
   @fileoverview Local storage for este.Model's via HTML5 or IE user data.
-  @see ../demos/storage/local.html
+  @see /demos/storage/local.html
 ###
 goog.provide 'este.storage.Local'
 

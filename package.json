@@ -23,7 +23,7 @@
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-este": "~2.3.0",
     "grunt-npm": "0.0.2",
-    "grunt-release": "~0.3.5"
+    "grunt-release": "~0.4.0"
   },
   "scripts": {
     "test": "grunt test"

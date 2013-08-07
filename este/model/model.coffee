@@ -270,6 +270,7 @@ class este.Model extends este.Base
     json
 
   ###*
+    Validate model recursively.
     @return {Array.<este.validators.Base>}
   ###
   validate: ->
@@ -370,6 +371,7 @@ class este.Model extends este.Base
       changes ?= {}
       changes[key] = value
     changes
+
   ###*
     @param {Object} json key is attr, value is its value
     @return {Array.<este.validators.Base>}

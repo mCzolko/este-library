@@ -491,3 +491,19 @@ suite 'este.Model', ->
           'title': -> 'foo'
       foo = new Foo
       assert.equal foo.get('title'), 'foo'
+
+    test 'should deeply clone non primitive defaults', ->
+      class Foo extends este.Model
+        constructor: ->
+          super()
+        defaults:
+          'array': [[]]
+          'object': foo: bla: 1
+      a = new Foo
+      b = new Foo
+      b.get('array').push 'foo'
+      b.get('object').bar = 1
+      aSerialized = JSON.stringify a.toJson true
+      bSerialized = JSON.stringify b.toJson true
+      assert.equal aSerialized, '{"array":[[]],"object":{"foo":{"bla":1}}}'
+      assert.equal bSerialized, '{"array":[[],"foo"],"object":{"foo":{"bla":1},"bar":1}}'

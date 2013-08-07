@@ -299,9 +299,13 @@ class este.Model extends este.Base
   getResolvedDefaults: ->
     return {} if !@defaults
     goog.object.map @defaults, (value, key) ->
-      if typeof value == 'function'
-        return value()
-      value
+      switch goog.typeOf value
+        when 'function'
+          value()
+        when 'object', 'array'
+          goog.object.unsafeClone value
+        else
+          value
 
   ###*
     @param {Object} json

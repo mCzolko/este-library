@@ -58,6 +58,8 @@ class este.app.View extends este.ui.Component
     return
 
   ###*
+    Use this method for events registration.
+    This method should be overridden.
     @override
   ###
   enterDocument: ->
@@ -66,7 +68,8 @@ class este.app.View extends este.ui.Component
     return
 
   ###*
-    Use this method for element DOM update. We can use Closure Templates or
-    Facebook React. This method should be overridden.
+    Use this method for DOM update. This method is called when view is shown
+    by default. You should call it when model is changed.
+    This method should be overridden.
   ###
   update: ->

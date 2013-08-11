@@ -2,27 +2,17 @@ suite 'este.string', ->
 
   string = este.string
 
-  suite 'subs', ->
-    test 'should replace array', ->
-      str = string.subs 'foo{0}.. {1}', [1, 2]
-      assert.equal str, 'foo1.. 2'
-
-    test 'should replace object', ->
-      str = string.subs 'foo{foo}, {bla}', foo: 1, bla: 2
-      assert.equal str, 'foo1, 2'
-
-  suite 'subsOrNull', ->
-    test 'should replace array', ->
-      str = string.subsOrNull 'foo{0}.. {1}', [1, 2]
-      assert.equal str, 'foo1.. 2'
-
-    test 'should replace array', ->
-      str = string.subsOrNull 'foo.. {prop}', {}
-      assert.isNull str
-
-    test 'should replace array', ->
-      str = string.subsOrNull 'foo.. {prop}', {prop:'value'}
-      assert.equal str, 'foo.. value'
+  suite 'toFancyUrl', ->
+    test 'should rewrite string to be usable as url', ->
+      assert.equal 'escrzyaie', string.toFancyUrl 'ěščřžýáíé'
+      assert.equal 'ou-jee', string.toFancyUrl 'Ou jee'
+      assert.equal 'foo-bla', string.toFancyUrl 'foo-bla'
+      assert.equal 'foo-bla', string.toFancyUrl 'foo--bla'
+      assert.equal 'foo-bla', string.toFancyUrl '-foo-bla'
+      assert.equal 'foo-bla', string.toFancyUrl 'foo-bla-'
+      assert.equal '', string.toFancyUrl '@#$'
+      assert.equal '100', string.toFancyUrl '100%'
+      assert.equal '100', string.toFancyUrl '100 %'
 
   suite 'chunk', ->
     chunked = null
@@ -74,14 +64,9 @@ suite 'este.string', ->
       assert.equal chunked[1].index, 1
       assert.equal chunked[1].total, 2
 
-  suite 'toFancyUrl', ->
-    test 'should rewrite string to be usable as url', ->
-      assert.equal 'escrzyaie', string.toFancyUrl 'ěščřžýáíé'
-      assert.equal 'ou-jee', string.toFancyUrl 'Ou jee'
-      assert.equal 'foo-bla', string.toFancyUrl 'foo-bla'
-      assert.equal 'foo-bla', string.toFancyUrl 'foo--bla'
-      assert.equal 'foo-bla', string.toFancyUrl '-foo-bla'
-      assert.equal 'foo-bla', string.toFancyUrl 'foo-bla-'
-      assert.equal '', string.toFancyUrl '@#$'
-      assert.equal '100', string.toFancyUrl '100%'
-      assert.equal '100', string.toFancyUrl '100 %'
+  suite 'stripSlashHashPrefixes', ->
+    test 'should strip slashes and hashes on string start', ->
+      assert.equal '', string.stripSlashHashPrefixes ''
+      assert.equal 'foo', string.stripSlashHashPrefixes 'foo'
+      assert.equal 'foo', string.stripSlashHashPrefixes '//foo'
+      assert.equal 'foo', string.stripSlashHashPrefixes '##foo'

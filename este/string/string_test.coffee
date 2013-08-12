@@ -6,6 +6,8 @@ suite 'este.string', ->
     test 'should rewrite string to be usable as url', ->
       assert.equal 'escrzyaie', string.toFancyUrl 'ěščřžýáíé'
       assert.equal 'ou-jee', string.toFancyUrl 'Ou jee'
+      assert.equal 'ou-jee', string.toFancyUrl '  Ou jee'
+      assert.equal 'ou-jee', string.toFancyUrl 'Ou jee  '
       assert.equal 'foo-bla', string.toFancyUrl 'foo-bla'
       assert.equal 'foo-bla', string.toFancyUrl 'foo--bla'
       assert.equal 'foo-bla', string.toFancyUrl '-foo-bla'

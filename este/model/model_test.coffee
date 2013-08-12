@@ -101,15 +101,6 @@ suite 'este.Model', ->
         'age': 55
         'firstName': 'Joe'
 
-  suite 'set', ->
-    test 'should no changes occur if the validation fails', ->
-      assert.equal person.get('firstName'), 'Joe'
-      person.set
-        firstName: 'Pepa'
-        lastName: ''
-      assert.equal person.get('firstName'), 'Joe'
-      assert.equal person.get('lastName'), 'Satriani'
-
   suite 'toJson', ->
     suite 'true', ->
       test 'should return undefined name and _cid for model', ->
@@ -289,42 +280,6 @@ suite 'este.Model', ->
       assert.equal called, 2
 
   suite 'errors', ->
-    suite 'set', ->
-      test 'should return correct errors', ->
-        errors = person.set()
-        assert.isNull errors
-
-        errors = person.set 'firstName', ''
-        assert.isArray errors
-        assert.lengthOf errors, 1
-        assert.instanceOf errors[0], RequiredValidator
-        assert.equal errors[0].model, person
-        assert.equal errors[0].key, 'firstName'
-        assert.equal errors[0].value, ''
-        assert.equal person.get('firstName'), 'Joe'
-
-        errors = person.set 'firstName', 'Pepa'
-        assert.deepEqual errors, null
-
-        errors = person.set
-          'firstName': 'Pepa'
-          'lastName': 'Zdepa'
-        assert.deepEqual errors, null
-
-        errors = person.set
-          'firstName': ''
-          'lastName': ' '
-        assert.isArray errors
-        assert.lengthOf errors, 2
-        assert.instanceOf errors[0], RequiredValidator
-        assert.instanceOf errors[1], RequiredValidator
-        assert.equal errors[0].model, person
-        assert.equal errors[0].key, 'firstName'
-        assert.equal errors[0].value, ''
-        assert.equal errors[1].model, person
-        assert.equal errors[1].key, 'lastName'
-        assert.equal errors[1].value, ' '
-
     suite 'validate', ->
       test 'should return correct errors', ->
         errors = person.validate()
@@ -413,22 +368,6 @@ suite 'este.Model', ->
       catch e
         done()
 
-    test 'should not dispatch change event', ->
-      person = new Person
-      dispatched = false
-      goog.events.listen person, 'change', ->
-        dispatched = true
-      person.setId 123
-      assert.isFalse dispatched
-
-    test 'should not dispatch update event', ->
-      person = new Person
-      dispatched = false
-      goog.events.listen person, 'update', ->
-        dispatched = true
-      person.setId 123
-      assert.isFalse dispatched
-
   suite 'getId', ->
     test 'should return empty string for model without id', ->
       assert.equal person.getId(), ''
@@ -507,3 +446,12 @@ suite 'este.Model', ->
       bSerialized = JSON.stringify b.toJson true
       assert.equal aSerialized, '{"array":[[]],"object":{"foo":{"bla":1}}}'
       assert.equal bSerialized, '{"array":[[],"foo"],"object":{"foo":{"bla":1},"bar":1}}'
+
+  suite 'getClone', ->
+    test 'should return cloned value', ->
+      roles = ['admin', 'user']
+      person.set 'roles', roles
+      assert.deepEqual roles, person.getClone 'roles'
+      assert.notEqual roles, person.getClone 'roles'
+      person.getClone('roles').push 'superuser'
+      assert.deepEqual roles, person.getClone 'roles'

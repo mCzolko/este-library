@@ -6,13 +6,13 @@
   Features:
 
   - setters, getters, validators
-  - model's change event with event bubbling
-  - JSON serialization
+  - 'add', 'remove', 'change', 'sort', 'update' events
+  - JSON serialization/deserialization
 
-  Why not plain objects?
+  Why not plain objects with properties?
 
+  - strings are better for uncompiled attributes from DOM, storages etc.
   - http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
-  - strings are better for uncompiled attributes from DOM or storage etc.
 
   Client ID
 
@@ -20,10 +20,28 @@
   It's used for HTML rendering, it starts with ':'. For local storage
   persistence is used este.storage.Local unique-enough ID.
 
-  Notes:
+  How to modify nested models?
 
-  - to modify complex attribute: joe.get('items').add 'foo'
-  - how to define schema: see model_test.coffee
+  Make a method for it. For example, ```user.addRole role``` instead of
+  ```user.get('roles').add role```.
+
+  How to modify complex attributes?
+
+  Model can have complex plain JSON attributes. Updating them can be a little
+  tricky. Remeber to use getClone method.
+
+  Example:
+
+  ```coffee
+  addRole: (role) ->
+    # We need to get roles clone, not original array, to model be able to
+    # detect changes.
+    roles = this.getClone 'roles'
+    # Note we are dealing with plain JSON, not este.Model.
+    roles.push role
+    # Set dispatches changes, if any.
+    this.set 'roles', roles
+  ```
 
   @see /demos/model/model.html
   @see /demos/app/todomvc/index.html
@@ -70,8 +88,8 @@ class este.Model extends este.Base
     @attributes = {}
     @schema ?= {}
     defaults = @getResolvedDefaults()
-    @setInternal defaults, true if defaults
-    @setInternal json, true if json
+    @setAttributes defaults if defaults
+    @setAttributes json if json
     @ensureClientId idGenerator
 
   ###*
@@ -152,7 +170,7 @@ class este.Model extends este.Base
         nested[idAttribute] = id
       else
         nested = nested[idAttribute] = {}
-    @setInternal json, true
+    @set json
 
   ###*
     @return {string}
@@ -182,25 +200,59 @@ class este.Model extends este.Base
     url + '/' + id
 
   ###*
-    Set model attribute(s).
+    Set attributes and dispatch events on model change.
+
+    Example:
+
+    ```coffee
     model.set 'foo', 1
     model set 'foo': 1, 'bla': 2
-    Don't set any value on validation error.
-    Dispatch change event with changed property, if any.
-    Returns errors.
+    ```
     @param {Object|string} json Object of key value pairs or string key.
     @param {*=} value value or nothing.
-    @return {Array.<este.validators.Base>}
   ###
   set: (json, value) ->
-    return null if !json
-
     if typeof json == 'string'
       _json = {}
       _json[json] = value
       json = _json
+    changes = @getChanges json
+    return if !changes
+    @setAttributes changes
+    @dispatchChangeEvent changes
+    return
 
-    @setInternal json
+  ###*
+    @param {Object} json
+    @return {Object}
+    @protected
+  ###
+  getChanges: (json) ->
+    changes = null
+    for key, value of json
+      set = @schema[key]?.set
+      value = set value if set
+      continue if Model.equal value, @get key
+      changes ?= {}
+      changes[key] = value
+    changes
+
+  ###*
+    @param {Object} json
+    @protected
+  ###
+  setAttributes: (json) ->
+    idAttributes = @idAttribute.split '.'
+    for key, value of json
+      $key = @getKey key
+      currentValue = @attributes[$key]
+      if key == idAttributes[0]
+        @setIdAttribute value, currentValue, idAttributes
+      if key == '_cid' && currentValue?
+        goog.asserts.fail 'Model _cid is immutable.'
+      @attributes[$key] = value
+      value.addParent @ if value instanceof este.Base
+    return
 
   ###*
     Returns model attribute(s).
@@ -221,6 +273,14 @@ class este.Model extends este.Base
     return get value if get
 
     value
+
+  ###*
+    Returns cloned model attribute(s).
+    @param {string|Array.<string>} key
+    @return {*|Object.<string, *>}
+  ###
+  getClone: (key) ->
+    goog.object.unsafeClone @get key
 
   ###*
     @param {string} key
@@ -309,42 +369,6 @@ class este.Model extends este.Base
           value
 
   ###*
-    @param {Object} json
-    @param {boolean=} silent
-    @return {Array.<este.validators.Base>}
-    @protected
-  ###
-  setInternal: (json, silent) ->
-    changes = @getChanges json
-    return null if !changes
-
-    if !silent
-      errors = @getErrors changes
-      return errors if errors
-
-    @setAttributes changes
-    if !silent
-      @dispatchChangeEvent changes
-    null
-
-  ###*
-    @param {Object} json
-    @protected
-  ###
-  setAttributes: (json) ->
-    idAttributes = @idAttribute.split '.'
-    for key, value of json
-      $key = @getKey key
-      currentValue = @attributes[$key]
-      if key == idAttributes[0]
-        @setIdAttribute value, currentValue, idAttributes
-      if key == '_cid' && currentValue?
-        goog.asserts.fail 'Model _cid is immutable.'
-      @attributes[$key] = value
-      value.addParent @ if value instanceof este.Base
-    return
-
-  ###*
     @protected
   ###
   setIdAttribute: (value, currentValue, idAttributes) ->
@@ -356,21 +380,6 @@ class este.Model extends este.Base
       nestedId = goog.object.getValueByKeys value, idAttributes.slice 1
       @id = nestedId.toString()
     return
-
-  ###*
-    @param {Object} json
-    @return {Object}
-    @protected
-  ###
-  getChanges: (json) ->
-    changes = null
-    for key, value of json
-      set = @schema[key]?.set
-      value = set value if set
-      continue if Model.equal value, @get key
-      changes ?= {}
-      changes[key] = value
-    changes
 
   ###*
     @param {Object} json key is attr, value is its value
@@ -419,10 +428,11 @@ class este.Model extends este.Base
   ###
   ensureClientId: (idGenerator) ->
     return if @get '_cid'
-    @set '_cid', if idGenerator
+    _cid = if idGenerator
       idGenerator()
     else
       goog.ui.IdGenerator.getInstance().getNextUniqueId()
+    @setAttributes '_cid': _cid
 
 ###*
   @fileoverview este.Model.Event.

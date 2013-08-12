@@ -197,10 +197,10 @@ este.dom.isRealMouseClick = (e) ->
 
 ###*
   @param {Element} form
-  @param {boolean} lock
+  @param {boolean} enable
 ###
-este.dom.lockForm = (form, lock) ->
-  field.disabled = lock for field in form.elements
+este.dom.setFormEnabled = (form, enable) ->
+  field.disabled = !enable for field in form.elements
 
 ###*
   @param {Element|Node} form

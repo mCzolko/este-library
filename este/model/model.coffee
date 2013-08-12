@@ -354,6 +354,13 @@ class este.Model extends este.Base
     '$' + key
 
   ###*
+    Returns true if model has no ID.
+    @return {boolean}
+  ###
+  isNew: ->
+    !@getId()
+
+  ###*
     @return {Object}
     @protected
   ###

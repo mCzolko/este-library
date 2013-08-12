@@ -455,3 +455,11 @@ suite 'este.Model', ->
       assert.notEqual roles, person.getClone 'roles'
       person.getClone('roles').push 'superuser'
       assert.deepEqual roles, person.getClone 'roles'
+
+  suite 'inNew', ->
+    test 'should return true for model without ID', ->
+      assert.isTrue person.isNew()
+
+    test 'should return false for model with ID', ->
+      person.set 'id', 123
+      assert.isFalse person.isNew()

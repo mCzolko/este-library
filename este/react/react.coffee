@@ -44,7 +44,6 @@ este.react.syntaxSugarize = (proto) ->
 
 ###*
   Allow to use this.h3 'Foo' instead of verbose React.DOM.h3 null, 'Foo'.
-  Autobind methods.
   @param {Function} factory
   @return {function(*=, *=): React.ReactComponent}
   @private

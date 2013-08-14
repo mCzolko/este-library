@@ -239,7 +239,8 @@ class este.Router extends este.Base
     return false if goog.global.history?.length == 1
     !!goog.dom.getAncestor e.target, (node) =>
       return false if !goog.dom.isElement node
-      node.hasAttribute 'e-router-back-button'
+      node.hasAttribute('e-router-back-button') ||
+      node.hasAttribute('data-e-router-back-button')
     , true
 
   ###*

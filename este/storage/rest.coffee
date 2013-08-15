@@ -39,19 +39,6 @@ class este.storage.Rest extends este.storage.Base
       'Content-Type': 'application/json;charset=utf-8'
 
   ###*
-    @param {string} url
-    @param {string=} id
-    @protected
-  ###
-  getRestUrl: (url, id) ->
-    restUrl = goog.uri.utils.appendPath @namespace, url
-    if id
-      restUrl = goog.uri.utils.appendPath restUrl, id
-    if @queryParams
-      restUrl = goog.uri.utils.appendParamsFromMap restUrl, @queryParams
-    restUrl
-
-  ###*
     @override
   ###
   addInternal: (model, url) ->
@@ -97,10 +84,25 @@ class este.storage.Rest extends este.storage.Base
   ###
   queryInternal: (collection, url, params) ->
     restUrl = @getRestUrl url
+    if params
+      restUrl = goog.uri.utils.appendParamsFromMap restUrl, params
     result = goog.labs.net.xhr.getJson restUrl, @xhrOptions
     goog.result.waitOnSuccess result, (array) ->
       collection.reset array
     result
+
+  ###*
+    @param {string} url
+    @param {string=} id
+    @protected
+  ###
+  getRestUrl: (url, id) ->
+    restUrl = goog.uri.utils.appendPath @namespace, url
+    if id
+      restUrl = goog.uri.utils.appendPath restUrl, id
+    if @queryParams
+      restUrl = goog.uri.utils.appendParamsFromMap restUrl, @queryParams
+    restUrl
 
   ###*
     @param {goog.result.Result} result

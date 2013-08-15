@@ -27,6 +27,11 @@ suite 'este.storage.Rest', ->
       url = rest.getRestUrl 'bla', '1'
       assert.equal url, 'foo/bla/1'
 
-    test 'should append id', ->
+    test 'should not append id', ->
       url = rest.getRestUrl 'bla', ''
       assert.equal url, 'foo/bla'
+
+    test 'should not append id but should append query params', ->
+      rest = new Rest namespace, 1, 'foo': 'bla'
+      url = rest.getRestUrl 'bla', ''
+      assert.equal url, 'foo/bla?foo=bla'

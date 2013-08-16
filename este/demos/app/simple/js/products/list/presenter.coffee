@@ -14,9 +14,8 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
     @extends {este.app.Presenter}
   ###
   constructor: ->
-    @products = new este.demos.app.simple.products.Collection
     super()
-    @view = new este.demos.app.simple.products.list.View @products
+    @view = new este.demos.app.simple.products.list.View
 
   ###*
     @override
@@ -27,7 +26,7 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
     result = new goog.result.SimpleResult
     setTimeout =>
       # fixtures
-      @products.reset [
+      products = new este.demos.app.simple.products.Collection [
         'id': 0
         'name': 'products/0'
         'description': 'slow loading, 6s'
@@ -40,14 +39,14 @@ class este.demos.app.simple.products.list.Presenter extends este.app.Presenter
         'name': 'products/2'
         'description': '2s loading'
       ]
-      result.setValue null
+      result.setValue products
     , 1000
     result
 
   ###*
     @override
   ###
-  disposeInternal: ->
-    super()
-    @products.dispose()
+  show: (result) ->
+    @view.products = (`/** @type {este.demos.app.simple.products.Collection} */`) result.
+      getValue()
     return

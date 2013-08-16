@@ -14,11 +14,11 @@ class este.storage.Base
 
   ###*
     @param {string} namespace
-    @param {string=} version
+    @param {string|number=} version
     @constructor
   ###
   constructor: (@namespace = '', version) ->
-    @version = version if version?
+    @version = version.toString() if version?
 
   ###*
     @type {string}

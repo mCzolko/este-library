@@ -68,7 +68,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
 
   createFooter: ->
     getClassIfSelected = (state) =>
-      return 'selected' if @props['filter'] == state
+      return 'selected' if @props['state'] == state
       ''
 
     @footer 'className': 'footer', [

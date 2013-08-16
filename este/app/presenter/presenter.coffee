@@ -10,6 +10,7 @@ goog.provide 'este.app.Presenter'
 
 goog.require 'este.app.View'
 goog.require 'este.Base'
+goog.require 'goog.net.HttpStatus'
 goog.require 'goog.result'
 
 class este.app.Presenter extends este.Base
@@ -69,12 +70,13 @@ class este.app.Presenter extends este.Base
   ###*
     Called on successful load.
     @param {boolean} isNavigation
+    @param {goog.result.Result} result
   ###
-  beforeShow: (isNavigation) ->
+  beforeShow: (isNavigation, result) ->
     return if !@view
     @view.createUrl = @createUrl
     @view.redirect = @redirect
-    @show()
+    @show result
     @screen.show @view, isNavigation
 
   ###*
@@ -88,9 +90,10 @@ class este.app.Presenter extends este.Base
   ###*
     You can use this method to pass data into view or start watching view model
     events. This method should be overridden.
+    @param {goog.result.Result} result
     @protected
   ###
-  show: ->
+  show: (result) ->
 
   ###*
     You can use this method to stop watching view model events. This method
@@ -98,6 +101,35 @@ class este.app.Presenter extends este.Base
     @protected
   ###
   hide: ->
+
+  ###*
+    @param {!goog.result.Result} result
+    @param {Function} onSuccess
+    @protected
+  ###
+  onResult: (result, onSuccess) ->
+    goog.result.waitOnSuccess result, =>
+      onSuccess.call @
+    goog.result.waitOnError result, (error) =>
+      @dispatchEvent
+        type: 'error'
+        error: error
+
+  ###*
+    @param {!este.Collection} collection
+    @param {!goog.result.Result} result
+    @protected
+  ###
+  tryGetFirst: (collection, result) ->
+    returnResult = new goog.result.SimpleResult
+    goog.result.waitOnError result, returnResult.setError
+    goog.result.waitOnSuccess result, =>
+      first = collection.at 0
+      if !first
+        returnResult.setError goog.net.HttpStatus.NOT_FOUND
+        return
+      returnResult.setValue first
+    returnResult
 
   ###*
     @override

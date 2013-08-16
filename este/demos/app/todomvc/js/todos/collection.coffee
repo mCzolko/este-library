@@ -17,6 +17,11 @@ class este.demos.app.todomvc.todos.Collection extends este.Collection
     super array
 
   ###*
+    @type {?string}
+  ###
+  state: null
+
+  ###*
     @override
   ###
   model: este.demos.app.todomvc.todos.Model
@@ -49,11 +54,10 @@ class este.demos.app.todomvc.todos.Collection extends este.Collection
     @getRemainingCount() == 0
 
   ###*
-    @param {string} state
     @return {Array.<Object>}
   ###
-  filterByState: (state) ->
-    switch state
+  filterByState: ->
+    switch @state
       when 'active'
         @filter 'completed': false
       when 'completed'

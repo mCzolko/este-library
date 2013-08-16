@@ -15,7 +15,7 @@ class este.storage.Rest extends este.storage.Base
 
   ###*
     @param {string} namespace
-    @param {string=} version
+    @param {string|number=} version
     @param {Object=} queryParams
     @constructor
     @extends {este.storage.Base}
@@ -46,9 +46,10 @@ class este.storage.Rest extends este.storage.Base
     data = model.toJson true
     data = este.json.stringify data
     result = goog.labs.net.xhr.postJson restUrl, data, @xhrOptions
-    goog.result.waitOnSuccess result, (json) ->
+    goog.result.transform result, (json) ->
       model.set json
-    result
+      model
+
 
   ###*
     @override
@@ -57,19 +58,24 @@ class este.storage.Rest extends este.storage.Base
     id = model.getId()
     restUrl = @getRestUrl url, id
     result = goog.labs.net.xhr.getJson restUrl, @xhrOptions
-    goog.result.waitOnSuccess result, (json) ->
+    goog.result.transform result, (json) ->
       model.set json
-    result
+      model
 
   ###*
     @override
+    @suppress {accessControls} Workaround for addJsonParsingCallbacks_.
   ###
   saveInternal: (model, url) ->
     id = model.getId()
     restUrl = @getRestUrl url, id
     data = model.toJson true
     data = este.json.stringify data
-    goog.labs.net.xhr.send 'PUT', restUrl, data, @xhrOptions
+    result = goog.labs.net.xhr.send 'PUT', restUrl, data, @xhrOptions
+    jsonResult = goog.labs.net.xhr.addJsonParsingCallbacks_ result, @xhrOptions
+    goog.result.transform jsonResult, (json) ->
+      model.set json
+      model
 
   ###*
     @override
@@ -77,7 +83,8 @@ class este.storage.Rest extends este.storage.Base
   removeInternal: (model, url) ->
     id = model.getId()
     restUrl = @getRestUrl url, id
-    goog.labs.net.xhr.send 'DELETE', restUrl, null, @xhrOptions
+    result = goog.labs.net.xhr.send 'DELETE', restUrl, null, @xhrOptions
+    goog.result.transform result, -> model
 
   ###*
     @override
@@ -87,9 +94,9 @@ class este.storage.Rest extends este.storage.Base
     if params
       restUrl = goog.uri.utils.appendParamsFromMap restUrl, params
     result = goog.labs.net.xhr.getJson restUrl, @xhrOptions
-    goog.result.waitOnSuccess result, (array) ->
-      collection.reset array
-    result
+    goog.result.transform result, (json) ->
+      collection.reset json
+      collection
 
   ###*
     @param {string} url

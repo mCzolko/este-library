@@ -16,7 +16,7 @@ class este.storage.Local extends este.storage.Base
 
   ###*
     @param {string} namespace
-    @param {string=} version
+    @param {string|number=} version
     @param {goog.storage.mechanism.Mechanism=} mechanism
     @param {function():string=} idFactory
     @constructor
@@ -58,7 +58,7 @@ class este.storage.Local extends este.storage.Base
     json = models[id]
     return goog.result.failedResult() if !json
     model.set json
-    goog.result.successfulResult id
+    goog.result.successfulResult model
 
   ###*
     @override
@@ -70,7 +70,7 @@ class este.storage.Local extends este.storage.Base
     models = if serializedModels then este.json.parse serializedModels else {}
     models[id] = model.toJson true
     @saveModels models, url
-    goog.result.successfulResult id
+    goog.result.successfulResult model
 
   ###*
     @override
@@ -82,7 +82,7 @@ class este.storage.Local extends este.storage.Base
       if models && models[id]
         delete models[id]
         @saveModels models, url
-        return goog.result.successfulResult id
+        return goog.result.successfulResult model
     goog.result.failedResult()
 
   ###*
@@ -92,7 +92,7 @@ class este.storage.Local extends este.storage.Base
     models = @loadModels url
     array = (model for id, model of models)
     collection.reset array
-    goog.result.successfulResult params
+    goog.result.successfulResult collection
 
   ###*
     @param {este.Model} model

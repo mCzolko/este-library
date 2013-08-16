@@ -18,36 +18,22 @@ class este.demos.app.todomvc.todos.list.Presenter extends este.app.Presenter
     @view = new este.demos.app.todomvc.todos.list.View
 
   ###*
-    Filter parsed from URL. Example: #/active.
-    @type {string}
-    @protected
-  ###
-  filter: ''
-
-  ###*
-    Collection used for loading.
-    @type {este.demos.app.todomvc.todos.Collection}
-    @protected
-  ###
-  todos: null
-
-  ###*
     Load collection for view.
     @override
   ###
   load: (params) ->
-    @filter = params['filter'] || ''
-    @todos = new este.demos.app.todomvc.todos.Collection
-    @storage.query @todos
+    todos = new este.demos.app.todomvc.todos.Collection
+    todos.state = params['state']
+    @storage.query todos
 
   ###*
     If load was successful and not canceled, then we can set view's filter and
     todos properties and register collection update event.
     @override
   ###
-  show: ->
-    @view.filter = @filter
-    @view.todos = @todos
+  show: (result) ->
+    @view.todos = (`/** @type {este.demos.app.todomvc.todos.Collection} */`) result.
+      getValue()
     @on @view.todos, 'update', @onViewTodosUpdate
 
   ###*

@@ -9,11 +9,10 @@ goog.require 'este.demos.app.simple.products.list.templates'
 class este.demos.app.simple.products.list.View extends este.app.View
 
   ###*
-    @param {este.demos.app.simple.products.Collection} products
     @constructor
     @extends {este.app.View}
   ###
-  constructor: (@products) ->
+  constructor: ->
     super()
 
   ###*

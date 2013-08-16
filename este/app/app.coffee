@@ -285,20 +285,21 @@ class este.App extends este.Base
     @queue.clear()
     switch result.getState()
       when goog.result.Result.State.SUCCESS
-        @onSuccessLoad request
+        @onSuccessLoad request, result
       when goog.result.Result.State.ERROR
         @onFailedLoad request, result
     return
 
   ###*
     @param {este.app.Request} request
+    @param {goog.result.Result} result
     @protected
   ###
-  onSuccessLoad: (request) ->
+  onSuccessLoad: (request, result) ->
     @handlePreviousRequest()
     @previousRequest = request
     @dispatchAppEvent App.EventType.SHOW, request
-    request.presenter.beforeShow request.isNavigation
+    request.presenter.beforeShow request.isNavigation, result
     @updateLocation request
 
   ###*
@@ -307,14 +308,30 @@ class este.App extends este.Base
     @protected
   ###
   onFailedLoad: (request, result) ->
+    error = result.getError()
     if result.isCanceled()
       if @showAlertOnError
         @window.alert App.MSG_REQUEST_TIMEOUT
-      @dispatchAppEvent App.EventType.TIMEOUT, request, result.getError()
+      @dispatchAppEvent App.EventType.TIMEOUT, request, error
+      return
+    notFoundRoute = @tryGetNotFoundRoute error
+    if notFoundRoute
+      @load notFoundRoute.presenter, null, true
       return
     if @showAlertOnError
       @window.alert App.MSG_REQUEST_ERROR
-    @dispatchAppEvent App.EventType.ERROR, request, result.getError()
+    @dispatchAppEvent App.EventType.ERROR, request, error
+
+  ###*
+    @param {*} error
+    @return {este.app.Route}
+    @protected
+  ###
+  tryGetNotFoundRoute: (error) ->
+    return null if error != 404
+    route = @routes[@routes.length - 1]
+    return null if route.path != '*'
+    route
 
   ###*
     @protected

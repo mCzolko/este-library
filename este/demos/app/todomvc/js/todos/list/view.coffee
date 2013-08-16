@@ -17,11 +17,6 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
     super()
 
   ###*
-    @type {string}
-  ###
-  filter: ''
-
-  ###*
     @type {este.demos.app.todomvc.todos.Collection}
   ###
   todos: null
@@ -121,11 +116,11 @@ class este.demos.app.todomvc.todos.list.View extends este.app.View
 
     props =
       'doneCount': length - remainingCount
-      'filter': @filter
       'itemsLeftLocalized': @getItemsLeftLocalized remainingCount
-      'showBodyAndFooter': length > 0
       'remainingCount': remainingCount
-      'todos': @todos.filterByState @filter
+      'showBodyAndFooter': length > 0
+      'state': @todos.state || ''
+      'todos': @todos.filterByState()
 
     if !@react
       @react = este.demos.app.todomvc.todos.list.react props

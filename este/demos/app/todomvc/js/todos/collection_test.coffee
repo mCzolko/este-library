@@ -60,11 +60,14 @@ suite 'este.demos.app.todomvc.todos.Collection', ->
       ]
       collection = new Collection json
 
-      completed = collection.filterByState 'completed'
+      collection.state = 'completed'
+      completed = collection.filterByState()
       assert.lengthOf completed, 1
 
+      collection.state = 'active'
       active = collection.filterByState 'active'
       assert.lengthOf active, 1
 
-      all = collection.filterByState 'all'
+      collection.state = null
+      all = collection.filterByState()
       assert.lengthOf all, 2

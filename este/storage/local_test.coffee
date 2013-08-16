@@ -54,10 +54,10 @@ suite 'este.storage.Local', ->
         id: 'fok'
       local.save model
 
-    test 'should return success result with id', (done) ->
+    test 'should return success result', (done) ->
       result = local.save model
       goog.result.waitOnSuccess result, (value) ->
-        assert.equal value, 'someUniqueId'
+        assert.equal value, model
         done()
 
   suite 'load', ->
@@ -80,12 +80,13 @@ suite 'este.storage.Local', ->
         done()
       local.load model
 
-    test 'should return success result with id', (done) ->
+    test 'should return success result', (done) ->
       mechanism.get = (key) -> '{"123":{"foo":"bla"}}'
       model.id = '123'
       result = local.load model
       goog.result.waitOnSuccess result, (value) ->
-        assert.equal value, '123'
+        assert.equal value, model
+        assert.equal value.getId(), '123'
         done()
 
     test 'should return error result if storage does not exists', (done) ->
@@ -116,7 +117,8 @@ suite 'este.storage.Local', ->
       model.id = '123'
       result = local.remove model
       goog.result.waitOnSuccess result, (value) ->
-        assert.equal value, '123'
+        assert.equal value, model
+        assert.equal value.getId(), '123'
         done()
 
     test 'should return error result if storage does not exists', (done) ->
@@ -150,5 +152,5 @@ suite 'este.storage.Local', ->
       params = {}
       result = local.query collection, params
       goog.result.waitOnSuccess result, (value) ->
-        assert.equal value, params
+        assert.equal value, collection
         done()

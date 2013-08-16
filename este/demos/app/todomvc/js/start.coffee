@@ -13,7 +13,7 @@ este.demos.app.todomvc.start = ->
   todoApp = este.app.create 'todoapp', forceHash: true
   todoApp.storage = new este.storage.Local 'todos-este'
   todoApp.addRoutes
-    '/:filter?': new este.demos.app.todomvc.todos.list.Presenter
+    '/:state?': new este.demos.app.todomvc.todos.list.Presenter
   todoApp.run()
 
 # ensures the symbol will be visible after compiler renaming

@@ -281,7 +281,7 @@ class este.ui.Scrollbar extends este.ui.Component
 
     # TODO: Try fix Firefox, it needs real mouse move.
     isMacFirefox =
-      goog.labs.userAgent.platform.isMac() &&
+      goog.labs.userAgent.platform.isMacintosh() &&
       goog.labs.userAgent.browser.isFirefox()
     isIeLess9 =
       goog.labs.userAgent.browser.isIE() &&

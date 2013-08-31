@@ -36,9 +36,8 @@ este.ui.userAgent.features =
   'e-ua-platform-iphone': goog.labs.userAgent.platform.isIphone()
   'e-ua-platform-ipod': goog.labs.userAgent.platform.isIpod()
   'e-ua-platform-linux': goog.labs.userAgent.platform.isLinux()
-  'e-ua-platform-mac': goog.labs.userAgent.platform.isMac()
+  'e-ua-platform-mac': goog.labs.userAgent.platform.isMacintosh()
   'e-ua-platform-windows': goog.labs.userAgent.platform.isWindows()
-  'e-ua-platform-x11': goog.labs.userAgent.platform.isX11()
 
 do ->
   for feature, enabled of este.ui.userAgent.features

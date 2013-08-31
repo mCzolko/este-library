@@ -463,3 +463,12 @@ suite 'este.Model', ->
     test 'should return false for model with ID', ->
       person.set 'id', 123
       assert.isFalse person.isNew()
+
+  suite 'set', ->
+    test 'should accept function for setting complex values', (done) ->
+      person.set 'array', []
+      goog.events.listenOnce person, 'change', (e) ->
+        assert.deepEqual array: [1], e.changed
+        assert.deepEqual [1], person.get 'array'
+        done()
+      person.set 'array', (array) -> array.push 1

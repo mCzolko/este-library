@@ -22,26 +22,11 @@
 
   How to modify nested models?
 
-  Make a method for it. For example, ```user.addRole role``` instead of
   ```user.get('roles').add role```.
 
-  How to modify complex attributes?
+  How to modify complex models?
 
-  Model can have complex plain JSON attributes. Updating them can be a little
-  tricky. Remeber to use getClone method.
-
-  Example:
-
-  ```coffee
-  addRole: (role) ->
-    # We need to get roles clone, not original array, to model be able to
-    # detect changes.
-    roles = this.getClone 'roles'
-    # Note we are dealing with plain JSON, not este.Model.
-    roles.push role
-    # Set dispatches changes, if any.
-    this.set 'roles', roles
-  ```
+  ```user.set 'tags', (tags) -> tags.push 'some tag'```
 
   @see /demos/model/model.html
   @see /demos/app/todomvc/index.html
@@ -230,6 +215,10 @@ class este.Model extends este.Base
   getChanges: (json) ->
     changes = null
     for key, value of json
+      if goog.isFunction value
+        clone = @getClone key
+        value clone
+        value = clone
       set = @schema[key]?.set
       value = set value if set
       continue if Model.equal value, @get key

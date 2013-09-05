@@ -189,7 +189,7 @@ class este.ui.Component extends goog.ui.Component
       return
 
     id = @getComponentListenableId src, type, fn, capture, handler
-    listenable = @componentListenables_[id]
+    listenable = @componentListenables_?[id]
     return if !listenable
     @getHandler().unlisten.apply @getHandler(), listenable
     delete @componentListenables_[id]

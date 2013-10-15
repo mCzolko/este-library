@@ -16,9 +16,11 @@
   <a href='/about'>about</a>
   ```
 
-  Back button. It calls history.back(), but only when its href attribute was
-  yet visited by router. This behavior ensures that back button works only
-  within application. Ajax back button should not leave the application.
+  Smart back button. It calls history.back() if there is any, otherwise it will
+  work as normal link. Typical scenario: Someone opens ajax link in new tab,
+  then back button redirects him to href, home or listing for example. If he
+  opens link in the same tab, then smart back button redirects him to previous
+  page.
 
   ```html
   <a e-router-back-button href='#/home'>back</a>
@@ -160,7 +162,10 @@ class este.Router extends este.Base
       item.path == path
 
   ###*
-    Suppress default anchor redirecting behaviour.
+    Suppress default anchor redirecting behaviour. If no touch-action attribute
+    is defined on target or its parents, then we need to delegate click to
+    onGestureHandlerTap handler.
+    https://github.com/Polymer/PointerEvents#basic-usage
     @param {goog.events.BrowserEvent} e
     @protected
   ###
@@ -169,19 +174,8 @@ class este.Router extends este.Base
     token = @tryGetToken e
     return if !token
     e.preventDefault()
-    # Delegate click to tap handler if target has no touch action attribute.
-    if !@targetHasTouchActionAttribute (`/** @type {Element} */`) e.target
+    if !@gestureHandler.targetIsTouchActionEnabled e.target
       @onGestureHandlerTap e, token
-
-  ###*
-    @param {Element} element
-    @return {boolean}
-    @protected
-  ###
-  targetHasTouchActionAttribute: (element) ->
-    !!goog.dom.getAncestor element, (item) ->
-      item.hasAttribute && item.hasAttribute 'touch-action'
-    , true
 
   ###*
     @param {goog.events.BrowserEvent} e

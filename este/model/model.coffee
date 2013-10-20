@@ -14,17 +14,7 @@
   - strings are better for uncompiled attributes from DOM, storages etc.
   - http://www.devthought.com/2012/01/18/an-object-is-not-a-hash
 
-  Client ID
-
-  _cid is temporary session id. It's erased when you close your browser.
-  It's used for HTML rendering, it starts with ':'. For local storage
-  persistence is used este.storage.Local unique-enough ID.
-
-  How to modify nested models?
-
-  ```user.get('roles').add role```.
-
-  How to modify complex models?
+  How to modify complex properties?
 
   ```user.set 'tags', (tags) -> tags.push 'some tag'```
 

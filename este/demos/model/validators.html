@@ -28,8 +28,15 @@
   </form>
   <p id="output"></p>
   <script>
-    var model = new este.Model;
-    model.schema = {
+
+    // Use CoffeeScript for nicer syntax.
+    var Person = function(json) {
+      este.Model.call(this, json);
+    };
+
+    goog.inherits(Person, este.Model);
+
+    Person.prototype.schema = {
       name: {
         validators: [
           este.validators.required()
@@ -49,23 +56,34 @@
     };
 
     var validate = function() {
+      var json = getSerializedForm();
+      var joe = new Person(json);
+      var errors = joe.validate(json);
+      showErrors(errors);
+    }
+
+    var getSerializedForm = function() {
       var inputs = form.getElementsByTagName('input');
       var json = {};
       for (var i = 0; i < inputs.length; i++) {
         var input = inputs[i];
         json[input.name] = input.value;
       }
+      return json;
+    };
+
+    var showErrors = function(errors) {
       output.innerHTML = '';
-      var errors = model.set(json);
       if (!errors) return;
       for (var i = 0; i < errors.length; i++) {
         output.innerHTML += errors[i].key + ': ' + errors[i].getMsg() + '<br>';
       }
-    }
+    };
 
     form.oninput = function(e) {
       validate();
     };
+
     validate();
 
   </script>

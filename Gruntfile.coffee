@@ -78,7 +78,6 @@ module.exports = (grunt) ->
           'bower.json'
         ]
         commitFiles: ['-a']
-        pushTo: 'master'
 
     'npm-contributors':
       options:

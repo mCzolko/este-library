@@ -1,8 +1,7 @@
 /**
- * @fileoverview Externs for React 0.4.0
+ * @fileoverview Externs for React 0.5.0.
  *
- * @see http://facebook.github.io/react/
- * @see http://facebook.github.io/react/docs/api.html
+ * @see http://facebook.github.io/react
  * @externs
  */
 
@@ -13,14 +12,14 @@
 var React = {};
 
 /**
+ * @type {string}
+ */
+React.version;
+
+/**
  * @param {boolean} shouldUseTouch
  */
 React.initializeTouchEvents = function(shouldUseTouch) {};
-
-/**
- * @param {Function} method
- */
-React.autoBind = function(method) {};
 
 /**
  * @param {Object} specification
@@ -32,16 +31,23 @@ React.autoBind = function(method) {};
 React.createClass = function(specification) {};
 
 /**
+ * @param {*} componentClass
+ * @return {boolean}
+ */
+React.isValidClass = function(componentClass) {};
+
+/**
  * @param {React.ReactComponent} container
  * @param {Element} mountPoint
+ * @param {Function=} callback
  * @return {React.ReactComponent}
  */
-React.renderComponent = function(container, mountPoint) {};
+React.renderComponent = function(container, mountPoint, callback) {};
 
 /**
  * @param {Element} container
  */
-React.unmountAndReleaseReactRootNode = function(container) {};
+React.unmountComponentAtNode = function(container) {};
 
 /**
  * @param {React.ReactComponent} component
@@ -77,8 +83,9 @@ React.ReactComponent.prototype.propTypes;
 
 /**
  * @param {Object} nextProps
+ * @param {Function=} callback
  */
-React.ReactComponent.prototype.setProps = function(nextProps) {};
+React.ReactComponent.prototype.setProps = function(nextProps, callback) {};
 
 /**
  * @return {Object}
@@ -110,21 +117,24 @@ React.ReactComponent.prototype.replaceProps = function(nextProps) {};
 React.ReactComponent.prototype.transferPropsTo = function(targetComponent) {};
 
 /**
+ * @param {Function=} callback
  * @protected
  */
-React.ReactComponent.prototype.forceUpdate = function() {};
+React.ReactComponent.prototype.forceUpdate = function(callback) {};
 
 /**
  * @param {Object} nextState
+ * @param {Function=} callback
  * @protected
  */
-React.ReactComponent.prototype.setState = function(nextState) {};
+React.ReactComponent.prototype.setState = function(nextState, callback) {};
 
 /**
  * @param {Object} nextState
+ * @param {Function=} callback
  * @protected
  */
-React.ReactComponent.prototype.replaceState = function(nextState) {};
+React.ReactComponent.prototype.replaceState = function(nextState, callback) {};
 
 /**
  * @param {Element} element

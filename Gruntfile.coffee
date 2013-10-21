@@ -116,26 +116,25 @@ module.exports = (grunt) ->
     src = grunt.file.read 'bower_components/react/react.min.js'
     desc = """
       ###*
-        @fileoverview Facebook React UI library incorporated into Este.
-        Supported browsers: all evergreen and IE9+. To support IE8, add
-        https://github.com/kriskowal/es5-shim.
+        @fileoverview Facebook React UI library incorporated into Este. Remember to
+        use externs for advanced compilation.
 
-        Learn React.
+        Supported browsers:
+
+        - all evergreen and IE9+.
+        - to support IE8, add [es5-shim](https://github.com/kriskowal/es5-shim)
+
+        @see /demos/thirdparty/react/index.html
         @see http://facebook.github.io/react
-
-        React demos:
-        @see bower_components/este-library/este/demos/thirdparty/react/index.html
-
-        Remember to use externs for advanced compilation demo.
         @see https://github.com/steida/este/blob/master/Gruntfile.coffee
-
-        Copyright 2013 Facebook, Inc.
       ###
       goog.provide 'este.thirdParty.react'
 
       goog.globalEval #{JSON.stringify src}
-      # Hint for compiler dead code removal. Prevents src duplication.
-      # GZip probably can't reduce such a long string.
+
+      # Hint for compiler dead code removal, it prevents src duplication.
+      # How to test it: Try compile Este default app.start.
+      # grunt build --stage // should be around 25kb.
       goog.globalEval ';'
     """
     grunt.file.write 'este/thirdparty/react.coffee', desc

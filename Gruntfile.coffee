@@ -1,13 +1,5 @@
 module.exports = (grunt) ->
 
-  depsDirs = [
-    'bower_components/closure-library'
-    'bower_components/closure-templates'
-    'este'
-  ]
-  depsPath = 'build/deps.js'
-  depsPrefix = '../../../../'
-
   grunt.initConfig
 
     clean:
@@ -41,21 +33,25 @@ module.exports = (grunt) ->
     esteDeps:
       all:
         options:
-          outputFile: depsPath
-          prefix: depsPrefix
-          root: depsDirs
+          outputFile: 'build/deps.js'
+          prefix: '../../../../'
+          root: [
+            'bower_components/closure-library'
+            'bower_components/closure-templates'
+            'este'
+          ]
 
     esteUnitTests:
       app:
         options:
-          depsPath: depsPath
-          prefix: depsPrefix
+          depsPath: '<%= esteDeps.all.options.outputFile %>'
+          prefix: '<%= esteDeps.all.options.prefix %>'
         src: 'este/**/*_test.js'
 
     esteBuilder:
       options:
-        root: depsDirs
-        depsPath: depsPath
+        root: '<%= esteDeps.all.options.root %>'
+        depsPath: '<%= esteDeps.all.options.outputFile %>'
         compilerFlags: [
           # You will love advanced compilation with verbose warning level.
           '--output_wrapper="(function(){%output%})();"'

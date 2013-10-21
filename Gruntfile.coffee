@@ -71,15 +71,13 @@ module.exports = (grunt) ->
           namespace: '*'
           outputFilePath: 'build/all.js'
 
-    release:
+    bump:
       options:
-        bump: true
-        add: true
-        commit: true
-        tag: true
-        push: true
-        pushTags: true
-        npm: false
+        files: [
+          'package.json'
+          'bower.json'
+        ]
+        commitFiles: ['-a']
 
     'npm-contributors':
       options:
@@ -90,12 +88,12 @@ module.exports = (grunt) ->
     changelog:
       options: {}
 
+  grunt.loadNpmTasks 'grunt-bump'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-conventional-changelog'
   grunt.loadNpmTasks 'grunt-este'
   grunt.loadNpmTasks 'grunt-npm'
-  grunt.loadNpmTasks 'grunt-release'
 
   grunt.registerTask 'test', ->
     grunt.task.run [

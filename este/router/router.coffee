@@ -215,7 +215,7 @@ class este.Router extends este.Base
     token = ''
     goog.dom.getAncestor e.target, (node) =>
       return false if !goog.dom.isElement node
-      return true if node.hasAttribute 'e-router-ignore'
+      return true if node.hasAttribute('e-router-ignore') || node.hasAttribute('data-e-router-ignore')
       return true if node.getAttribute('href')?.indexOf('http') == 0
       # http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml?showone=Protocol#Protocol
       return true if node.getAttribute('href')?.indexOf('//') == 0

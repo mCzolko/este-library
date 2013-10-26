@@ -71,10 +71,12 @@ module.exports = (grunt) ->
           namespace: '*'
           outputFilePath: 'build/all.js'
 
-    release:
+    bump:
       options:
-        files: ['package.json', 'bower.json']
         commitFiles: ['-a']
+        files: ['package.json', 'bower.json']
+        pushTo: 'origin'
+        tagName: '%VERSION%'
 
     'npm-contributors':
       options:

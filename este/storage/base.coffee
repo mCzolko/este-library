@@ -79,10 +79,11 @@ class este.storage.Base
   ###*
     @param {este.Collection} collection
     @param {Object=} params
+    @param {string=} url
     @return {!goog.result.Result}
   ###
-  query: (collection, params) ->
-    url = @getUrl null, collection
+  query: (collection, params, url) ->
+    url ?= @getUrl null, collection
     @queryInternal collection, url, params
 
   ###*

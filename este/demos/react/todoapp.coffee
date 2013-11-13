@@ -19,16 +19,17 @@ este.demos.react.todoApp = este.react.create (`/** @lends {React.ReactComponent.
   render: ->
     @div [
       este.demos.react.todoList 'items': @state['items']
-      if @state['items'].length
-        @p "#{@state['items'].length} items."
-      @form 'onSubmit': @onFormSubmit, [
-        @input
-          'onChange': @onChange
-          'value': @state['text']
-          'autoFocus': true
-          'ref': 'textInput'
-        @button "Add ##{@state['items'].length + 1}"
-      ]
+      @createSubmitForm()
+    ]
+
+  createSubmitForm: ->
+    @form 'onSubmit': @onFormSubmit, [
+      @input
+        'onChange': @onChange
+        'value': @state['text']
+        'autoFocus': true
+        'ref': 'textInput'
+      @button "Add ##{@state['items'].length + 1}"
     ]
 
   onFormSubmit: (e) ->

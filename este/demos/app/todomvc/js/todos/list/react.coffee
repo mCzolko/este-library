@@ -9,18 +9,15 @@ goog.require 'este.react'
 este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
 
   render: ->
-    # DIV, because React doesn't support returning array of children yet.
     @div [
-      @createHeader()
+      @renderHeader()
       if @props['showBodyAndFooter'] then [
-        @createMain()
-        @createFooter()
+        @renderMain()
+        @renderFooter()
       ]
     ]
 
-  # Remember to name your HTML factories with 'create' prefix to distinguish
-  # header element from header factory method.
-  createHeader: ->
+  renderHeader: ->
     @header 'className': 'header', [
       @h1 'todos'
       @form 'className': 'new-todo-form', [
@@ -32,7 +29,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
       ]
     ]
 
-  createMain: ->
+  renderMain: ->
     @section 'className': 'main', [
       @input
         'checked': @props['remainingCount'] == 0
@@ -40,10 +37,10 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
         'type': 'checkbox'
       @label 'htmlFor': 'toggle-all', 'Mark all as complete'
       @ul 'className': 'todo-list',
-        @props['todos'].map @createTodoItem, @
+        @props['todos'].map @renderTodoItem, @
     ]
 
-  createTodoItem: (todo) ->
+  renderTodoItem: (todo) ->
     props =
       'data-e-model-cid': todo['_cid']
       'className': do ->
@@ -66,7 +63,7 @@ este.demos.app.todomvc.todos.list.react = este.react.create (`/** @lends {React.
         'defaultValue': todo['title']
     ]
 
-  createFooter: ->
+  renderFooter: ->
     getClassIfSelected = (state) =>
       return 'selected' if @props['state'] == state
       ''

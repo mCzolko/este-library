@@ -105,9 +105,9 @@ React.ReactComponent.prototype.getDOMNode = function() {};
 
 /**
  * @param {Object} nextProps
- * @protected
+ * @param {Function=} callback
  */
-React.ReactComponent.prototype.replaceProps = function(nextProps) {};
+React.ReactComponent.prototype.replaceProps = function(nextProps, callback) {};
 
 /**
  * @param {React.ReactComponent} targetComponent

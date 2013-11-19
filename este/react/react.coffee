@@ -5,6 +5,7 @@
 goog.provide 'este.react'
 goog.provide 'este.react.create'
 goog.provide 'este.react.render'
+goog.provide 'este.react.unmount'
 
 goog.require 'este.array'
 goog.require 'este.thirdParty.react'
@@ -30,6 +31,13 @@ este.react.create = (proto) ->
 ###
 este.react.render = (component, container) ->
   React.renderComponent component, container
+
+###*
+  Unmount component at node
+  @param {Element} container
+###
+este.react.unmount = (container) ->
+  React.unmountComponentAtNode container
 
 ###*
   Copy React.DOM methods into React component prototype.

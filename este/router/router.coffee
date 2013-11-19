@@ -249,6 +249,8 @@ class este.Router extends este.Base
       try
         matched = route.process token, isNavigation, firstRouteMatched
         firstRouteMatched = true if matched
+      catch e
+        #ensure IE executes the finally section
       finally
         continue
     return

@@ -2,7 +2,7 @@
   "name": "este-library",
   "version": "5.1.3",
   "dependencies": {
-    "closure-compiler": "http://closure-compiler.googlecode.com/files/compiler-latest.zip",
+    "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     "closure-library": "git://github.com/steida/google-closure-library.git",
     "closure-templates": "http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
     "stylus-nib": "git://github.com/visionmedia/nib.git",

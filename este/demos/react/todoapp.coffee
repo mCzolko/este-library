@@ -10,34 +10,25 @@ este.demos.react.todoApp = este.react.create (`/** @lends {React.ReactComponent.
 
   getDefaultProps: ->
     'items': []
-    'text': ''
-
-  getInitialState: ->
-    'items': @props['items']
-    'text': @props['text']
 
   render: ->
     @div [
-      este.demos.react.todoList 'items': @state['items']
+      este.demos.react.todoList 'items': @props['items']
       @createSubmitForm()
     ]
 
   createSubmitForm: ->
     @form 'onSubmit': @onFormSubmit, [
       @input
-        'onChange': @onChange
-        'value': @state['text']
         'autoFocus': true
         'ref': 'textInput'
-      @button "Add ##{@state['items'].length + 1}"
+      @button "Add ##{@props['items'].length + 1}"
     ]
 
+  # For real app this method should be out of the component.
   onFormSubmit: (e) ->
     e.preventDefault()
-    @setState
-      'items': @state['items'].concat [@state['text']]
-      'text': ''
-    @refs['textInput'].getDOMNode().focus()
-
-  onChange: (e) ->
-    @setState 'text': e.target.value
+    textInput = @refs['textInput'].getDOMNode()
+    @setProps 'items': @props['items'].concat textInput.value.trim()
+    textInput.value = ''
+    textInput.focus()

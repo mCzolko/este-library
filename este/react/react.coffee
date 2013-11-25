@@ -33,6 +33,15 @@ este.react.render = (component, container) ->
   React.renderComponent component, container
 
 ###*
+ Render React component to string.
+ @param {React.ReactComponent} component
+ @param {function(S):?} callback
+ @template S
+###
+este.react.renderToString = (component, callback) ->
+ React.renderComponentToString component, callback
+
+###*
   Unmount component at node
   @param {Element} container
 ###

@@ -1,6 +1,6 @@
 {
   "name": "este-library",
-  "version": "5.1.7",
+  "version": "5.1.8",
   "description": "Library for github.com/steida/este.git",
   "author": "Daniel Steigerwald <daniel@steigerwald.cz>",
   "private": true,

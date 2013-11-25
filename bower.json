@@ -5,7 +5,9 @@
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     "closure-library": "git://github.com/steida/google-closure-library.git",
     "closure-templates": "http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
+    "pointerevents-polyfill": "git://github.com/Polymer/PointerEvents.git",
+    "react": "~0.5.0",
     "stylus-nib": "git://github.com/visionmedia/nib.git",
-    "react": "~0.5.0"
+    "weakmap": "git://github.com/Polymer/WeakMap.git"
   }
 }

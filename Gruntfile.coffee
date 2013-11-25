@@ -114,7 +114,7 @@ module.exports = (grunt) ->
 
         Supported browsers:
 
-        - all evergreen and IE9+.
+        - all evergreen and IE9+
         - to support IE8, add [es5-shim](https://github.com/kriskowal/es5-shim)
 
         @see /demos/thirdparty/react/index.html
@@ -127,7 +127,33 @@ module.exports = (grunt) ->
 
       # Hint for compiler dead code removal, it prevents src duplication.
       # How to test it: Try compile Este default app.start.
-      # grunt build --stage // should be around 25kb.
+      # grunt build --stage // should be around 25KB.
       goog.globalEval ';'
     """
     grunt.file.write 'este/thirdparty/react.coffee', desc
+
+  grunt.registerTask 'incorporatePointerEvents', ->
+    src = grunt.file.read 'bower_components/pointerevents-polyfill/pointerevents.min.js'
+    desc = """
+      ###*
+        @fileoverview Polymer PointerEvents polyfill incorporated into Este.
+
+        Supported browsers:
+
+        - all evergreen and IE10+
+
+        @see http://www.polymer-project.org/platform/pointer-events.html
+      ###
+      goog.provide 'este.thirdParty.pointerEvents'
+
+      goog.require 'goog.userAgent'
+
+      este.thirdParty.pointerEvents.install = ->
+        return if goog.userAgent.IE && !goog.userAgent.isVersionOrHigher 10
+        goog.globalEval #{JSON.stringify src}
+
+      # Hint for compiler dead code removal, it prevents src duplication.
+      # grunt build --stage // should be around 8.6KB.
+      goog.globalEval ';'
+    """
+    grunt.file.write 'este/thirdparty/pointerevents.coffee', desc

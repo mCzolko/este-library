@@ -137,19 +137,20 @@ module.exports = (grunt) ->
     desc = """
       ###*
         @fileoverview Polymer PointerEvents polyfill incorporated into Este.
-
-        Supported browsers:
-
-        - all evergreen and IE10+
-
         @see http://www.polymer-project.org/platform/pointer-events.html
       ###
       goog.provide 'este.thirdParty.pointerEvents'
 
       goog.require 'goog.userAgent'
 
+      ###*
+        @return {boolean}
+      ###
+      este.thirdParty.pointerEvents.isSupported = ->
+        !goog.userAgent.IE || goog.userAgent.isVersionOrHigher 10
+
       este.thirdParty.pointerEvents.install = ->
-        return if goog.userAgent.IE && !goog.userAgent.isVersionOrHigher 10
+        return if !este.thirdParty.pointerEvents.isSupported()
         goog.globalEval #{JSON.stringify src}
 
       # Hint for compiler dead code removal, it prevents src duplication.

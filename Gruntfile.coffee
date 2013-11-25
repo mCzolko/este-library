@@ -149,8 +149,16 @@ module.exports = (grunt) ->
       este.thirdParty.pointerEvents.isSupported = ->
         !goog.userAgent.IE || goog.userAgent.isVersionOrHigher 10
 
+      ###*
+        @type {boolean}
+        @private
+      ###
+      este.thirdParty.pointerEvents.installed_ = false
+
       este.thirdParty.pointerEvents.install = ->
         return if !este.thirdParty.pointerEvents.isSupported()
+        return if este.thirdParty.pointerEvents.installed_
+        este.thirdParty.pointerEvents.installed_ = true
         goog.globalEval #{JSON.stringify src}
 
       # Hint for compiler dead code removal, it prevents src duplication.

@@ -14,7 +14,6 @@ goog.provide 'este.History'
 
 goog.require 'este.Base'
 goog.require 'este.history.TokenTransformer'
-goog.require 'este.mobile'
 goog.require 'este.string'
 goog.require 'goog.dom'
 goog.require 'goog.History'
@@ -65,12 +64,6 @@ class este.History extends este.Base
     @protected
   ###
   history: null
-
-  ###*
-    @type {goog.events.EventHandler}
-    @protected
-  ###
-  handler: null
 
   ###*
     @type {boolean}

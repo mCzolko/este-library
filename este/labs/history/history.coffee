@@ -19,8 +19,6 @@
 goog.provide 'este.labs.History'
 
 goog.require 'este.history.TokenTransformer'
-goog.require 'este.string'
-goog.require 'goog.dom'
 goog.require 'goog.History'
 goog.require 'goog.history.Html5History'
 goog.require 'goog.labs.userAgent.platform'

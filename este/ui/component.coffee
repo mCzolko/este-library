@@ -121,22 +121,21 @@ class este.ui.Component extends goog.ui.Component
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
-    @param {Object=} handler Object in whose scope to call the listener.
     @param {boolean=} once
     @protected
   ###
-  on: (src, type, fn, capture, handler, once) ->
+  on: (src, type, fn, capture, once) ->
     if goog.isArray type
-      @on src, t, fn, capture, handler for t in type
+      @on src, t, fn, capture for t in type
       return
 
-    id = @getComponentListenableId src, type, fn, capture, handler
+    id = @getComponentListenableId src, type, fn, capture
     return if @componentListenables_?[id]
 
     if once
-      fn = do (src, type, fn, capture, handler) ->
+      fn = do (src, type, fn, capture) ->
         (e) ->
-          @off src, type, fn, capture, handler
+          @off src, type, fn, capture
           fn.call @, e
 
     useEventDelegation = goog.isString src
@@ -155,11 +154,11 @@ class este.ui.Component extends goog.ui.Component
       fn = Component.wrapListenerForEventDelegation fn, selector
 
     @componentListenables_ ?= {}
-    @componentListenables_[id] = [src, type, fn, capture, handler]
+    @componentListenables_[id] = [src, type, fn, capture]
 
     type = (`/** @type {string} */`) type
     src = (`/** @type {goog.events.ListenableType} */`) src
-    @getHandler().listen src, type, fn, capture, handler
+    @getHandler().listen src, type, fn, capture
     return
 
   ###*
@@ -168,11 +167,10 @@ class este.ui.Component extends goog.ui.Component
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
-    @param {Object=} handler Object in whose scope to call the listener.
     @protected
   ###
-  once: (src, type, fn, capture, handler) ->
-    @on src, type, fn, capture, handler, true
+  once: (src, type, fn, capture) ->
+    @on src, type, fn, capture, true
 
   ###*
     @param {goog.events.ListenableType|string} src Event source.
@@ -180,15 +178,14 @@ class este.ui.Component extends goog.ui.Component
       or array of event types.
     @param {Function} fn Optional callback function to be used as the listener.
     @param {boolean=} capture Optional whether to use capture phase.
-    @param {Object=} handler Object in whose scope to call the listener.
     @protected
   ###
-  off: (src, type, fn, capture, handler) ->
+  off: (src, type, fn, capture) ->
     if goog.isArray type
-      @off src, t, fn, capture, handler for t in type
+      @off src, t, fn, capture for t in type
       return
 
-    id = @getComponentListenableId src, type, fn, capture, handler
+    id = @getComponentListenableId src, type, fn, capture
     listenable = @componentListenables_?[id]
     return if !listenable
     @getHandler().unlisten.apply @getHandler(), listenable
@@ -204,13 +201,12 @@ class este.ui.Component extends goog.ui.Component
   ###*
     @protected
   ###
-  getComponentListenableId: (src, type, fn, capture, handler) ->
+  getComponentListenableId: (src, type, fn, capture) ->
     [
       if goog.isString(src) then src else goog.getUid src
       type
       goog.getUid fn
       capture
-      if handler then goog.getUid(handler) else handler
     ].join()
 
   ###*

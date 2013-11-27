@@ -107,9 +107,9 @@ class este.events.EventHandler extends goog.events.EventHandler
   ###*
     @override
   ###
-  listen: (src, type, opt_fn, opt_capture, opt_handler) ->
+  listen: (src, type, opt_fn, opt_capture) ->
     if goog.isArray type
-      @listen src, t, opt_fn, opt_capture, opt_handler for t in type
+      @listen src, t, opt_fn, opt_capture for t in type
       return @
 
     type = (`/** @type {string} */`) type
@@ -118,14 +118,14 @@ class este.events.EventHandler extends goog.events.EventHandler
     if handlerClass
       src = EventHandler.lazyCreateHandler src, handlerClass
 
-    super src, type, opt_fn, opt_capture, opt_handler
+    super src, type, opt_fn, opt_capture
 
   ###*
     @override
   ###
-  unlisten: (src, type, opt_fn, opt_capture, opt_handler) ->
+  unlisten: (src, type, opt_fn, opt_capture) ->
     if goog.isArray type
-      @listen src, t, opt_fn, opt_capture, opt_handler for t in type
+      @listen src, t, opt_fn, opt_capture for t in type
       return @
 
     type = (`/** @type {string} */`) type
@@ -137,7 +137,7 @@ class este.events.EventHandler extends goog.events.EventHandler
       src = EventHandler.getHandler src, handlerClass
       return @ if !src
 
-    super src, type, opt_fn, opt_capture, opt_handler
+    super src, type, opt_fn, opt_capture
 
     if handlerClass && !src.hasListener()
       EventHandler.removeHandler originalSrc, handlerClass

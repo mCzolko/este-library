@@ -93,7 +93,7 @@ class este.labs.ui.Baseliner extends goog.ui.Component
 
   ###*
     @param {Node} link
-    @return {boolean}
+    @return {number}
     @protected
   ###
   getLinkIndex: (link) ->

@@ -1,9 +1,9 @@
 ###*
-  @fileoverview este.labs.Route.
+  @fileoverview este.labs.app.Route.
 ###
-goog.provide 'este.labs.Route'
+goog.provide 'este.labs.app.Route'
 
-class este.labs.Route
+class este.labs.app.Route
 
   ###*
     @param {string|Array.<string>} path
@@ -14,16 +14,20 @@ class este.labs.Route
     @pathToRegExp()
 
   ###*
+    @param {Array.<este.labs.app.Route>} routes
+    @param {string} url
+    @return {este.labs.app.Route}
+  ###
+  @match: (routes, url) ->
+    for route in routes
+      return route if route.match url
+    null
+
+  ###*
     @type {string|Array.<string>}
     @protected
   ###
   path: null
-
-  ###*
-    @type {RegExp}
-    @protected
-  ###
-  regexp: null
 
   ###*
     @type {Array.<Object>}
@@ -32,13 +36,25 @@ class este.labs.Route
   keys: null
 
   ###*
-    Get params from url.
+    @type {RegExp}
+    @protected
+  ###
+  regexp: null
+
+  ###*
+    @param {string} url
+    @return {boolean}
+  ###
+  match: (url) ->
+    !!@getMatches url
+
+  ###*
     @param {string} url
     @return {Object}
   ###
-  getParams: (url) ->
+  parseParams: (url) ->
     matches = @getMatches url
-    return {} unless matches
+    return null if !matches
     params = null
     for match, i in matches
       continue if !i
@@ -56,11 +72,10 @@ class este.labs.Route
     params
 
   ###*
-    Create url from params.
     @param {(Object|Array)} params
     @return {string}
   ###
-  getUrl: (params) ->
+  createUrl: (params) ->
     url = @path
     if Array.isArray params
       index = 0

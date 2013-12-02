@@ -1,5 +1,5 @@
 ###*
-  @fileoverview este.labs.app.Controller.
+  @fileoverview Base controller.
 ###
 goog.provide 'este.labs.app.Controller'
 
@@ -20,7 +20,8 @@ class este.labs.app.Controller
   route: '/'
 
   ###*
-    @type {function(): React.ReactComponent}
+    @type {function(Object): React.ReactComponent}
+    @protected
   ###
   reactClass: este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
     render: ->
@@ -39,19 +40,27 @@ class este.labs.app.Controller
 
   ###*
     @type {React.ReactComponent}
+    @protected
   ###
-  react: null
+  reactComponent: null
+
+  ###*
+    @type {Element}
+    @protected
+  ###
+  reactElement: null
 
   ###*
     @type {Object.<string, Function>}
+    @protected
   ###
   handlers: null
 
   ###*
-    @param {Object} params
+    @type {boolean}
+    @private
   ###
-  load: (params) ->
-    goog.labs.Promise.resolve params
+  wasRendered_: false
 
   ###*
     @param {(Object|Array)} params
@@ -66,3 +75,56 @@ class este.labs.app.Controller
   ###
   redirect: (params) ->
     # new este.labs.app.Route(@route).createUrl params
+
+  ###*
+    @return {boolean}
+  ###
+  wasRendered: ->
+    @wasRendered_
+
+  ###*
+    @return {Element}
+  ###
+  getElement: ->
+    @reactElement || null
+
+  ###*
+    @param {Object} params
+  ###
+  load: (params) ->
+    goog.labs.Promise.resolve params
+
+  ###*
+    @param {Element} container
+    @param {Object} data
+  ###
+  show: (container, data) ->
+    if !@wasRendered_
+      @render container, data
+      @wasRendered_ = true
+      return
+    @reactComponent.setProps data
+
+  ###*
+    @param {Object} data
+  ###
+  hide: (data) ->
+
+  ###*
+    @param {Element} container
+    @param {Object=} data
+    @protected
+  ###
+  render: (container, data) ->
+    @reactComponent = @reactClass @getDataMixedWithHandlers data
+    este.react.render @reactComponent, container
+    @reactElement = @reactComponent.getDOMNode()
+
+  ###*
+    @param {Object=} data
+    @protected
+  ###
+  getDataMixedWithHandlers: (data) ->
+    mixed = {}
+    goog.object.extend mixed, data || {}, @handlers || {}
+    mixed

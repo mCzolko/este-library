@@ -1,5 +1,5 @@
 /**
- * @fileoverview Externs for React 0.5.0.
+ * @fileoverview Externs for React 0.5.1.
  *
  * @see http://facebook.github.io/react
  * @externs
@@ -99,7 +99,6 @@ React.ReactComponent.prototype.getDefaultProps = function() {};
 
 /**
  * @return {Element}
- * @protected
  */
 React.ReactComponent.prototype.getDOMNode = function() {};
 

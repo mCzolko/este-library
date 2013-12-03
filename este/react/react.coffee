@@ -27,10 +27,11 @@ este.react.create = (proto) ->
   Render React component.
   @param {React.ReactComponent} component
   @param {Element} container
+  @param {Function=} callback
   @return {React.ReactComponent} Component instance rendered in container.
 ###
-este.react.render = (component, container) ->
-  React.renderComponent component, container
+este.react.render = (component, container, callback = ->) ->
+  React.renderComponent component, container, callback
 
 ###*
  Render React component to string.

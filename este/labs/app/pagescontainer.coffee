@@ -28,9 +28,9 @@ class este.labs.app.PagesContainer
     @param {Object} data
   ###
   show: (controller, data) ->
-    if controller != @previousController
-      if @previousController
-        @container.removeChild @previousController.getElement()
+    if @previousController && @previousController != controller
+      @container.removeChild @previousController.getElement()
+      @previousController.hide()
       if controller.wasRendered()
         @container.appendChild controller.getElement()
     controller.show @container, data

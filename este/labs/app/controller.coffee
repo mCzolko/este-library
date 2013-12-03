@@ -89,35 +89,55 @@ class este.labs.app.Controller
     @reactElement || null
 
   ###*
+    TODO: Check return generics annotation.
+    This method can be overridden.
     @param {Object} params
+    @return {!goog.labs.Promise.<TYPE>}
+    @template TYPE
   ###
   load: (params) ->
     goog.labs.Promise.resolve params
 
   ###*
+    This method can be overridden.
     @param {Element} container
     @param {Object} data
   ###
   show: (container, data) ->
     if !@wasRendered_
-      @render container, data
+      @render container, data, => @onShow()
       @wasRendered_ = true
       return
-    @reactComponent.setProps data
+    @reactComponent.setProps data, => @onShow()
 
   ###*
-    @param {Object} data
+    This method can be overridden.
   ###
-  hide: (data) ->
+  hide: ->
+    @onHide()
+
+  ###*
+    This method can be overridden.
+    @protected
+  ###
+  onShow: ->
+
+  ###*
+    This method can be overridden.
+    @protected
+  ###
+  onHide: ->
 
   ###*
     @param {Element} container
-    @param {Object=} data
+    @param {Object} data
+    @param {Function} callback
     @protected
   ###
-  render: (container, data) ->
-    @reactComponent = @reactClass @getDataMixedWithHandlers data
-    este.react.render @reactComponent, container
+  render: (container, data, callback) ->
+    dataMixedWithHandlers = @getDataMixedWithHandlers data
+    @reactComponent = @reactClass dataMixedWithHandlers
+    este.react.render @reactComponent, container, callback
     @reactElement = @reactComponent.getDOMNode()
 
   ###*

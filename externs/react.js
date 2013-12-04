@@ -186,6 +186,28 @@ React.ReactComponent.prototype.componentDidUpdate = function(
 React.ReactComponent.prototype.componentWillUnmount = function() {};
 
 /**
+ * There is no such thing like ReactAtrribute, we just need to preserve
+ * some important prop namem after advanced compilation.
+ * @interface
+ */
+React.ReactAtrribute = function() {};
+
+/**
+ * @type {Object}
+ */
+React.ReactAtrribute.dangerouslySetInnerHTML;
+
+/**
+ * @type {string}
+ */
+React.ReactAtrribute.__html;
+
+/**
+ * @type {string}
+ */
+React.ReactAtrribute.key;
+
+/**
  * @type {Object}
  * @const
  */

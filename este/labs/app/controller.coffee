@@ -15,11 +15,6 @@ class este.labs.app.Controller
   constructor: ->
 
   ###*
-    @type {string}
-  ###
-  route: '/'
-
-  ###*
     @type {function(Object): React.ReactComponent}
     @protected
   ###
@@ -61,20 +56,6 @@ class este.labs.app.Controller
     @private
   ###
   wasRendered_: false
-
-  ###*
-    @param {(Object|Array)} params
-    @return {string}
-  ###
-  createUrl: (params) ->
-    new este.labs.app.Route(@route).createUrl params
-
-  ###*
-    @param {(Object|Array)} params
-    @return {string}
-  ###
-  redirect: (params) ->
-    # new este.labs.app.Route(@route).createUrl params
 
   ###*
     @return {boolean}

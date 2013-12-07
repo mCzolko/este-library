@@ -1,6 +1,6 @@
-suite 'este.labs.app.Route', ->
+suite 'este.labs.Route', ->
 
-  Route = este.labs.app.Route
+  Route = este.labs.Route
   testData = [
     path: 'user/:user'
     url: 'user/joe'
@@ -70,18 +70,18 @@ suite 'este.labs.app.Route', ->
           route = new Route data.path
           assert.isTrue route.match data.url
 
-    suite 'parseParams', ->
+    suite 'params', ->
       test 'should return params from url', ->
         for data in testData
           route = new Route data.path
-          params = route.parseParams data.url
+          params = route.params data.url
           assert.deepEqual params, data.params, data.url
 
-    suite 'createUrl', ->
+    suite 'url', ->
       test 'should return url from params', ->
         for data in testData
           route = new Route data.path
-          url = route.createUrl data.params
+          url = route.url data.params
           assert.equal url, data.url, data.url
 
   suite 'instance match', ->
@@ -94,13 +94,3 @@ suite 'este.labs.app.Route', ->
       assert.isFalse new Route('/:foo').match '/'
       assert.isTrue new Route('/users/:foo?').match '/users'
       assert.isTrue new Route('/users/:foo?').match '/users/foo'
-
-  suite 'static match', ->
-    test 'should work', ->
-      routes = [
-        a = new Route '/'
-        b = new Route '/foo'
-      ]
-      assert.equal a, Route.match routes, '/'
-      assert.equal b, Route.match routes, '/foo'
-      assert.isNull Route.match routes, '/bar'

@@ -6,8 +6,7 @@
   http://stackoverflow.com/questions/6421769/popstate-on-pages-load-in-chrome
   popState can be dispatched anytime during app lifetime, because window load
   waits for all images to be loaded. As workaround, we need to store last token
-  to prevent repeated navigate event dispatching. Also, remember to register
-  navigate event before setEnable call.
+  to prevent repeated navigate event dispatching.
 
   TODO: Describe pattern for html5 when client does not support it. Use case:
   Server renders '/drugs/humira' but client supports only '/#drugs/humira'.

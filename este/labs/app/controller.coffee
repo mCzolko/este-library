@@ -15,63 +15,54 @@ class este.labs.app.Controller
   constructor: ->
 
   ###*
+    React Class used for controller rendering.
     @type {function(Object): React.ReactComponent}
-    @protected
   ###
   reactClass: este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
     render: ->
       @pre goog.DEBUG && """
-        Warning: Missing React component.
+        Base controller reactClass output.
+        Add your own React component.
+        Example:
 
-        ###*
-          @constructor
-          @extends {este.labs.app.Controller}
-        ###
-        constructor: ->
-          @route = '/'
+        class app.home.Controller extends este.labs.app.Controller
 
-          # Define your React component here.
-          @reactClass = app.home.react.Index"""
+          ###*
+            @constructor
+            @extends {este.labs.app.Controller}
+          ###
+          constructor: ->
 
-  ###*
-    @type {React.ReactComponent}
-    @protected
-  ###
-  reactComponent: null
-
-  ###*
-    @type {Element}
-    @protected
-  ###
-  reactElement: null
+          ###*
+            @override
+          ###
+          reactClass: app.home.react.Home
+      """
 
   ###*
+    Handlers for React component. Will be mixed with data for first shown.
+    Should be defined in child constructor.
     @type {Object.<string, Function>}
-    @protected
   ###
   handlers: null
 
   ###*
-    @type {boolean}
-    @private
+    # TODO: Try const annotation.
+    @type {React.ReactComponent}
   ###
-  wasRendered_: false
+  react: null
 
   ###*
-    @return {boolean}
+    Manually stored React element because getDOMNode does not work, if
+    React component is not in document.
+    # TODO: Try const annotation.
+    @type {Element}
   ###
-  wasRendered: ->
-    @wasRendered_
+  reactElement: null
 
   ###*
-    @return {Element}
-  ###
-  getElement: ->
-    @reactElement || null
-
-  ###*
+    Load data for React and return them as Promise.
     TODO: Check return generics annotation.
-    This method can be overridden.
     @param {Object} params
     @return {!goog.labs.Promise.<TYPE>}
     @template TYPE
@@ -80,52 +71,11 @@ class este.labs.app.Controller
     goog.labs.Promise.resolve params
 
   ###*
-    This method can be overridden.
-    @param {Element} container
-    @param {Object} data
-  ###
-  show: (container, data) ->
-    if !@wasRendered_
-      @render container, data, => @onShow()
-      @wasRendered_ = true
-      return
-    @reactComponent.setProps data, => @onShow()
-
-  ###*
-    This method can be overridden.
-  ###
-  hide: ->
-    @onHide()
-
-  ###*
-    This method can be overridden.
-    @protected
+    Put show specific logic here. For example focus something.
   ###
   onShow: ->
 
   ###*
-    This method can be overridden.
-    @protected
+    Put hide specific logic here. For example disposing something.
   ###
   onHide: ->
-
-  ###*
-    @param {Element} container
-    @param {Object} data
-    @param {Function} callback
-    @protected
-  ###
-  render: (container, data, callback) ->
-    dataMixedWithHandlers = @getDataMixedWithHandlers data
-    @reactComponent = @reactClass dataMixedWithHandlers
-    este.react.render @reactComponent, container, callback
-    @reactElement = @reactComponent.getDOMNode()
-
-  ###*
-    @param {Object=} data
-    @protected
-  ###
-  getDataMixedWithHandlers: (data) ->
-    mixed = {}
-    goog.object.extend mixed, data || {}, @handlers || {}
-    mixed

@@ -3,74 +3,116 @@ suite 'este.labs.app.PagesContainer', ->
   PagesContainer = este.labs.app.PagesContainer
 
   container = null
+  containerElement = null
+  reactRender = null
+  controller = null
   data = null
-  containerEl = null
-  controllerA = null
-  controllerB = null
 
   setup ->
-    data = {}
-    containerEl =
-      appendChild: ->
-      removeChild: ->
-    container = new PagesContainer containerEl
+    containerElement = arrangeContainerElement()
+    reactRender = ->
+    container = arrangeContainer()
+    controller = arrangeController()
+    data = [1, 2]
+
+  arrangeContainerElement = ->
+    appendChild: ->
+    removeChild: ->
+
+  arrangeContainer = ->
+    container = new PagesContainer containerElement, reactRender
 
   arrangeController = ->
-    wasRendered: ->
-      @rendered
-    show: ->
-      @rendered = true
-    hide: ->
+    reactClass: -> arrangeReact()
+    onShow: ->
+    onHide: ->
 
-  arrangeControllersAandB = ->
-    controllerA = arrangeController()
-    controllerA.getElement = -> 1
-    controllerB = arrangeController()
+  arrangeReact = ->
+    toString: -> 'react'
+    getDOMNode: -> 'node'
+    setProps: ->
 
   suite 'show', ->
-    suite 'of not yet rendered controller', ->
-      test 'should call controller show', (done) ->
-        controller = arrangeController()
-        controller.show = (el, p_data) ->
-          assert.equal el, containerEl
-          assert.equal p_data, data
-          done()
+    suite 'not yet rendered controller', ->
+      test 'should create React instance with passed data', ->
+        controller.reactClass = (p_data) ->
+          assert.deepEqual p_data, data
+          arrangeReact()
+        container.show controller, data
+        assert.equal controller.react.toString(), 'react'
+
+      test 'should mix controller handlers', ->
+        controller.handlers = foo: -> @
+        controller.reactClass = (p_data) ->
+          assert.notEqual p_data, data
+          assert.isFunction p_data.foo
+          # Should not modify data.
+          assert.isUndefined data.foo
+          # Should set context to controller.
+          assert.equal p_data.foo(), controller
         container.show controller, data
 
-    suite 'of yet rendered controller', ->
-      test 'should add controller element to container', (done) ->
-        arrangeControllersAandB()
-        controllerB.getElement = -> 2
-        container.show controllerA, data
-        container.show controllerB, data
-        containerEl.appendChild = (node) ->
-          assert.equal node, 1
+      test 'should render React instance', (done) ->
+        reactRender = (component, parent, onComplete) ->
+          assert.equal component.toString(), 'react'
+          assert.equal parent, containerElement
+          onShowCalled = false
+          controller.onShow = -> onShowCalled = true
+          onComplete()
+          assert.equal controller.reactElement, 'node'
+          assert.isTrue onShowCalled
           done()
-        container.show controllerA, data
+        container = arrangeContainer()
+        container.show controller, data
 
-    suite 'of two different controllers', ->
-      test 'should remove previous controller element', (done) ->
-        arrangeControllersAandB()
-        container.show controllerA, data
-        containerEl.removeChild = (node) ->
-          assert.equal node, 1
+    suite 'next controller', ->
+      test 'should remove previous controller react element', (done) ->
+        controller.reactElement = 1
+        container.show controller, data
+        nextController = arrangeController()
+        containerElement.removeChild = (element) ->
+          assert.equal element, 1
           done()
-        container.show controllerB, data
+        container.show nextController
 
-      test 'should call hide on previous controller', (done) ->
-        arrangeControllersAandB()
-        container.show controllerA, data
-        controllerA.hide = ->
+      test 'should call onHide on previous controller', (done) ->
+        controller.onHide = -> done()
+        container.show controller, data
+        nextController = arrangeController()
+        container.show nextController
+
+      test 'should append controller react element if react is truthy', (done) ->
+        container.show controller, data
+        nextController = arrangeController()
+        nextController.react = arrangeReact()
+        nextController.reactElement = 'foo'
+        containerElement.appendChild = (element) ->
+          assert.equal element, 'foo'
           done()
-        container.show controllerB, data
+        container.show nextController
 
-    suite 'repeated on the same controllers', ->
-      test 'should not add nor remove controller element', ->
-        controllerA = arrangeController()
-        controllerA.getElement = ->
-        container.show controllerA, data
-        domChanged = false
-        containerEl.appendChild = -> domChanged = true
-        containerEl.removeChild = -> domChanged = true
-        container.show controllerA, data
-        assert.isFalse domChanged
+    suite 'the same controller twice', ->
+      test 'should not remove previous controller react element', ->
+        container.show controller, data
+        removeChildCalled = false
+        containerElement.removeChild = -> removeChildCalled = true
+        container.show controller, data
+        assert.isFalse removeChildCalled
+
+      test 'should not call onHide on previous controller', ->
+        container.show controller, data
+        onHideCalled = false
+        controller.onHide = -> onHideCalled = true
+        container.show controller
+        assert.isFalse onHideCalled
+
+    suite 'yet rendered controller', ->
+      test 'should call setProps with data', (done) ->
+        container.show controller, data
+        container.show arrangeController(), data
+        controller.onShow = -> done()
+        controller.react =
+          setProps: (p_data, onComplete) ->
+            assert.equal p_data, data
+            onComplete()
+        container.show controller, data

@@ -70,6 +70,7 @@ class este.labs.App
     routeController.controller.load(params).then (data) =>
       @pagesContainer.show routeController.controller, data
       # TODO: Check, should be always safe because it is ignored.
+      # Consider load with updateUrl option, that's ok.
       @history.setToken url
 
   ###*

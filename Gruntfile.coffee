@@ -78,12 +78,6 @@ module.exports = (grunt) ->
         pushTo: 'origin'
         tagName: '%VERSION%'
 
-    'npm-contributors':
-      options:
-        file: 'package.json'
-        commit: true
-        commitMessage: 'Update contributors'
-
     changelog:
       options: {}
 

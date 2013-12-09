@@ -47,11 +47,3 @@ suite 'este.net.ChunkedJsonp', ->
       arrange jsonpFactory, payload, (response) ->
         assert.equal response, 'reply'
         done()
-
-
-
-
-
-
-
-

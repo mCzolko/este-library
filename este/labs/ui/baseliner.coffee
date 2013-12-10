@@ -1,6 +1,5 @@
 ###*
   @fileoverview Align one element with anoter element via CSS3 animations.
-  TODO: consider better names then linksContainer, targetsContainer
 ###
 goog.provide 'este.labs.ui.Baseliner'
 
@@ -57,6 +56,14 @@ class este.labs.ui.Baseliner extends goog.ui.Component
   prevSelectedTarget: null
 
   ###*
+    Reset UI state.
+  ###
+  reset: ->
+    @prevY = 0
+    @setTargetsContainerStyle()
+    @setSelectedClasses null, null
+
+  ###*
     @override
   ###
   enterDocument: ->
@@ -82,14 +89,21 @@ class este.labs.ui.Baseliner extends goog.ui.Component
     @protected
   ###
   alignLinkWithItsTarget: (link) ->
-    target = @targetsContainer.children[@getLinkIndex link]
+    linkIndex = @getLinkIndex link
+    target = @targetsContainer.children[(2 * linkIndex) + 1]
     @prevY = @getLinkAndTargetDiff(link, target) + @prevY
     return if !@prevY
+    @setTargetsContainerStyle()
+    @setSelectedClasses link, target
+
+  ###*
     # TODO: Fix wrong alignment. as result of click during animation.
+    @protected
+  ###
+  setTargetsContainerStyle: ->
     goog.style.setStyle @targetsContainer,
       'transition': '-webkit-transform .3s ease-in-out'
       'transform': "translateY(#{@prevY}px)"
-    @setSelectedClasses link, target
 
   ###*
     @param {Node} link
@@ -119,7 +133,10 @@ class este.labs.ui.Baseliner extends goog.ui.Component
       goog.dom.classlist.remove @prevSelectedLink, @selectedClassName
     if @prevSelectedTarget
       goog.dom.classlist.remove @prevSelectedTarget, @selectedClassName
+
     @prevSelectedLink = (`/** @type {Element} */`) link
     @prevSelectedTarget = (`/** @type {Element} */`) target
-    goog.dom.classlist.add @prevSelectedLink, @selectedClassName
-    goog.dom.classlist.add @prevSelectedTarget, @selectedClassName
+    if @prevSelectedLink
+      goog.dom.classlist.add @prevSelectedLink, @selectedClassName
+    if @prevSelectedTarget
+      goog.dom.classlist.add @prevSelectedTarget, @selectedClassName

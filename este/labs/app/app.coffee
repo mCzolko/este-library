@@ -44,9 +44,9 @@ class este.labs.App
       controller: controller
 
   ###*
-    Run app.
+    Start app.
   ###
-  run: ->
+  start: ->
     @registerEvents()
     @history.setEnabled true
     @load @history.getToken()

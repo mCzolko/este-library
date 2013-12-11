@@ -3,7 +3,6 @@
   PointerEvents to enable fast click on touch devices.
   Note, this trick does not work on iOS also sometimes we need zoom.
   https://plus.google.com/u/0/+RickByers/posts/ej7nsuoaaDa
-  @see TODO
 ###
 goog.provide 'este.labs.events.AnchorClickHandler'
 

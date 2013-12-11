@@ -7,6 +7,11 @@ suite 'este.labs.app.Controller', ->
   setup ->
     controller = new Controller
 
+  suite 'reactClass', ->
+    test 'should render default template', ->
+      react = controller.reactClass()
+      # TODO: Test methods, but now rendering because data-react-checksum.
+
   suite 'load', ->
     test 'should return resolved promise with params', (done) ->
       params = a: 1

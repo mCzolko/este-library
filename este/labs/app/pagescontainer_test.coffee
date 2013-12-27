@@ -107,12 +107,25 @@ suite 'este.labs.app.PagesContainer', ->
         assert.isFalse onHideCalled
 
     suite 'yet rendered controller', ->
-      test 'should call setProps with data', (done) ->
+      test 'should call setProps with data and onShow', ->
         container.show controller, data
         container.show arrangeController(), data
-        controller.onShow = -> done()
+        onShowCalled = false
+        controller.onShow = -> onShowCalled = true
         controller.react =
           setProps: (p_data, onComplete) ->
             assert.equal p_data, data
             onComplete()
         container.show controller, data
+        assert.isTrue onShowCalled
+
+      test 'should not call onShow on same controller', ->
+        container.show controller, data
+        onShowCalled = false
+        controller.onShow = -> onShowCalled = true
+        controller.react =
+          setProps: (p_data, onComplete) ->
+            assert.equal p_data, data
+            onComplete()
+        container.show controller, data
+        assert.isFalse onShowCalled

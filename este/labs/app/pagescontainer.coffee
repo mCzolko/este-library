@@ -32,6 +32,7 @@ class este.labs.app.PagesContainer
     @param {!Object} data
   ###
   show: (controller, data) ->
+
     if @previousController && @previousController != controller
       @element.removeChild @previousController.reactElement
       @previousController.onHide()
@@ -48,6 +49,9 @@ class este.labs.app.PagesContainer
         controller.reactElement = controller.react.getDOMNode()
         controller.onShow()
     else
-      controller.react.setProps data, -> controller.onShow()
+      sameController = controller == @previousController
+      controller.react.setProps data, ->
+        return if sameController
+        controller.onShow()
 
     @previousController = controller

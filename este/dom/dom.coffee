@@ -11,6 +11,7 @@ goog.require 'goog.dom'
 goog.require 'goog.dom.classlist'
 goog.require 'goog.dom.forms'
 goog.require 'goog.string'
+goog.require 'goog.Uri'
 
 ###*
   Check if node matches given simple selector. Only tag and class are
@@ -189,11 +190,27 @@ este.dom.forceBlur = ->
   , 0
 
 ###*
+  Check if click is useable for client side routing.
   @param {goog.events.BrowserEvent} e
   @return {boolean}
 ###
-este.dom.isRealMouseClick = (e) ->
-  e.isMouseActionButton() && !e.platformModifierKey
+este.dom.isRoutingClick = (e) ->
+  # Handle only primary mouse button.
+  return false if !e.isMouseActionButton()
+  # Handle only plain click without keys. On Chrome Mac shift opens link in
+  # new window, cmd in new tab, alt means download, ctrl emulates right click.
+  # Client side routing should ignore all these actions.
+  return false if e.platformModifierKey || e.altKey || e.shiftKey
+  # Ignore default prevented.
+  return false if e.getBrowserEvent().defaultPrevented
+  # Ignore anchor with target.
+  anchor = e.target
+  return false if anchor.target
+  # Ignore x-domain anchor.
+  locationUri = new goog.Uri window.location
+  anchorUri = new goog.Uri anchor.href
+  return false if !locationUri.hasSameDomainAs anchorUri
+  true
 
 ###*
   @param {Element} form

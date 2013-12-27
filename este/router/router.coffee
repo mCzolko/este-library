@@ -170,7 +170,7 @@ class este.Router extends este.Base
     @protected
   ###
   onGestureHandlerElementClick: (e) ->
-    return if !este.dom.isRealMouseClick e
+    return if !este.dom.isRoutingClick e
     token = @tryGetToken e
     return if !token
     e.preventDefault()

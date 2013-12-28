@@ -1,15 +1,16 @@
 ###*
-  @fileoverview Watch clicking on anchors elements. It uses Polymer
+  @fileoverview Click handler for client side routing. It uses Polymer
   PointerEvents to enable fast click on touch devices.
-  Note, this trick does not work on iOS also sometimes we need zoom.
+
+  Another trick, but this one does not work on iOS also sometimes we need zoom.
   https://plus.google.com/u/0/+RickByers/posts/ej7nsuoaaDa
 ###
-goog.provide 'este.labs.events.AnchorClickHandler'
+goog.provide 'este.labs.events.RoutingClickHandler'
 
 goog.require 'este.Base'
 goog.require 'este.thirdParty.pointerEvents'
 
-class este.labs.events.AnchorClickHandler extends este.Base
+class este.labs.events.RoutingClickHandler extends este.Base
 
   ###*
     @param {Element=} element
@@ -47,7 +48,7 @@ class este.labs.events.AnchorClickHandler extends este.Base
     e.preventDefault()
     return if este.thirdParty.pointerEvents.isSupported()
     # IE<10 does not support pointer events, so emulate it via click.
-    @dispatchClick anchor
+    @dispatchClick e, anchor
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -56,7 +57,7 @@ class este.labs.events.AnchorClickHandler extends este.Base
   onElementPointerUp: (e) ->
     anchor = @tryGetClickableAnchor e.target
     return if !anchor
-    @dispatchClick anchor
+    @dispatchClick e, anchor
 
   ###*
     @param {Node} node
@@ -67,10 +68,11 @@ class este.labs.events.AnchorClickHandler extends este.Base
     goog.dom.getAncestorByTagNameAndClass node, goog.dom.TagName.A
 
   ###*
+    @param {goog.events.BrowserEvent} e
     @param {Element} anchor
     @protected
   ###
-  dispatchClick: (anchor) ->
-    @dispatchEvent
-      type: goog.events.EventType.CLICK
-      target: anchor
+  dispatchClick: (e, anchor) ->
+    e.target = anchor
+    e.type = goog.events.EventType.CLICK
+    @dispatchEvent e

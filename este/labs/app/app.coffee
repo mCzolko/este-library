@@ -3,17 +3,18 @@
 ###
 goog.provide 'este.labs.App'
 
+goog.require 'este.dom'
 goog.require 'goog.events.EventHandler'
 
 class este.labs.App
 
   ###*
     @param {este.labs.History} history
-    @param {este.labs.events.AnchorClickHandler} anchorClickHandler
+    @param {este.labs.events.RoutingClickHandler} routingClickHandler
     @param {este.labs.app.PagesContainer} pagesContainer
     @constructor
   ###
-  constructor: (@history, @anchorClickHandler, @pagesContainer) ->
+  constructor: (@history, @routingClickHandler, @pagesContainer) ->
 
     ###*
       @type {goog.events.EventHandler}
@@ -79,7 +80,7 @@ class este.labs.App
   registerEvents: ->
     @eventHandler.listen @history, goog.history.EventType.NAVIGATE,
       @onHistoryNavigate
-    @eventHandler.listen @anchorClickHandler, goog.events.EventType.CLICK,
+    @eventHandler.listen @routingClickHandler, goog.events.EventType.CLICK,
       @onAnchorClickHandlerClick
 
   ###*

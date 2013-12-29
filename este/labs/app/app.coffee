@@ -56,9 +56,7 @@ class este.labs.App
     @param {string} url
   ###
   load: (url) ->
-    # TODO: Try parse null-{} resolution.
     routeController = goog.array.find @routesController, (item) ->
-      # TODO: Try routeController instead of item.
       item.route.match url
 
     if !routeController

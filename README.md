@@ -2,12 +2,12 @@
 
 Google Closure library written in CoffeeScript and powered by [Este](https://github.com/steida/este).
 
-  - Este MVC framework with canonical TodoMVC demo
-  - several UI components intented as tutorial
-  - mobile and offline support
-  - well documented sources
-  - a lot of simple demos
-  - etc.
+  - Este MVC framework with canonical TodoMVC example
+  - UI components
+  - support for mobile and touch devices
+  - integrated thirdparty libraries (Facebook React, Polymer PointerEvents)
+  - many useful utils, check source
+  - well documented with demos
 
 ## Why yet another library/MVC framework/utils whatever?
 

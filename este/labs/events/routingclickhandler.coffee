@@ -1,6 +1,8 @@
 ###*
-  @fileoverview Click handler for client side routing. It uses Polymer
-  PointerEvents to enable fast click on touch devices.
+  @fileoverview Click handler for client side routing.
+
+  - Handle only relevant anchors, see este.dom.isRoutingClick.
+  - Uses Polymer's PointerEvents to enable fast click on touch devices.
 
   Another trick, but this one does not work on iOS also sometimes we need zoom.
   https://plus.google.com/u/0/+RickByers/posts/ej7nsuoaaDa
@@ -8,6 +10,7 @@
 goog.provide 'este.labs.events.RoutingClickHandler'
 
 goog.require 'este.Base'
+goog.require 'este.dom'
 goog.require 'este.thirdParty.pointerEvents'
 
 class este.labs.events.RoutingClickHandler extends este.Base
@@ -32,7 +35,7 @@ class este.labs.events.RoutingClickHandler extends este.Base
     @protected
   ###
   registerEvents: ->
-    # To prevent default anchor redirection behavior.
+    # We need to listen click to be able to prevent anchor redirection.
     @on @element, goog.events.EventType.CLICK, @onElementClick
     return if !este.thirdParty.pointerEvents.isSupported()
     # Use pointerup for fast click.
@@ -43,36 +46,38 @@ class este.labs.events.RoutingClickHandler extends este.Base
     @protected
   ###
   onElementClick: (e) ->
-    anchor = @tryGetClickableAnchor e.target
+    anchor = @tryGetRoutingAnchor e
     return if !anchor
     e.preventDefault()
     return if este.thirdParty.pointerEvents.isSupported()
     # IE<10 does not support pointer events, so emulate it via click.
-    @dispatchClick e, anchor
+    @dispatchClick anchor
 
   ###*
     @param {goog.events.BrowserEvent} e
     @protected
   ###
   onElementPointerUp: (e) ->
-    anchor = @tryGetClickableAnchor e.target
+    anchor = @tryGetRoutingAnchor e
     return if !anchor
-    @dispatchClick e, anchor
-
-  ###*
-    @param {Node} node
-    @return {Element}
-    @protected
-  ###
-  tryGetClickableAnchor: (node) ->
-    goog.dom.getAncestorByTagNameAndClass node, goog.dom.TagName.A
+    @dispatchClick anchor
 
   ###*
     @param {goog.events.BrowserEvent} e
+    @return {Element}
+    @protected
+  ###
+  tryGetRoutingAnchor: (e) ->
+    return null if !este.dom.isRoutingEvent e
+    anchor = goog.dom.getAncestorByTagNameAndClass e.target, goog.dom.TagName.A
+    return null if !anchor || !este.dom.isRoutingAnchor anchor
+    anchor
+
+  ###*
     @param {Element} anchor
     @protected
   ###
-  dispatchClick: (e, anchor) ->
-    e.target = anchor
-    e.type = goog.events.EventType.CLICK
-    @dispatchEvent e
+  dispatchClick: (anchor) ->
+    @dispatchEvent
+      target: anchor
+      type: goog.events.EventType.CLICK

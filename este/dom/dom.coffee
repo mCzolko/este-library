@@ -195,16 +195,32 @@ este.dom.forceBlur = ->
   @return {boolean}
 ###
 este.dom.isRoutingClick = (e) ->
+  return false if !este.dom.isRoutingEvent e
+  return false if !este.dom.isRoutingAnchor (`/** @type {Element} */`) e.target
+  true
+
+###*
+  @param {goog.events.BrowserEvent} e
+  @return {boolean}
+###
+este.dom.isRoutingEvent = (e) ->
   # Handle only primary mouse button.
   return false if !e.isMouseActionButton()
   # Handle only plain click without keys. On Chrome Mac shift opens link in
   # new window, cmd in new tab, alt means download, ctrl emulates right click.
   # Client side routing should ignore all these actions.
-  return false if e.platformModifierKey || e.altKey || e.shiftKey
+  return false if e.ctrlKey || e.altKey || e.shiftKey || e.metaKey
   # Ignore default prevented.
+  # NOTE: Does not work with emulated pointer events from Polymer.
   return false if e.getBrowserEvent().defaultPrevented
+  true
+
+###*
+  @param {Element} anchor
+  @return {boolean}
+###
+este.dom.isRoutingAnchor = (anchor) ->
   # Ignore anchor with target.
-  anchor = e.target
   return false if anchor.target
   # Ignore x-domain anchor.
   locationUri = new goog.Uri window.location

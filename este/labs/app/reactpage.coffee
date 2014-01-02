@@ -1,28 +1,25 @@
 ###*
-  @fileoverview Base controller.
+  @fileoverview este.labs.app.ReactPage.
 ###
-goog.provide 'este.labs.app.Controller'
+goog.provide 'este.labs.app.ReactPage'
 
-goog.require 'este.labs.app.Route'
-goog.require 'goog.labs.Promise'
+goog.require 'este.labs.app.Page'
 goog.require 'este.react'
+goog.require 'goog.labs.Promise'
+goog.require 'goog.object'
 
-class este.labs.app.Controller
+class este.labs.app.ReactPage
 
   ###*
     @constructor
+    @implements {este.labs.app.Page}
   ###
   constructor: ->
 
   ###*
-    Handlers for React component. Will be mixed with data for first shown.
-    Has to be defined in constructor.
-    @type {Object.<string, Function>}
-  ###
-  handlers: null
-
-  ###*
+    Should be overridden in child constructor.
     @type {function(Object): React.ReactComponent}
+    @protected
   ###
   reactClass: este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
     render: ->
@@ -56,30 +53,68 @@ class este.labs.app.Controller
       """
 
   ###*
+    Can be overridden in child constructor.
+    @type {Object}
+    @protected
+  ###
+  pageProps: null
+
+  ###*
     @type {React.ReactComponent}
+    @protected
   ###
   react: null
 
   ###*
     @type {Element}
+    @protected
   ###
   reactElement: null
 
   ###*
-    Load data for React and return them as Promise.
-    @param {Object} params
-    @return {!goog.labs.Promise.<TYPE>}
-    @template TYPE
+    @override
   ###
   load: (params) ->
     goog.labs.Promise.resolve params
 
   ###*
-    Put show specific logic here. For example focus something.
+    @override
+  ###
+  show: (container, data) ->
+    # TODO: Check if React callback is really async.
+    if @react
+      @react.setProps data, => @onShow()
+      return
+
+    props = {}
+    goog.object.extend props, data
+    if @pageProps
+      for key, value of @pageProps
+        props[key] = if goog.isFunction value then value.bind @ else value
+    @react = @reactClass props
+    este.react.render @react, container, =>
+      @reactElement = @react.getDOMNode()
+      @onShow()
+    return
+
+  ###*
+    @protected
   ###
   onShow: ->
 
   ###*
-    Put hide specific logic here. For example disposing something.
+    @override
+  ###
+  hide: ->
+    @onHide()
+
+  ###*
+    @protected
   ###
   onHide: ->
+
+  ###*
+    @override
+  ###
+  getElement: ->
+    @reactElement

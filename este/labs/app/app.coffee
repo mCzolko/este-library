@@ -3,18 +3,19 @@
 ###
 goog.provide 'este.labs.App'
 
-goog.require 'este.dom'
+goog.require 'este.labs.app.Route'
 goog.require 'goog.events.EventHandler'
 
 class este.labs.App
 
   ###*
+    @param {Element} element
     @param {este.labs.History} history
     @param {este.labs.events.RoutingClickHandler} routingClickHandler
     @param {este.labs.app.PagesContainer} pagesContainer
     @constructor
   ###
-  constructor: (@history, @routingClickHandler, @pagesContainer) ->
+  constructor: (@element, @history, @routingClickHandler, @pagesContainer) ->
 
     ###*
       @type {goog.events.EventHandler}
@@ -26,7 +27,31 @@ class este.labs.App
       @type {Array}
       @protected
     ###
-    @routesController = []
+    @routesPages = []
+
+  ###*
+    @type {Element}
+    @protected
+  ###
+  element: null
+
+  ###*
+    @type {este.labs.History}
+    @protected
+  ###
+  history: null
+
+  ###*
+    @type {este.labs.events.RoutingClickHandler}
+    @protected
+  ###
+  routingClickHandler: null
+
+  ###*
+    @type {este.labs.app.PagesContainer}
+    @protected
+  ###
+  pagesContainer: null
 
   ###*
     @param {string} path
@@ -37,12 +62,12 @@ class este.labs.App
 
   ###*
     @param {este.labs.app.Route} route
-    @param {este.labs.app.Controller} controller
+    @param {este.labs.app.Page} page
   ###
-  add: (route, controller) ->
-    @routesController.push
+  add: (route, page) ->
+    @routesPages.push
       route: route
-      controller: controller
+      page: page
 
   ###*
     Start app.
@@ -56,18 +81,18 @@ class este.labs.App
     @param {string} url
   ###
   load: (url) ->
-    routeController = goog.array.find @routesController, (item) ->
-      item.route.match url
+    routePage = goog.array.find @routesPages, (routePage) ->
+      routePage.route.match url
 
-    if !routeController
+    if !routePage
       alert 404
       return
 
-    params = routeController.route.params url
+    params = routePage.route.params url
 
     # TODO: Add last click win.
-    routeController.controller.load(params).then (data) =>
-      @pagesContainer.show routeController.controller, data
+    routePage.page.load(params).then (data) =>
+      @pagesContainer.show routePage.page, @element, data
       # TODO: Check, should be always safe because it is ignored.
       # Consider load with updateUrl option, that's ok.
       @history.setToken url
@@ -79,7 +104,7 @@ class este.labs.App
     @eventHandler.listen @history, goog.history.EventType.NAVIGATE,
       @onHistoryNavigate
     @eventHandler.listen @routingClickHandler, goog.events.EventType.CLICK,
-      @onAnchorClickHandlerClick
+      @onRoutingClickHandlerClick
 
   ###*
     @param {goog.history.Event} e
@@ -94,5 +119,5 @@ class este.labs.App
     @param {goog.events.BrowserEvent} e
     @protected
   ###
-  onAnchorClickHandlerClick: (e) ->
+  onRoutingClickHandlerClick: (e) ->
     @load e.target.getAttribute 'href'

@@ -1,57 +1,33 @@
 ###*
-  @fileoverview Show controller, hide previous. Render their reactClasses.
+  @fileoverview Show page, hide previous.
 ###
 goog.provide 'este.labs.app.PagesContainer'
-
-goog.require 'este.react.render'
-goog.require 'goog.object'
 
 class este.labs.app.PagesContainer
 
   ###*
-    @param {Element} element
-    @param {Function=} reactRender
     @constructor
   ###
-  constructor: (@element, @reactRender = este.react.render) ->
+  constructor: ->
 
   ###*
-    @type {Element}
+    @type {este.labs.app.Page}
     @protected
   ###
-  element: null
+  previous: null
 
   ###*
-    @type {este.labs.app.Controller}
-    @protected
+    @param {!este.labs.app.Page} page
+    @param {Element} container
+    @param {Object} data
   ###
-  previousController: null
+  show: (page, container, data) ->
+    if @previous
+      @previous.hide()
+      container.removeChild @previous.getElement()
 
-  ###*
-    @param {!este.labs.app.Controller} controller
-    @param {!Object} data
-  ###
-  show: (controller, data) ->
+    if page.getElement()
+      container.appendChild page.getElement()
 
-    if @previousController && @previousController != controller
-      @element.removeChild @previousController.reactElement
-      @previousController.onHide()
-      if controller.react
-        @element.appendChild controller.reactElement
-
-    if !controller.react
-      if controller.handlers
-        data = goog.object.clone data
-        for name, handler of controller.handlers
-          data[name] = handler.bind controller
-      controller.react = controller.reactClass data
-      @reactRender controller.react, @element, ->
-        controller.reactElement = controller.react.getDOMNode()
-        controller.onShow()
-    else
-      sameController = controller == @previousController
-      controller.react.setProps data, ->
-        return if sameController
-        controller.onShow()
-
-    @previousController = controller
+    page.show container, data
+    @previous = page

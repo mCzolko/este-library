@@ -59,41 +59,23 @@ React.renderComponentToString = function(component, callback) {};
  * Constructs a component instance of `constructor` with `initialProps` and
  * renders it into the supplied `container`.
  *
- * @param {function} constructor React component constructor.
- * @param {?object} props Initial props of the component instance.
+ * @param {Function} constructor React component constructor.
+ * @param {Object} props Initial props of the component instance.
  * @param {Element} container DOM element to render into.
  * @return {React.ReactComponent} Component instance rendered in `container`.
  */
-React.constructAndRenderComponent: function(constructor, props, container) {};
-  
+React.constructAndRenderComponent = function(constructor, props, container) {};
+
 /**
  * Constructs a component instance of `constructor` with `initialProps` and
  * renders it into a container node identified by supplied `id`.
  *
- * @param {function} componentConstructor React component constructor
- * @param {?object} props Initial props of the component instance.
+ * @param {Function} componentConstructor React component constructor
+ * @param {Object} props Initial props of the component instance.
  * @param {string} id ID of the DOM element to render into.
  * @return {React.ReactComponent} Component instance rendered in the container node.
  */
-React.constructAndRenderComponentByID: function(constructor, props, id) {};
-
-/**
- * Temporarily extends the current context while executing scopedCallback.
- *
- * A typical use case might look like
- *
- *  render: function() {
- *    var children = ReactContext.withContext({foo: 'foo'} () => (
- *
- *    ));
- *    return <div>{children}</div>;
- *  }
- *
- * @param {object} newContext New context to merge into the existing context
- * @param {function} scopedCallback Callback to run with the new context
- * @return {React.ReactComponent|array<React.ReactComponent>}
- */
-React.withContext: function(newContext, scopedCallback) {};
+React.constructAndRenderComponentByID = function(componentConstructor, props, id) {};
 
 /**
  * @interface
@@ -890,7 +872,7 @@ React.ChainableTypeChecker.isRequired;
  * @type {React.ChainableTypeChecker}
  */
 React.ChainableTypeChecker.isRequired.weak;
- 
+
 /**
  * @type {Object}
  * @const

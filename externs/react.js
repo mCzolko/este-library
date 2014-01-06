@@ -56,6 +56,46 @@ React.unmountComponentAtNode = function(container) {};
 React.renderComponentToString = function(component, callback) {};
 
 /**
+ * Constructs a component instance of `constructor` with `initialProps` and
+ * renders it into the supplied `container`.
+ *
+ * @param {function} constructor React component constructor.
+ * @param {?object} props Initial props of the component instance.
+ * @param {Element} container DOM element to render into.
+ * @return {React.ReactComponent} Component instance rendered in `container`.
+ */
+React.constructAndRenderComponent: function(constructor, props, container) {};
+  
+/**
+ * Constructs a component instance of `constructor` with `initialProps` and
+ * renders it into a container node identified by supplied `id`.
+ *
+ * @param {function} componentConstructor React component constructor
+ * @param {?object} props Initial props of the component instance.
+ * @param {string} id ID of the DOM element to render into.
+ * @return {React.ReactComponent} Component instance rendered in the container node.
+ */
+React.constructAndRenderComponentByID: function(constructor, props, id) {};
+
+/**
+ * Temporarily extends the current context while executing scopedCallback.
+ *
+ * A typical use case might look like
+ *
+ *  render: function() {
+ *    var children = ReactContext.withContext({foo: 'foo'} () => (
+ *
+ *    ));
+ *    return <div>{children}</div>;
+ *  }
+ *
+ * @param {object} newContext New context to merge into the existing context
+ * @param {function} scopedCallback Callback to run with the new context
+ * @return {React.ReactComponent|array<React.ReactComponent>}
+ */
+React.withContext: function(newContext, scopedCallback) {};
+
+/**
  * @interface
  */
 React.ReactComponent = function() {};
@@ -77,9 +117,20 @@ React.ReactComponent.prototype.refs;
 
 /**
  * @type {Object}
+ */
+React.ReactComponent.prototype.context;
+
+/**
+ * @type {Object}
  * @protected
  */
 React.ReactComponent.prototype.propTypes;
+
+/**
+ * @type {Object}
+ * @protected
+ */
+React.ReactComponent.prototype.contextTypes;
 
 /**
  * @param {Object} nextProps
@@ -96,6 +147,11 @@ React.ReactComponent.prototype.getInitialState = function() {};
  * @return {Object}
  */
 React.ReactComponent.prototype.getDefaultProps = function() {};
+
+/**
+ * @return {Object}
+ */
+React.ReactComponent.prototype.getChildContext = function() {};
 
 /**
  * @return {Element}
@@ -776,6 +832,14 @@ React.DOM.path = function(props, children) {};
  * @return {React.ReactComponent}
  * @protected
  */
+React.DOM.polygon = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
 React.DOM.polyline = function(props, children) {};
 
 /**
@@ -801,3 +865,55 @@ React.DOM.svg = function(props, children) {};
  * @protected
  */
 React.DOM.text = function(props, children) {};
+
+/**
+ * @typedef {function(boolean, boolean, Object, string, string, string): boolean} React.ChainableTypeChecker
+ */
+React.ChainableTypeChecker;
+
+/**
+ * @type {React.ChainableTypeChecker}
+ */
+React.ChainableTypeChecker.weak;
+
+/**
+ * @type {React.ChainableTypeChecker}
+ */
+React.ChainableTypeChecker.weak.isRequired;
+
+/**
+ * @type {React.ChainableTypeChecker}
+ */
+React.ChainableTypeChecker.isRequired;
+
+/**
+ * @type {React.ChainableTypeChecker}
+ */
+React.ChainableTypeChecker.isRequired.weak;
+ 
+/**
+ * @type {Object}
+ * @const
+ */
+React.PropTypes = {
+      /** @type {React.ChainableTypeChecker} */
+      "array": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "boolean": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "func": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "number": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "object": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "string": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "oneOf": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "oneOfType": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "instanceOf": function () {},
+      /** @type {React.ChainableTypeChecker} */
+      "renderable": function () {}
+};

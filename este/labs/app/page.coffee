@@ -18,7 +18,7 @@ este.labs.app.Page::load
 ###*
   Show page. Implementer should lazily render view or update it.
   @param {Element} container
-  @param {Object} data View data for page.
+  @param {*} data View data for page.
 ###
 este.labs.app.Page::show
 

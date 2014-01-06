@@ -5,6 +5,7 @@ goog.provide 'este.labs.app.ReactPage'
 
 goog.require 'este.labs.app.Page'
 goog.require 'este.react'
+goog.require 'goog.asserts'
 goog.require 'goog.labs.Promise'
 goog.require 'goog.object'
 
@@ -81,6 +82,8 @@ class este.labs.app.ReactPage
     @override
   ###
   show: (container, data) ->
+    goog.asserts.assertObject data
+
     # TODO: Check if React callback is really async.
     if @react
       @react.setProps data, => @onShow()

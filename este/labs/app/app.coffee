@@ -4,6 +4,7 @@
 goog.provide 'este.labs.App'
 
 goog.require 'este.labs.app.Route'
+goog.require 'goog.asserts'
 goog.require 'goog.events.EventHandler'
 
 class este.labs.App
@@ -13,9 +14,15 @@ class este.labs.App
     @param {este.labs.History} history
     @param {este.labs.events.RoutingClickHandler} routingClickHandler
     @param {este.labs.app.PagesContainer} pagesContainer
+    @param {este.labs.app.UrlLoader} urlLoader
     @constructor
   ###
-  constructor: (@element, @history, @routingClickHandler, @pagesContainer) ->
+  constructor: (
+    @element,
+    @history,
+    @routingClickHandler,
+    @pagesContainer,
+    @urlLoader) ->
 
     ###*
       @type {goog.events.EventHandler}
@@ -83,19 +90,37 @@ class este.labs.App
   load: (url) ->
     routePage = goog.array.find @routesPages, (routePage) ->
       routePage.route.match url
+    goog.asserts.assert !!routePage, 'este.labs.App: RoutePage not found.'
 
-    if !routePage
-      alert 404
-      return
+    return null if !routePage
 
-    params = routePage.route.params url
+    @urlLoader.load url, ->
+      routePage.page.load routePage.route.params url
+    .then(
+      @onLoadFulfilled.bind @, url, routePage
+      @onLoadRejected.bind @, url
+    )
 
-    # TODO: Add last click win.
-    routePage.page.load(params).then (data) =>
-      @pagesContainer.show routePage.page, @element, data
-      # TODO: Check, should be always safe because it is ignored.
-      # Consider load with updateUrl option, that's ok.
-      @history.setToken url
+  ###*
+    @param {string} url
+    @param {Object} routePage
+    @param {*} value
+    @protected
+  ###
+  onLoadFulfilled: (url, routePage, value) ->
+    @pagesContainer.show routePage.page, @element, value
+    @history.setToken url
+    return
+
+  ###*
+    @param {string} url
+    @param {*} reason
+  ###
+  onLoadRejected: (url, reason) ->
+    # TODO: Handle timeout and error nicely.
+    #       Check reason type and isSilend.
+    # console.log url, reason
+    return
 
   ###*
     @protected

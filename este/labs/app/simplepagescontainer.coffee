@@ -20,9 +20,7 @@ class este.labs.app.SimplePagesContainer
   previous: null
 
   ###*
-    @param {!este.labs.app.Page} page
-    @param {Element} container
-    @param {Object} data
+    @override
   ###
   show: (page, container, data) ->
     if @previous

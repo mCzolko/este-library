@@ -82,6 +82,7 @@ class este.labs.app.ReactPage
     @override
   ###
   show: (container, data) ->
+    data ?= {}
     goog.asserts.assertObject data
 
     # TODO: Check if React callback is really async.

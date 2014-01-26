@@ -10,6 +10,7 @@ goog.require 'goog.labs.net.xhr'
 goog.require 'goog.object'
 goog.require 'goog.string'
 goog.require 'goog.uri.utils'
+goog.require 'goog.result.SimpleResult'
 
 class este.storage.Rest extends este.storage.Base
 
@@ -45,11 +46,11 @@ class este.storage.Rest extends este.storage.Base
     restUrl = @getRestUrl url
     data = model.toJson true
     data = este.json.stringify data
-    result = goog.labs.net.xhr.postJson restUrl, data, @xhrOptions
+    promise = goog.labs.net.xhr.postJson restUrl, data, @xhrOptions
+    result = goog.result.SimpleResult.fromPromise promise
     goog.result.transform result, (json) ->
       model.set json
       model
-
 
   ###*
     @override
@@ -57,23 +58,25 @@ class este.storage.Rest extends este.storage.Base
   loadInternal: (model, url) ->
     id = model.getId()
     restUrl = @getRestUrl url, id
-    result = goog.labs.net.xhr.getJson restUrl, @xhrOptions
+    promise = goog.labs.net.xhr.getJson restUrl, @xhrOptions
+    result = goog.result.SimpleResult.fromPromise promise
     goog.result.transform result, (json) ->
       model.set json
       model
 
   ###*
     @override
-    @suppress {accessControls} Workaround for addJsonParsingCallbacks_.
+    @suppress {accessControls} Workaround for parseJson_.
   ###
   saveInternal: (model, url) ->
     id = model.getId()
     restUrl = @getRestUrl url, id
     data = model.toJson true
     data = este.json.stringify data
-    result = goog.labs.net.xhr.send 'PUT', restUrl, data, @xhrOptions
-    jsonResult = goog.labs.net.xhr.addJsonParsingCallbacks_ result, @xhrOptions
-    goog.result.transform jsonResult, (json) ->
+    promise = goog.labs.net.xhr.send('PUT', restUrl, data, @xhrOptions).then (xhr) =>
+      goog.labs.net.xhr.parseJson_ xhr.responseText, @xhrOptions
+    result = goog.result.SimpleResult.fromPromise promise
+    goog.result.transform result, (json) ->
       model.set json
       model
 
@@ -83,7 +86,8 @@ class este.storage.Rest extends este.storage.Base
   removeInternal: (model, url) ->
     id = model.getId()
     restUrl = @getRestUrl url, id
-    result = goog.labs.net.xhr.send 'DELETE', restUrl, null, @xhrOptions
+    promise = goog.labs.net.xhr.send 'DELETE', restUrl, null, @xhrOptions
+    result = goog.result.SimpleResult.fromPromise promise
     goog.result.transform result, -> model
 
   ###*
@@ -93,7 +97,8 @@ class este.storage.Rest extends este.storage.Base
     restUrl = @getRestUrl url
     if params
       restUrl = goog.uri.utils.appendParamsFromMap restUrl, params
-    result = goog.labs.net.xhr.getJson restUrl, @xhrOptions
+    promise = goog.labs.net.xhr.getJson restUrl, @xhrOptions
+    result = goog.result.SimpleResult.fromPromise promise
     goog.result.transform result, (json) ->
       collection.reset json
       collection

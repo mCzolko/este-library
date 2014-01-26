@@ -29,6 +29,7 @@ class este.labs.ui.Baseliner
     setTimeout =>
       link = @linksContainer.querySelector '.' + @selectedClassName
       target = @targetsContainer.querySelector '.' + @selectedClassName
+      return if !link || !target
       goog.style.setStyle @targetsContainer, 'transform': 'translateY(0px)'
       @prevY = @getLinkAndTargetDiff(link, target) + @prevY
       @setTargetsContainerStyle()

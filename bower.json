@@ -1,6 +1,6 @@
 {
   "name": "este-library",
-  "version": "5.2.14",
+  "version": "5.2.15",
   "dependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     "closure-library": "git://github.com/steida/google-closure-library.git",

@@ -224,8 +224,7 @@ React.ReactComponent.prototype.componentDidUpdate = function(
 React.ReactComponent.prototype.componentWillUnmount = function() {};
 
 /**
- * There is no such thing like ReactAttribute, we just need to preserve
- * some React attributes after advanced compilation.
+ * Interface to preserve React attributes for advanced compilation.
  * @interface
  */
 React.ReactAtrribute = function() {};
@@ -249,6 +248,168 @@ React.ReactAtrribute.key;
  * @type {string}
  */
 React.ReactAtrribute.ref;
+
+// http://facebook.github.io/react/docs/events.html
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onCopy;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onCut;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onPaste;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onKeyDown;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onKeyPress;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onKeyUp;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onFocus;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onBlur;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onChange;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onInput;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onSubmit;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onClick;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDoubleClick;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDrag;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragEnd;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragEnter;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragExit;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragLeave;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragOver;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDragStart;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onDrop;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onMouseDown;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onMouseEnter;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onMouseLeave;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onMouseMove;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onMouseUp;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onTouchCancel;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onTouchEnd;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onTouchMove;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onTouchStart;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onScroll;
+
+/**
+ * @type {Function}
+ */
+React.ReactAtrribute.onWheel;
 
 /**
  * @type {Object}
@@ -886,24 +1047,24 @@ React.ChainableTypeChecker.isRequired.weak;
  * @const
  */
 React.PropTypes = {
-      /** @type {React.ChainableTypeChecker} */
-      "array": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "boolean": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "func": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "number": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "object": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "string": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "oneOf": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "oneOfType": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "instanceOf": function () {},
-      /** @type {React.ChainableTypeChecker} */
-      "renderable": function () {}
+  /** @type {React.ChainableTypeChecker} */
+  "array": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "boolean": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "func": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "number": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "object": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "string": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "oneOf": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "oneOfType": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "instanceOf": function () {},
+  /** @type {React.ChainableTypeChecker} */
+  "renderable": function () {}
 };

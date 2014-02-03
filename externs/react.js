@@ -174,6 +174,11 @@ React.ReactComponent.prototype.setState = function(nextState, callback) {};
 React.ReactComponent.prototype.replaceState = function(nextState, callback) {};
 
 /**
+ * @protected
+ */
+React.ReactComponent.prototype.componentWillMount = function() {};
+
+/**
  * @param {Element} element
  * @protected
  */
@@ -204,24 +209,24 @@ React.ReactComponent.prototype.componentWillUpdate = function(
   nextProps, nextState) {};
 
 /**
- * @return {React.ReactComponent}
- * @protected
- */
-React.ReactComponent.prototype.render = function() {};
-
-/**
  * @param {Object} prevProps
  * @param {Object} prevState
- * @param {Element} element
+ * @param {Element} rootNode
  * @protected
  */
 React.ReactComponent.prototype.componentDidUpdate = function(
-  prevProps, prevState, element) {};
+  prevProps, prevState, rootNode) {};
 
 /**
  * @protected
  */
 React.ReactComponent.prototype.componentWillUnmount = function() {};
+
+/**
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.ReactComponent.prototype.render = function() {};
 
 /**
  * Interface to preserve React attributes for advanced compilation.

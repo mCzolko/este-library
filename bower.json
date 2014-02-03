@@ -1,6 +1,6 @@
 {
   "name": "este-library",
-  "version": "5.2.18",
+  "version": "5.2.19",
   "dependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     // Waiting for new Closure Compiler release.

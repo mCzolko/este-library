@@ -43,8 +43,10 @@ este.react.renderToString = (component, callback) ->
  React.renderComponentToString component, callback
 
 ###*
-  Unmount component at node
+  Remove a mounted React component from the DOM and clean up its event handlers
+  and state.
   @param {Element} container
+  @return {boolean}
 ###
 este.react.unmount = (container) ->
   React.unmountComponentAtNode container

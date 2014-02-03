@@ -3,7 +3,8 @@
   "version": "5.2.18",
   "dependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
-    "closure-library": "git://github.com/steida/google-closure-library.git",
+    // Waiting for new Closure Compiler release.
+    "closure-library": "git://github.com/steida/google-closure-library.git#74667f60a487ea7a596789e2d9f48f26ff29569c",
     "closure-templates": "http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
     "pointerevents-polyfill": "~0.1.1",
     "react": "~0.8.0",

@@ -84,6 +84,11 @@ suite 'este.labs.Route', ->
           url = route.url data.params
           assert.equal url, data.url, data.url
 
+      test 'should remove unused params', ->
+        route = new Route '/drug/:name/:condition?/:question?'
+        url = route.url 'name': 'name'
+        assert.equal url, '/drug/name'
+
   suite 'instance match', ->
     test 'should work', ->
       assert.isTrue new Route('/').match '/'

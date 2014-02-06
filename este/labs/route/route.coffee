@@ -62,20 +62,20 @@ class este.labs.Route
     @return {string}
   ###
   url: (params) ->
-    url = @path
     if Array.isArray params
       index = 0
-      url = url.replace /\*/g, -> params[index++]
+      url = @path.replace /\*/g, -> params[index++]
     else
-      url = url
+      url = @path
       for key, value of params
         value = '' if value == undefined
-        regex = new RegExp "\\:#{key}"
+        regex = new RegExp "\\:#{key}\\??"
         url = url.replace regex, value
-    if url.charAt(url.length - 1) == '?'
-      url = url.slice 0, -1
-    if url.length > 1 && url.charAt(url.length - 1) in ['/', '.']
-      url = url.slice 0, -1
+      url = url.replace /\:[^\/]*/g, ''
+
+    # Url with '/' or '.' on the end is ugly.
+    if url.length > 1
+      url = url.replace /[.\/]+$/g, ''
     url
 
   ###*

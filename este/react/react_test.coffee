@@ -9,7 +9,7 @@ suite 'este.react', ->
   setup ->
     context = {}
     props = {}
-    children = []
+    children = ['a']
 
   suite 'este.react.improve', ->
     test 'should work without args', (done) ->
@@ -21,7 +21,7 @@ suite 'este.react', ->
       improvedFactory.call context
 
     test 'should work with props', (done) ->
-      factory = (p_props, p_children) ->
+      factory = (p_props) ->
         assert.lengthOf arguments, 1
         assert.deepEqual p_props, props
         assert.equal @, context
@@ -30,10 +30,10 @@ suite 'este.react', ->
       improvedFactory.call context, props
 
     test 'should work with props and children', (done) ->
-      factory = (p_props, p_children) ->
+      factory = (p_props) ->
         assert.lengthOf arguments, 2
         assert.deepEqual p_props, props
-        assert.deepEqual p_children, children
+        assert.deepEqual [].slice.call(arguments, 1), children
         assert.equal @, context
         done()
       improvedFactory = improve factory
@@ -41,10 +41,10 @@ suite 'este.react', ->
 
     suite 'should allow to omit props and pass children instead', ->
       test 'for array', (done) ->
-        factory = (p_props, p_children) ->
+        factory = (p_props) ->
           assert.lengthOf arguments, 2
           assert.isNull p_props
-          assert.deepEqual p_children, children
+          assert.deepEqual [].slice.call(arguments, 1), children
           assert.equal @, context
           done()
         improvedFactory = improve factory
@@ -81,25 +81,35 @@ suite 'este.react', ->
         improvedFactory = improve factory
         improvedFactory.call context, instance
 
+      test 'for null', (done) ->
+        instance = new Function
+        factory = (p_props) ->
+          assert.lengthOf arguments, 1
+          assert.isNull p_props
+          done()
+        improvedFactory = improve factory
+        improvedFactory.call context, null
+
     suite 'should remove undefined values from children', ->
       test 'for children', (done) ->
-        factory = (p_props, p_children) ->
-          assert.lengthOf p_children, 2
+        factory = (p_props) ->
+          assert.lengthOf arguments, 3
           done()
         improvedFactory = improve factory
         improvedFactory.call context, [0, undefined, '']
 
       test 'for props and children', (done) ->
-        factory = (p_props, p_children) ->
-          assert.lengthOf p_children, 2
+        factory = (p_props) ->
+          assert.lengthOf arguments, 3
           done()
         improvedFactory = improve factory
         improvedFactory.call context, props, [0, undefined, '']
 
     suite 'should flatten children', ->
       test 'for children', (done) ->
-        factory = (p_props, p_children) ->
-          assert.deepEqual p_children, ['1', '2', '3', '4']
+        factory = (p_props) ->
+          args = [].slice.call arguments
+          assert.deepEqual args, [null, '1', '2', '3', '4']
           done()
         improvedFactory = improve factory
         improvedFactory.call context, ['1', ['2', '3'], [['4', undefined]]]

@@ -120,7 +120,7 @@ module.exports = (grunt) ->
       goog.globalEval #{JSON.stringify src}
 
       # Hint for compiler dead code removal, it prevents src duplication.
-      # How to test it: Try compile Este default app.start.
+      # How to test it: Try compile Este default app.main.
       # grunt build --stage // should be around 25KB.
       goog.globalEval ';'
     """

@@ -63,7 +63,13 @@ este.react.syntaxSugarize = (proto) ->
   return
 
 ###*
-  Allow to use this.h3 'Foo' instead of verbose React.DOM.h3 null, 'Foo'.
+  This allows us to ommit props, and specify children as array to have
+  idiomatic Coffee-like syntax. TODO: Add better type check.
+  Examples:
+    p 'Foo'
+    p ['Foo']
+    p 'className': 'foo', 'Foo'
+    p 'className': 'foo', ['Foo']
   @param {Function} factory
   @return {function(*=, *=): React.ReactComponent}
   @private
@@ -79,16 +85,13 @@ este.react.improve = (factory) ->
 
     props = arg1
     children = arg2
-    if props.constructor != Object
-      children = props
+    if props?.constructor != Object
       props = null
+      children = arg1
 
     if goog.isArray children
       goog.asserts.assertArray children
       children = goog.array.flatten children
       este.array.removeUndefined children
 
-    if children?
-      factory.call @, props, children
-    else
-      factory.call @, props
+    factory.apply @, [props].concat children ? []

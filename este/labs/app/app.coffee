@@ -90,7 +90,8 @@ class este.labs.App
   load: (url) ->
     routePage = goog.array.find @routesPages, (routePage) ->
       routePage.route.match url
-    goog.asserts.assert !!routePage, 'este.labs.App: RoutePage not found.'
+    goog.asserts.assert !!routePage, "
+      este.labs.App: Route for url '#{url}' not found."
 
     return null if !routePage
 

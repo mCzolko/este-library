@@ -23,7 +23,6 @@
     "grunt-contrib-coffee": "~0.10.0",
     "grunt-este": "~2.5.0",
     "grunt-npm": "0.0.2",
-    "grunt-conventional-changelog": "~1.0.0",
     "grunt-release": "~0.6.0",
     "grunt-bump": "0.0.13"
   },

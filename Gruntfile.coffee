@@ -78,13 +78,9 @@ module.exports = (grunt) ->
         pushTo: 'origin'
         tagName: '%VERSION%'
 
-    changelog:
-      options: {}
-
   grunt.loadNpmTasks 'grunt-bump'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-conventional-changelog'
   grunt.loadNpmTasks 'grunt-este'
   grunt.loadNpmTasks 'grunt-npm'
 

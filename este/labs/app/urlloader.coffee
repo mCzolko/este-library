@@ -12,7 +12,7 @@ este.labs.app.UrlLoader = ->
 
 ###*
   @param {string} url
-  @param {function(): !goog.labs.Promise} load
-  @return {!goog.labs.Promise}
+  @param {function(): !goog.Promise} load
+  @return {!goog.Promise}
 ###
 este.labs.app.UrlLoader::load

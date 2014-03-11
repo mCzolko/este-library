@@ -11,7 +11,7 @@ este.labs.app.Page = ->
 ###*
   Load page data and return them as Promise.
   @param {!Object} params
-  @return {!goog.labs.Promise}
+  @return {!goog.Promise}
 ###
 este.labs.app.Page::load
 

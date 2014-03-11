@@ -12,7 +12,7 @@ suite 'este.labs.app.LastWinUrlLoader', ->
   load = (url, opt_delay) ->
     loader.load url, ->
       incrementLoadCall url
-      new goog.labs.Promise (fulfill, reject) ->
+      new goog.Promise (fulfill, reject) ->
         if opt_delay?
           setTimeout (-> fulfill url), opt_delay
         else
@@ -21,7 +21,7 @@ suite 'este.labs.app.LastWinUrlLoader', ->
   loadFail = (url, opt_delay) ->
     loader.load url, ->
       incrementLoadCall url
-      new goog.labs.Promise (fulfill, reject) ->
+      new goog.Promise (fulfill, reject) ->
         if opt_delay?
           setTimeout (-> reject url), opt_delay
         else

@@ -6,7 +6,7 @@ goog.provide 'este.labs.app.ReactPage'
 goog.require 'este.labs.app.Page'
 goog.require 'este.react'
 goog.require 'goog.asserts'
-goog.require 'goog.labs.Promise'
+goog.require 'goog.Promise'
 goog.require 'goog.object'
 
 class este.labs.app.ReactPage
@@ -76,7 +76,7 @@ class este.labs.app.ReactPage
     @override
   ###
   load: (params) ->
-    goog.labs.Promise.resolve params
+    goog.Promise.resolve params
 
   ###*
     @override

@@ -8,7 +8,7 @@ goog.provide 'este.labs.app.LastWinUrlLoader'
 
 goog.require 'este.labs.app.UrlLoader'
 goog.require 'goog.async.nextTick'
-goog.require 'goog.labs.Promise'
+goog.require 'goog.Promise'
 goog.require 'goog.object'
 
 class este.labs.app.LastWinUrlLoader
@@ -60,7 +60,7 @@ class este.labs.app.LastWinUrlLoader
       return @createRejectedWithPendingPromise()
     if goog.object.isEmpty @pendings
       @timeoutTimer = setTimeout (=> @onTimeout()), @timeoutMs
-    @pendings[url] = new goog.labs.Promise (resolve, reject) =>
+    @pendings[url] = new goog.Promise (resolve, reject) =>
       load().then(
         @onFulfill.bind @, url, resolve, reject
         @onReject.bind @, url, resolve, reject
@@ -100,7 +100,7 @@ class este.labs.app.LastWinUrlLoader
   ###
   createRejectedWithPendingPromise: ->
     error = @createCancellationError LastWinUrlLoader.CancelResolution.PENDING
-    goog.labs.Promise.reject error
+    goog.Promise.reject error
 
   ###*
     @param {string} url
@@ -142,7 +142,7 @@ class este.labs.app.LastWinUrlLoader
     @protected
   ###
   createCancellationError: (resolution) ->
-    new goog.labs.Promise.CancellationError resolution
+    new goog.Promise.CancellationError resolution
 
   ###*
     @protected

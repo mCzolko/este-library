@@ -60,6 +60,7 @@ class este.labs.app.LastWinUrlLoader
       return @createRejectedWithPendingPromise()
     if goog.object.isEmpty @pendings
       @timeoutTimer = setTimeout (=> @onTimeout()), @timeoutMs
+    # TODO(steida): Reuse promise?
     @pendings[url] = new goog.Promise (resolve, reject) =>
       load().then(
         @onFulfill.bind @, url, resolve, reject
@@ -126,9 +127,10 @@ class este.labs.app.LastWinUrlLoader
     @protected
   ###
   cancelPendingPromises: (url, resolution) ->
-    for promiseUrl, promise of @pendings
-      continue if promiseUrl == url
-      promise.cancel resolution ? LastWinUrlLoader.CancelResolution.ABORT
+    # TODO(steida): Fix it for IE8.
+    # for promiseUrl, promise of @pendings
+    #   continue if promiseUrl == url
+    #   promise.cancel resolution ? LastWinUrlLoader.CancelResolution.ABORT
     return
 
   ###*

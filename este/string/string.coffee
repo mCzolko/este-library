@@ -10,7 +10,7 @@ goog.require 'goog.string'
 ###*
   @param {string} string
 ###
-este.string.toFancyUrl = goog.memoize (string) ->
+este.string.toFancyUrl = (string) ->
   este.string.
     removeDiacritics(string).
     toLowerCase().
@@ -22,7 +22,7 @@ este.string.toFancyUrl = goog.memoize (string) ->
   @param {string} string
   @return {string}
 ###
-este.string.removeDiacritics = goog.memoize (string) ->
+este.string.removeDiacritics = (string) ->
   for base, letters of este.string.REMOVE_DIACRITICS_MAP
     string = string.replace letters, base
   string
@@ -59,7 +59,7 @@ este.string.chunkToObject = (str, size) ->
   @param {string} str
   @return {string}
 ###
-este.string.stripSlashHashPrefixes = goog.memoize (str) ->
+este.string.stripSlashHashPrefixes = (str) ->
   while str && str.charAt(0) in ['/', '#']
     str = str.substring 1
   str

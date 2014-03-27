@@ -4,7 +4,6 @@
 goog.provide 'este.labs.app.ReactPage'
 
 goog.require 'este.labs.app.Page'
-goog.require 'este.react'
 goog.require 'goog.asserts'
 goog.require 'goog.Promise'
 goog.require 'goog.object'
@@ -22,7 +21,7 @@ class este.labs.app.ReactPage
     @type {function(Object): React.ReactComponent}
     @protected
   ###
-  reactClass: este.react.create (`/** @lends {React.ReactComponent.prototype} */`)
+  reactClass: React.createClass (`/** @lends {React.ReactComponent.prototype} */`)
     render: ->
       @pre goog.DEBUG && """
         Hello from este.labs.app.Controller. This class should be subclassed.
@@ -96,7 +95,8 @@ class este.labs.app.ReactPage
       for key, value of @pageProps
         props[key] = if goog.isFunction value then value.bind @ else value
     @react = @reactClass props
-    este.react.render @react, container, =>
+
+    React.renderComponent @react, container, =>
       @reactElement = @react.getDOMNode()
       @onShow()
     return

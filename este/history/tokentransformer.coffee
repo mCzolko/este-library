@@ -21,7 +21,7 @@ class este.history.TokenTransformer
     @override
   ###
   retrieveToken: (pathPrefix, location) ->
-    (location.pathname.substr pathPrefix.length) + location.search
+    (location.pathname.substr pathPrefix.length) + location.search + location.hash
 
   ###*
     @override

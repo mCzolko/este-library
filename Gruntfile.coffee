@@ -57,6 +57,7 @@ module.exports = (grunt) ->
           '--output_wrapper="(function(){%output%})();"'
           '--compilation_level="ADVANCED_OPTIMIZATIONS"'
           '--warning_level="VERBOSE"'
+          '--jscomp_off="deprecated"'
           # Remove code for ancient browsers (IE<8, very old Gecko/Webkit).
           '--define=goog.net.XmlHttp.ASSUME_NATIVE_XHR=true'
           '--define=este.json.SUPPORTS_NATIVE_JSON=true'

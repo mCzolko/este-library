@@ -196,7 +196,10 @@ este.dom.forceBlur = ->
 ###
 este.dom.isRoutingClick = (e) ->
   return false if !este.dom.isRoutingEvent e
-  return false if !este.dom.isRoutingAnchor (`/** @type {Element} */`) e.target
+  target = (`/** @type {Element} */`) e.target
+  while not target.href and target.parentElement
+    target = target.parentElement
+  return false if !este.dom.isRoutingAnchor target
   true
 
 ###*

@@ -111,9 +111,12 @@ gulp.task 'test', (callback) ->
 
 gulp.task 'bump', ->
   type = args.major && 'major' || args.minor && 'minor' || 'patch'
+  getBumpMessage = -> "Bump #{require('./package').version}."
   gulp.src './*.json'
     .pipe bump type: type
     .pipe gulp.dest './'
+    .pipe git.add()
+    .pipe git.commit getBumpMessage()
     .on 'end', ->
-      version = require('./package.json').version
-      git.tag version, "bump #{version}"
+      git.tag version, getBumpMessage(), {}, ->
+        git.push 'origin', 'master', args: " --tags"

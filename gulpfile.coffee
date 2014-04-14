@@ -109,14 +109,16 @@ gulp.task 'compile', ->
 gulp.task 'test', (callback) ->
   runSequence 'coffee', 'deps', 'unitTests', 'compile', callback
 
-gulp.task 'bump', ->
-  type = args.major && 'major' || args.minor && 'minor' || 'patch'
-  getVersion = -> require('./package').version
+gulp.task 'bumpJson', ->
   gulp.src './*.json'
-    .pipe bump type: type
+    .pipe bump type: args.major && 'major' || args.minor && 'minor' || 'patch'
     .pipe gulp.dest './'
+
+gulp.task 'bump', ['bumpJson'], ->
+  message = "Bump #{require('./package').version}."
+  gulp.src './*.json'
     .pipe git.add()
-    .pipe git.commit "Bump #{getVersion()}."
+    .pipe git.commit message
     .on 'end', ->
-      git.tag getVersion(), "Bump #{getVersion()}.", {}, ->
-        git.push 'origin', 'master', args: " --tags"
+      git.tag getVersion(), message, {}, ->
+      git.push 'origin', 'master', args: " --tags"

@@ -106,20 +106,20 @@ gulp.task 'compile', ->
         warning_level: 'VERBOSE'
     .pipe gulp.dest 'tmp'
 
-gulp.task 'test', (callback) ->
-  runSequence 'coffee', 'deps', 'unitTests', 'compile', callback
+gulp.task 'test', (done) ->
+  runSequence 'coffee', 'deps', 'unitTests', 'compile', done
 
-gulp.task 'bumpJson', ->
+gulp.task 'bump', (done) ->
   gulp.src './*.json'
     .pipe bump type: args.major && 'major' || args.minor && 'minor' || 'patch'
     .pipe gulp.dest './'
-
-gulp.task 'bump', ['bumpJson'], ->
-  version = require('./package').version
-  message = "Bump #{version}."
-  gulp.src './*.json'
-    .pipe git.add()
-    .pipe git.commit message
     .on 'end', ->
-      git.tag version, message, {}, ->
-      git.push 'origin', 'master', args: " --tags"
+      version = require('./package').version
+      message = "Bump #{version}."
+      gulp.src './*.json'
+        .pipe git.add()
+        .pipe git.commit message
+        .on 'end', ->
+          git.push 'origin', 'master', {}, ->
+            git.tag version, message, {}, ->
+              git.push 'origin', 'master', args: ' --tags', done

@@ -115,5 +115,7 @@ gulp.task 'bump', ->
     .pipe bump type: type
     .pipe gulp.dest './'
     .on 'end', ->
+      git.push 'origin', 'master'
       version = require('./package.json').version
-      git.tag "v#{version}", "version #{version}"
+      git.tag version, "bump #{version}"
+      git.push 'origin', 'master', args: '--tags'

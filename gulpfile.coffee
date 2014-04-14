@@ -114,6 +114,7 @@ gulp.task 'bump', ->
   gulp.src './*.json'
     .pipe bump type: type
     .pipe gulp.dest './'
+    .pipe git.commit 'Update bower.json and package.json.'
     .on 'end', ->
       git.push 'origin', 'master'
       version = require('./package.json').version

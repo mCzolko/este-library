@@ -36,6 +36,7 @@ paths =
     'bower_components/closure-library/**/*.js'
     'este/**/*.js'
   ]
+  packages: './*.json'
 
 getEsteNamespaces = ->
   deps = fs.readFileSync './tmp/deps0.js', 'utf8'
@@ -110,13 +111,13 @@ gulp.task 'test', (done) ->
   runSequence 'coffee', 'deps', 'unitTests', 'compile', done
 
 gulp.task 'bump', (done) ->
-  gulp.src './*.json'
+  gulp.src paths.packages
     .pipe bump type: args.major && 'major' || args.minor && 'minor' || 'patch'
     .pipe gulp.dest './'
     .on 'end', ->
       version = require('./package').version
-      message = "Bump #{version}."
-      gulp.src './*.json'
+      message = "Bump #{version}"
+      gulp.src paths.packages
         .pipe git.add()
         .pipe git.commit message
         .on 'end', ->

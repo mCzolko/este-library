@@ -1,5 +1,5 @@
 /**
- * @fileoverview Externs for React 0.5.1.
+ * @fileoverview Externs for React 0.10.0.
  *
  * @see http://facebook.github.io/react
  * @externs
@@ -51,9 +51,15 @@ React.unmountComponentAtNode = function(container) {};
 
 /**
  * @param {React.ReactComponent} component
- * @param {Function} callback
+ * @return {string}
  */
-React.renderComponentToString = function(component, callback) {};
+React.renderComponentToString = function(component) {};
+
+/**
+ * @param {React.ReactComponent} component
+ * @return {string}
+ */
+React.renderComponentToStaticMarkup = function(component) {};
 
 /**
  * Constructs a component instance of `constructor` with `initialProps` and

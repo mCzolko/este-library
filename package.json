@@ -1,6 +1,6 @@
 {
   "name": "este-library",
-  "version": "5.2.40",
+  "version": "6.0.0",
   "description": "Library for github.com/steida/este.git",
   "author": "Daniel Steigerwald <daniel@steigerwald.cz>",
   "private": true,
@@ -18,16 +18,25 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-coffee": "~0.10.0",
-    "grunt-este": "~2.5.0",
-    "grunt-npm": "0.0.2",
-    "grunt-release": "~0.6.0",
-    "grunt-bump": "0.0.13"
+    "gulp": "^3.6.0",
+    "coffee-script": "^1.7.1",
+    "run-sequence": "^0.3.6",
+    "gulp-closure-compiler": "^0.2.0",
+    "gulp-coffee": "^1.4.1",
+    "chai": "^1.9.1",
+    "gulp-plumber": "^0.6.1",
+    "gulp-coffee2closure": "^0.1.0",
+    "gulp-util": "^2.2.14",
+    "gulp-mocha": "^0.4.1",
+    "sinon": "^1.9.1",
+    "gulp-closure-deps": "^0.2.1",
+    "envify": "^1.2.1",
+    "react": "^0.10.0",
+    "jsdom": "^0.10.5",
+    "gulp-filter": "^0.4.1"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   },
   "engines": {
     "node": "v0.10.x"

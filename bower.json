@@ -1,12 +1,11 @@
 {
   "name": "este-library",
-  "version": "5.2.40",
+  "version": "6.0.0",
   "dependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
+    "closure-compiler-externs": "https://github.com/dcodeIO/node.js-closure-compiler-externs.git",
     "closure-library": "git+https://code.google.com/p/closure-library/",
-    "closure-templates": "http://closure-templates.googlecode.com/files/closure-templates-for-javascript-latest.zip",
-    "pointerevents-polyfill": "~0.1.1",
-    "react": "~0.8.0",
-    "stylus-nib": "git://github.com/visionmedia/nib.git"
+    "normalize-css": "git://github.com/necolas/normalize.css.git",
+    "react": "~0.10.0"
   }
 }

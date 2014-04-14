@@ -17,7 +17,7 @@ class este.validators.Base
 
   ###*
     Model to be validated.
-    @type {este.Model}
+    @type {Object}
   ###
   model: null
 

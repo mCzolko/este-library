@@ -123,3 +123,4 @@ gulp.task 'bump', (done) ->
           git.push 'origin', 'master', {}, ->
             git.tag version, message, {}, ->
               git.push 'origin', 'master', args: ' --tags', done
+  return

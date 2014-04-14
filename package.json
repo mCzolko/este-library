@@ -19,6 +19,7 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.6.0",
+    "gulp-git": "^0.3.6",
     "coffee-script": "^1.7.1",
     "run-sequence": "^0.3.6",
     "gulp-closure-compiler": "^0.2.0",
@@ -33,7 +34,9 @@
     "envify": "^1.2.1",
     "react": "^0.10.0",
     "jsdom": "^0.10.5",
-    "gulp-filter": "^0.4.1"
+    "gulp-filter": "^0.4.1",
+    "gulp-bump": "^0.1.7",
+    "yargs": "^1.2.1"
   },
   "scripts": {
     "test": "gulp test"

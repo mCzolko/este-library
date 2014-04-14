@@ -1,5 +1,6 @@
 gulp = require 'gulp'
 
+bump = require 'gulp-bump'
 chai = require 'chai'
 closureCompiler = require 'gulp-closure-compiler'
 closureDeps = require 'gulp-closure-deps'
@@ -7,6 +8,7 @@ coffee = require 'gulp-coffee'
 coffee2closure = require 'gulp-coffee2closure'
 filter = require 'gulp-filter'
 fs = require 'fs'
+git = require 'gulp-git'
 gutil = require 'gulp-util'
 jsdom = require('jsdom').jsdom
 mocha = require 'gulp-mocha'
@@ -14,6 +16,12 @@ path = require 'path'
 plumber = require 'gulp-plumber'
 runSequence = require 'run-sequence'
 sinon = require 'sinon'
+yargs = require 'yargs'
+
+args = yargs
+  .alias 'p', 'patch'
+  .alias 'm', 'minor'
+  .argv
 
 paths =
   coffee: [
@@ -100,3 +108,12 @@ gulp.task 'compile', ->
 
 gulp.task 'test', (callback) ->
   runSequence 'coffee', 'deps', 'unitTests', 'compile', callback
+
+gulp.task 'bump', ->
+  type = args.major && 'major' || args.minor && 'minor' || 'patch'
+  gulp.src './*.json'
+    .pipe bump type: type
+    .pipe gulp.dest './'
+    .on 'end', ->
+      version = require('./package.json').version
+      git.tag "v#{version}", "version #{version}"

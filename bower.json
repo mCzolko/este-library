@@ -1,6 +1,6 @@
 {
   "name": "este-library",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "dependencies": {
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     "closure-compiler-externs": "https://github.com/dcodeIO/node.js-closure-compiler-externs.git",

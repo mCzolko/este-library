@@ -155,27 +155,23 @@ React.ReactComponent.prototype.replaceProps = function(nextProps, callback) {};
 /**
  * @param {React.ReactComponent} targetComponent
  * @return {React.ReactComponent}
- * @protected
  */
 React.ReactComponent.prototype.transferPropsTo = function(targetComponent) {};
 
 /**
  * @param {Function=} callback
- * @protected
  */
 React.ReactComponent.prototype.forceUpdate = function(callback) {};
 
 /**
  * @param {Object} nextState
  * @param {Function=} callback
- * @protected
  */
 React.ReactComponent.prototype.setState = function(nextState, callback) {};
 
 /**
  * @param {Object} nextState
  * @param {Function=} callback
- * @protected
  */
 React.ReactComponent.prototype.replaceState = function(nextState, callback) {};
 
@@ -730,14 +726,6 @@ React.DOM.li = function(props, children) {};
  * @return {React.ReactComponent}
  * @protected
  */
-React.DOM.line = function(props, children) {};
-
-/**
- * @param {Object=} props
- * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
- * @return {React.ReactComponent}
- * @protected
- */
 React.DOM.nav = function(props, children) {};
 
 /**
@@ -964,6 +952,8 @@ React.DOM.video = function(props, children) {};
  */
 React.DOM.wbr = function(props, children) {};
 
+// SVG
+
 /**
  * @param {Object=} props
  * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
@@ -978,7 +968,31 @@ React.DOM.circle = function(props, children) {};
  * @return {React.ReactComponent}
  * @protected
  */
+React.DOM.defs = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
 React.DOM.g = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.DOM.line = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.DOM.linearGradient = function(props, children) {};
 
 /**
  * @param {Object=} props
@@ -1010,7 +1024,23 @@ React.DOM.polyline = function(props, children) {};
  * @return {React.ReactComponent}
  * @protected
  */
+React.DOM.radialGradient = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
 React.DOM.rect = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.DOM.stop = function(props, children) {};
 
 /**
  * @param {Object=} props
@@ -1055,27 +1085,60 @@ React.ChainableTypeChecker.isRequired.weak;
 
 /**
  * @type {Object}
- * @const
  */
 React.PropTypes = {
   /** @type {React.ChainableTypeChecker} */
-  "array": function () {},
+  any: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "boolean": function () {},
+  array: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "func": function () {},
+  arrayOf: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "number": function () {},
+  boolean: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "object": function () {},
+  component: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "string": function () {},
+  func: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "oneOf": function () {},
+  number: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "oneOfType": function () {},
+  object: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "instanceOf": function () {},
+  string: function () {},
   /** @type {React.ChainableTypeChecker} */
-  "renderable": function () {}
+  oneOf: function () {},
+  /** @type {React.ChainableTypeChecker} */
+  oneOfType: function () {},
+  /** @type {React.ChainableTypeChecker} */
+  instanceOf: function () {},
+  /** @type {React.ChainableTypeChecker} */
+  renderable: function () {},
+  /** @type {React.ChainableTypeChecker} */
+  shape: function () {}
 };
+
+/**
+ * @type {Object}
+ */
+React.Children;
+
+/**
+ * @param {Object} children Children tree container.
+ * @param {function(*, int)} mapFunction.
+ * @param {*} mapContext Context for mapFunction.
+ * @return {Object|undefined} Object containing the ordered map of results.
+ */
+React.Children.map;
+
+/**
+ * @param {Object} children Children tree container.
+ * @param {function(*, int)} mapFunction.
+ * @param {*} mapContext Context for mapFunction.
+ */
+React.Children.forEach;
+
+/**
+ * @param {Object} children Children tree container.
+ * @return {Object|undefined}
+ */
+React.Children.only;

@@ -6,16 +6,19 @@ closureCompiler = require 'gulp-closure-compiler'
 closureDeps = require 'gulp-closure-deps'
 coffee = require 'gulp-coffee'
 coffee2closure = require 'gulp-coffee2closure'
+express = require 'express'
 filter = require 'gulp-filter'
 fs = require 'fs'
 git = require 'gulp-git'
 gutil = require 'gulp-util'
 jsdom = require('jsdom').jsdom
 mocha = require 'gulp-mocha'
+open = require 'open'
 path = require 'path'
 plumber = require 'gulp-plumber'
 runSequence = require 'run-sequence'
 sinon = require 'sinon'
+stylus = require 'gulp-stylus'
 yargs = require 'yargs'
 
 args = yargs
@@ -24,6 +27,7 @@ args = yargs
   .argv
 
 paths =
+  stylus: 'este/**/*.styl'
   coffee: [
     'este/**/*.coffee'
   ]
@@ -39,11 +43,17 @@ paths =
   packages: './*.json'
 
 getEsteNamespaces = ->
-  deps = fs.readFileSync './tmp/deps0.js', 'utf8'
+  deps = fs.readFileSync './tmp/deps.js', 'utf8'
   esteProvides = {}
   deps.replace /\['(este\.[^']+)/g, (match, namespace) ->
     esteProvides[namespace] = true
   Object.keys esteProvides
+
+gulp.task 'stylus', ->
+  gulp.src paths.stylus, base: '.'
+    .pipe stylus set: ['include css']
+    .on 'error', (err) -> gutil.log err.message
+    .pipe gulp.dest '.'
 
 gulp.task 'coffee', ->
   gulp.src paths.coffee, base: '.'
@@ -56,7 +66,7 @@ gulp.task 'coffee', ->
 gulp.task 'deps', ->
   gulp.src paths.compile
     .pipe closureDeps
-      fileName: 'deps0.js'
+      fileName: 'deps.js'
       prefix: paths.depsPrefix
     .pipe gulp.dest 'tmp'
 
@@ -74,7 +84,7 @@ gulp.task 'unitTests', ->
 
   # Server-side Google Closure.
   require './' + paths.nodejs
-  require './' + 'tmp/deps0.js'
+  require './' + 'tmp/deps.js'
 
   autoRequire = (file) ->
     jsPath = file.path.replace '_test.js', '.js'
@@ -107,8 +117,20 @@ gulp.task 'compile', ->
         warning_level: 'VERBOSE'
     .pipe gulp.dest 'tmp'
 
+gulp.task 'build', (done) ->
+  runSequence 'stylus', 'coffee', 'deps', 'unitTests', done
+
 gulp.task 'test', (done) ->
-  runSequence 'coffee', 'deps', 'unitTests', 'compile', done
+  runSequence 'build', 'compile', done
+
+gulp.task 'run', ->
+  app = express()
+  app.use express.static __dirname
+  app.listen 8000
+  open 'http://localhost:8000/este/demos'
+
+gulp.task 'default', (done) ->
+  runSequence 'build', 'run', done
 
 gulp.task 'bump', (done) ->
   gulp.src paths.packages

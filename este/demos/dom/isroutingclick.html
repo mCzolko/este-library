@@ -3,9 +3,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>este.dom.isRoutingClick</title>
-  <link href="../css/default.css" rel="stylesheet">
-  <script src='../../../../closure-library/closure/goog/base.js'></script>
-  <script src='../../../../../client/deps.js'></script>
+  <link href="../css/demos.css" rel="stylesheet">
+  <script src='/bower_components/closure-library/closure/goog/base.js'></script>
+  <script src='/tmp/deps.js'></script>
   <script>
     goog.require('este.dom');
     goog.require('goog.events');
@@ -14,13 +14,13 @@
 <body>
   <h1>este.dom.isRoutingClick</h1>
   <p>
-    este.dom.isRoutingClick detects click useable for client side routing.<br>
+    este.dom.isRoutingClick detects clicks for client side routing.<br>
     It means: primary mouse button, no keys, no target, not x-domain.
   </p>
   <ul>
     <li><a href="#foo">#foo</a></li>
-    <li><a target="_blank" href="#foo">#blank-target</a></li>
-    <li><a href="http://google.com">http://google.com</a></li>
+    <li><a target="_blank" href="#foo">#blank-target</a> (ignored because target attr)</li>
+    <li><a href="http://google.com">http://google.com</a> (external links are ignored too)</li>
   </ul>
   <pre id="output"></pre>
   <script>

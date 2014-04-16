@@ -5,7 +5,9 @@
     "closure-compiler": "http://dl.google.com/closure-compiler/compiler-latest.zip",
     "closure-compiler-externs": "https://github.com/dcodeIO/node.js-closure-compiler-externs.git",
     "closure-library": "git+https://code.google.com/p/closure-library/",
-    "normalize-css": "git://github.com/necolas/normalize.css.git",
-    "react": "~0.10.0"
+    "react": "~0.10.0",
+    "observe-js": "~0.2.2",
+    "normalize-css": "~3.0.1",
+    "pointerevents-polyfill": "~0.2.0"
   }
 }

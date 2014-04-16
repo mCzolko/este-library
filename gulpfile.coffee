@@ -142,7 +142,6 @@ gulp.task 'bump', (done) ->
       version = require('./package').version
       message = "Bump #{version}"
       gulp.src paths.packages
-        .pipe git.add()
         .pipe git.commit message
         .on 'end', ->
           git.push 'origin', 'master', {}, ->

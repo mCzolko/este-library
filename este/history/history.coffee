@@ -28,6 +28,7 @@ class este.History extends goog.events.EventTarget
     @param {este.History.Options=} options
     @constructor
     @extends {goog.events.EventTarget}
+    @final
   ###
   constructor: (options) ->
     super()

@@ -14,6 +14,7 @@ class este.history.TokenTransformer
   ###*
     @constructor
     @implements {goog.history.Html5History.TokenTransformer}
+    @final
   ###
   constructor: ->
 

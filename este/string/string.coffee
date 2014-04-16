@@ -1,7 +1,3 @@
-###*
-  @fileoverview String utils.
-  @namespace este.string
-###
 goog.provide 'este.string'
 
 goog.require 'goog.memoize'

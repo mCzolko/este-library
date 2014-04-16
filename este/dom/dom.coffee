@@ -1,8 +1,3 @@
-###*
-  @fileoverview DOM utils.
-  @namespace este.dom
-###
-
 goog.provide 'este.dom'
 
 goog.require 'este.object'

@@ -1,9 +1,4 @@
-###*
-  @fileoverview este.ui.InvisibleOverlay.
-  @see /demos/ui/invisibleoverlay.html
-###
 goog.provide 'este.ui.InvisibleOverlay'
-goog.provide 'este.ui.InvisibleOverlay.create'
 
 goog.require 'goog.ui.Component'
 
@@ -15,12 +10,6 @@ class este.ui.InvisibleOverlay extends goog.ui.Component
   ###
   constructor: ->
     super()
-
-  ###*
-    @return {este.ui.InvisibleOverlay}
-  ###
-  @create: ->
-    new InvisibleOverlay
 
   ###*
     @override

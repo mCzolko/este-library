@@ -1,9 +1,7 @@
-###*
-  @fileoverview este.ui.maxFontSize.
-###
 goog.provide 'este.ui.maxFontSize'
 
 ###*
+  Maximize fontSize until scrollbar appear.
   @param {Element} el
 ###
 este.ui.maxFontSize = (el) ->

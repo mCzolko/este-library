@@ -1,8 +1,3 @@
-###*
-  @fileoverview Style utils.
-  @namespace este.style
-###
-
 goog.provide 'este.style'
 
 goog.require 'goog.style'

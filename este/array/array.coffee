@@ -1,8 +1,3 @@
-###*
-  @fileoverview Array utils.
-  @namespace este.array
-###
-
 goog.provide 'este.array'
 
 goog.require 'goog.array'

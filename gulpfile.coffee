@@ -22,6 +22,7 @@ stylus = require 'gulp-stylus'
 yargs = require 'yargs'
 
 args = yargs
+  .alias 'n', 'noopen'
   .alias 'p', 'patch'
   .alias 'm', 'minor'
   .argv
@@ -127,6 +128,7 @@ gulp.task 'run', ->
   app = express()
   app.use express.static __dirname
   app.listen 8000
+  return if args.noopen
   open 'http://localhost:8000/este/demos'
 
 gulp.task 'default', (done) ->

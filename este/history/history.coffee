@@ -17,27 +17,39 @@ goog.provide 'este.History'
 
 goog.require 'este.history.TokenTransformer'
 goog.require 'goog.History'
+goog.require 'goog.Uri'
 goog.require 'goog.history.Html5History'
 goog.require 'goog.labs.userAgent.platform'
+goog.require 'goog.string'
 
 class este.History extends goog.events.EventTarget
 
   ###*
-    @param {boolean=} forceHash Force este.History.
+    @param {este.History.Options=} options
     @constructor
     @extends {goog.events.EventTarget}
   ###
-  constructor: (forceHash) ->
+  constructor: (options) ->
     super()
-    if forceHash || History.CAN_USE_HTML5_HISTORY
-      @createHtml5History()
-    else
+    if options?.forceHash || !History.CAN_USE_HTML5_HISTORY
       @createHashHistory()
+    else
+      @createHtml5History options?.pathPrefix
     @eventHandler = new goog.events.EventHandler @
 
   ###*
+   Configuration options for a History.
+     - forceHash: force hashchange instead of autodetection
+     - pathPrefix: path prefix
+   @typedef {{
+     forceHash: (boolean|undefined),
+     pathPrefix: (string|undefined)
+   }}
+  ###
+  @Options
+
+  ###*
     http://caniuse.com/#search=pushstate
-    http://webdesign.about.com/od/historyapi/a/what-is-history-api.htm
     @type {boolean}
   ###
   @CAN_USE_HTML5_HISTORY: if goog.labs.userAgent.platform.isIos()
@@ -94,13 +106,18 @@ class este.History extends goog.events.EventTarget
     @history.setEnabled enable
 
   ###*
+    @param {string|undefined} pathPrefix
     @protected
   ###
-  createHtml5History: ->
+  createHtml5History: (pathPrefix) ->
+    if !pathPrefix
+      pathPrefix = new goog.Uri(document.location.href).getPath()
+      pathPrefix += '/' if !goog.string.endsWith pathPrefix, '/'
+
     transformer = new este.history.TokenTransformer()
     @history = new goog.history.Html5History undefined, transformer
     @history.setUseFragment false
-    @history.setPathPrefix ''
+    @history.setPathPrefix pathPrefix
 
   ###*
     @protected

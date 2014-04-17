@@ -27,8 +27,6 @@ react = require 'gulp-react'
 
 args = yargs
   .alias 'n', 'noopen'
-  .alias 'p', 'patch'
-  .alias 'm', 'minor'
   .argv
 
 paths =
@@ -185,8 +183,9 @@ gulp.task 'default', (done) ->
   runSequence 'build', 'run', done
 
 gulp.task 'bump', (done) ->
+  args = yargs.alias('p', 'patch').alias('m', 'minor').argv
   type = args.major && 'major' || args.minor && 'minor' || 'patch'
-  # This line prevents accidental major bump.
+  # This prevents accidental major bump.
   return if type == 'major'
   gulp.src paths.packages
     .pipe bump type: type

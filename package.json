@@ -16,7 +16,9 @@
     "type": "git",
     "url": "https://github.com/steida/este-library.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.0.0"
+  },
   "devDependencies": {
     "chai": "^1.9.1",
     "coffee-script": "^1.7.1",
@@ -37,7 +39,6 @@
     "run-sequence": "^0.3.6",
     "sinon": "^1.9.1",
     "yargs": "^1.2.1",
-    "express": "^4.0.0",
     "open": "0.0.5",
     "gulp-stylus": "^0.2.1",
     "este-watch": "0.0.4",
@@ -45,10 +46,12 @@
     "gulp-react": "^0.3.2"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start": "node index.js"
   },
   "engines": {
     "node": "v0.10.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "subdomain": "este"
 }

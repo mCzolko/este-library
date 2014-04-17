@@ -7,7 +7,6 @@ closureDeps = require 'gulp-closure-deps'
 coffee = require 'gulp-coffee'
 coffee2closure = require 'gulp-coffee2closure'
 esteWatch = require 'este-watch'
-express = require 'express'
 filter = require 'gulp-filter'
 fs = require 'fs'
 git = require 'gulp-git'
@@ -24,10 +23,6 @@ stylus = require 'gulp-stylus'
 yargs = require 'yargs'
 
 react = require 'gulp-react'
-
-args = yargs
-  .alias 'n', 'noopen'
-  .argv
 
 paths =
   stylus: 'este/**/*.styl'
@@ -74,7 +69,9 @@ gulp.task 'coffee', ->
 
 gulp.task 'react', ->
   gulp.src changedFilePath ? paths.react, base: '.'
+    .pipe plumber()
     .pipe react harmony: true
+    .on 'error', (err) -> gutil.log err.message
     .pipe gulp.dest '.'
 
 gulp.task 'deps', ->
@@ -169,11 +166,10 @@ gulp.task 'watch', ->
   watch.start()
 
 gulp.task 'server', ->
-  app = express()
-  app.use express.static __dirname
-  app.listen 8000
+  require './index'
+  args = yargs.alias('n', 'noopen').argv
   return if args.noopen
-  open 'http://localhost:8000/este/demos'
+  open 'http://localhost:8080/este/demos'
   return
 
 gulp.task 'run', (done) ->

@@ -39,7 +39,9 @@
     "yargs": "^1.2.1",
     "express": "^4.0.0",
     "open": "0.0.5",
-    "gulp-stylus": "^0.2.1"
+    "gulp-stylus": "^0.2.1",
+    "este-watch": "0.0.4",
+    "require-uncache": "0.0.2"
   },
   "scripts": {
     "test": "gulp test"

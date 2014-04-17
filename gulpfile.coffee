@@ -6,6 +6,7 @@ closureCompiler = require 'gulp-closure-compiler'
 closureDeps = require 'gulp-closure-deps'
 coffee = require 'gulp-coffee'
 coffee2closure = require 'gulp-coffee2closure'
+esteWatch = require 'este-watch'
 express = require 'express'
 filter = require 'gulp-filter'
 fs = require 'fs'
@@ -16,6 +17,7 @@ mocha = require 'gulp-mocha'
 open = require 'open'
 path = require 'path'
 plumber = require 'gulp-plumber'
+requireUncache = require 'require-uncache'
 runSequence = require 'run-sequence'
 sinon = require 'sinon'
 stylus = require 'gulp-stylus'
@@ -43,6 +45,13 @@ paths =
   ]
   packages: './*.json'
 
+watchedDirs = [
+  'este'
+]
+
+globals = Object.keys global
+changedFilePath = null
+
 getEsteNamespaces = ->
   deps = fs.readFileSync './tmp/deps.js', 'utf8'
   esteProvides = {}
@@ -51,13 +60,13 @@ getEsteNamespaces = ->
   Object.keys esteProvides
 
 gulp.task 'stylus', ->
-  gulp.src paths.stylus, base: '.'
+  gulp.src changedFilePath ? paths.stylus, base: '.'
     .pipe stylus set: ['include css']
     .on 'error', (err) -> gutil.log err.message
     .pipe gulp.dest '.'
 
 gulp.task 'coffee', ->
-  gulp.src paths.coffee, base: '.'
+  gulp.src changedFilePath ? paths.coffee, base: '.'
     .pipe plumber()
     .pipe coffee bare: true
     .on 'error', (err) -> gutil.log err.message
@@ -72,6 +81,11 @@ gulp.task 'deps', ->
     .pipe gulp.dest 'tmp'
 
 gulp.task 'unitTests', ->
+  # Clean global variables created during test. For instance: goog and este.
+  Object.keys(global).forEach (key) ->
+    return if globals.indexOf(key) > -1
+    delete global[key]
+
   # Global aliases for tests.
   global.assert = chai.assert;
   global.sinon = sinon
@@ -83,9 +97,15 @@ gulp.task 'unitTests', ->
   global.navigator = doc.parentWindow.navigator
   global.React = require 'react'
 
-  # Server-side Google Closure.
+  # Server-side Google Closure, fresh for each test run.
+  requireUncache path.resolve paths.nodejs
+  requireUncache path.resolve 'tmp/deps.js'
   require './' + paths.nodejs
   require './' + 'tmp/deps.js'
+
+  # For watch mode, run foo_test.js when foo.js is changed.
+  if changedFilePath && !/_test\.js$/.test changedFilePath
+    changedFilePath = changedFilePath.replace '.js', '_test.js'
 
   autoRequire = (file) ->
     jsPath = file.path.replace '_test.js', '.js'
@@ -96,11 +116,20 @@ gulp.task 'unitTests', ->
     goog.require namespace if namespace
     true
 
-  gulp.src paths.unitTests
+  gulp.src changedFilePath ? paths.unitTests
     .pipe filter autoRequire
     .pipe mocha
       ui: 'tdd'
       reporter: 'dot'
+
+gulp.task 'js', (done) ->
+  sequence = []
+  sequence.push 'deps' if closureDeps.changed changedFilePath
+  sequence.push 'unitTests', done
+  runSequence sequence...
+
+gulp.task 'build', (done) ->
+  runSequence 'stylus', 'coffee', 'js', done
 
 gulp.task 'compile', ->
   gulp.src paths.compile
@@ -118,18 +147,28 @@ gulp.task 'compile', ->
         warning_level: 'VERBOSE'
     .pipe gulp.dest 'tmp'
 
-gulp.task 'build', (done) ->
-  runSequence 'stylus', 'coffee', 'deps', 'unitTests', done
-
 gulp.task 'test', (done) ->
   runSequence 'build', 'compile', done
 
-gulp.task 'run', ->
+gulp.task 'watch', ->
+  watch = esteWatch watchedDirs, (e) ->
+    changedFilePath = path.resolve e.filepath
+    switch e.extension
+      when 'coffee' then gulp.start 'coffee'
+      when 'js' then gulp.start 'js'
+      else changedFilePath = null
+  watch.start()
+
+gulp.task 'server', ->
   app = express()
   app.use express.static __dirname
   app.listen 8000
   return if args.noopen
   open 'http://localhost:8000/este/demos'
+  return
+
+gulp.task 'run', (done) ->
+  runSequence 'watch', 'server', done
 
 gulp.task 'default', (done) ->
   runSequence 'build', 'run', done

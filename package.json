@@ -41,7 +41,8 @@
     "open": "0.0.5",
     "gulp-stylus": "^0.2.1",
     "este-watch": "0.0.4",
-    "require-uncache": "0.0.2"
+    "require-uncache": "0.0.2",
+    "gulp-react": "^0.3.2"
   },
   "scripts": {
     "test": "gulp test"

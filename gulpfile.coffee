@@ -23,6 +23,8 @@ sinon = require 'sinon'
 stylus = require 'gulp-stylus'
 yargs = require 'yargs'
 
+react = require 'gulp-react'
+
 args = yargs
   .alias 'n', 'noopen'
   .alias 'p', 'patch'
@@ -31,9 +33,8 @@ args = yargs
 
 paths =
   stylus: 'este/**/*.styl'
-  coffee: [
-    'este/**/*.coffee'
-  ]
+  coffee: 'este/**/*.coffee'
+  react: 'este/**/*.jsx'
   depsPrefix: '../../../..'
   nodejs: 'bower_components/closure-library/closure/goog/bootstrap/nodejs'
   unitTests: [
@@ -73,6 +74,11 @@ gulp.task 'coffee', ->
     .pipe coffee2closure()
     .pipe gulp.dest '.'
 
+gulp.task 'react', ->
+  gulp.src changedFilePath ? paths.react, base: '.'
+    .pipe react harmony: true
+    .pipe gulp.dest '.'
+
 gulp.task 'deps', ->
   gulp.src paths.compile
     .pipe closureDeps
@@ -81,6 +87,12 @@ gulp.task 'deps', ->
     .pipe gulp.dest 'tmp'
 
 gulp.task 'unitTests', ->
+  if changedFilePath
+    # Ensure changedFilePath is _test.js file.
+    if !/_test\.js$/.test changedFilePath
+      changedFilePath = changedFilePath.replace '.js', '_test.js'
+    return if not fs.existsSync changedFilePath
+
   # Clean global variables created during test. For instance: goog and este.
   Object.keys(global).forEach (key) ->
     return if globals.indexOf(key) > -1
@@ -103,10 +115,7 @@ gulp.task 'unitTests', ->
   require './' + paths.nodejs
   require './' + 'tmp/deps.js'
 
-  # For watch mode, run foo_test.js when foo.js is changed.
-  if changedFilePath && !/_test\.js$/.test changedFilePath
-    changedFilePath = changedFilePath.replace '.js', '_test.js'
-
+  # Auto require Closure dependencies for unit test.
   autoRequire = (file) ->
     jsPath = file.path.replace '_test.js', '.js'
     return false if not fs.existsSync jsPath
@@ -118,9 +127,10 @@ gulp.task 'unitTests', ->
 
   gulp.src changedFilePath ? paths.unitTests
     .pipe filter autoRequire
-    .pipe mocha
-      ui: 'tdd'
-      reporter: 'dot'
+    .pipe mocha reporter: 'dot',  ui: 'tdd'
+
+gulp.task 'transpile', (done) ->
+  runSequence 'stylus', 'coffee', 'react', done
 
 gulp.task 'js', (done) ->
   sequence = []
@@ -129,7 +139,7 @@ gulp.task 'js', (done) ->
   runSequence sequence...
 
 gulp.task 'build', (done) ->
-  runSequence 'stylus', 'coffee', 'js', done
+  runSequence 'transpile', 'js', done
 
 gulp.task 'compile', ->
   gulp.src paths.compile
@@ -155,6 +165,7 @@ gulp.task 'watch', ->
     changedFilePath = path.resolve e.filepath
     switch e.extension
       when 'coffee' then gulp.start 'coffee'
+      when 'jsx' then gulp.start 'react'
       when 'js' then gulp.start 'js'
       else changedFilePath = null
   watch.start()

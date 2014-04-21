@@ -1,21 +1,23 @@
 gulp = require 'gulp'
 
 GulpEste = require 'gulp-este'
+express = require 'express'
 runSequence = require 'run-sequence'
+
 yargs = require 'yargs'
 
 este = new GulpEste __dirname, true, '../../../..'
 
 paths =
   stylus: 'este/**/*.styl'
-  coffee: 'este/**/*.coffee'
-  jsx: 'este/**/*.jsx'
+  coffee: '{este,server}/**/*.coffee'
+  jsx: '{este,server}/**/*.jsx'
   scripts: [
     'bower_components/closure-library/**/*.js'
-    'este/**/*.js'
+    '{este,server}/**/*.js'
   ]
   unittest: [
-    'este/**/*_test.js'
+    '{este,server}/**/*_test.js'
   ]
   compiler: 'bower_components/closure-compiler/compiler.jar'
   externs: [
@@ -29,9 +31,6 @@ dirs =
   watch: [
     'este'
   ]
-
-getProvidedNamespaces = ->
-  este.getProvidedNamespaces './tmp/deps.js', /\['(este\.[^']+)/g
 
 gulp.task 'stylus', ->
   este.stylus paths.stylus
@@ -66,11 +65,12 @@ gulp.task 'build', (done) ->
   runSequence 'transpile', 'js', done
 
 gulp.task 'compile', ->
+  namespaced = este.getProvidedNamespaces './tmp/deps.js', /\['(este\.[^']+)/g
   este.compile paths.scripts, 'tmp',
     fileName: 'app.js'
     compilerPath: paths.compiler
     compilerFlags:
-      closure_entry_point: getProvidedNamespaces()
+      closure_entry_point: namespaced
       externs: paths.externs
 
 gulp.task 'test', (done) ->
@@ -85,11 +85,10 @@ gulp.task 'watch', ->
   , (task) -> gulp.start task
 
 gulp.task 'server', ->
-  require './index'
+  require './server'
   args = yargs.alias('n', 'noopen').argv
   return if args.noopen
   este.open paths.open
-  return
 
 gulp.task 'run', (done) ->
   runSequence 'watch', 'server', done

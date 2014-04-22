@@ -46,7 +46,7 @@
   </div>
   <script>
     var esteHistory = new este.History;
-    var cur = 'kittens';
+    var cur = null;
 
     var updateUI = function(e) {
       var token = e.token || 'kittens';
@@ -56,14 +56,15 @@
       var next = document.getElementById(id);
       if (!next) return;
 
-      document.getElementById(cur).className = 'section';
+      if (cur)
+        document.getElementById(cur).className = 'section';
       next.className = 'section active';
       cur = id;
 
       var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
         anchors[i].className = '';
-      el = document.querySelector('*[href="' + id + '"]');
+      var el = document.querySelector('*[href="' + id + '"]');
       el.className = 'shown';
     }
 

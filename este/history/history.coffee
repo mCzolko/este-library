@@ -15,6 +15,7 @@ goog.provide 'este.History'
 goog.require 'este.history.TokenTransformer'
 goog.require 'goog.History'
 goog.require 'goog.Uri'
+goog.require 'goog.asserts'
 goog.require 'goog.events.EventHandler'
 goog.require 'goog.history.Html5History'
 goog.require 'goog.labs.userAgent.platform'
@@ -30,11 +31,12 @@ class este.History extends goog.events.EventTarget
   ###
   constructor: (options) ->
     super()
-    if options?.forceHash || !History.CAN_USE_HTML5_HISTORY
+    @hashChangeEnabled = options?.forceHash || !History.CAN_USE_HTML5_HISTORY
+    if @hashChangeEnabled
       @createHashHistory_()
     else
       @createHtml5History_ options?.pathPrefix
-    @eventHandler_ = new goog.events.EventHandler @
+    @handler_ = new goog.events.EventHandler @
 
   ###*
    Configuration options for a History.
@@ -59,6 +61,11 @@ class este.History extends goog.events.EventTarget
     goog.history.Html5History.isSupported()
 
   ###*
+    @type {boolean}
+  ###
+  hashChangeEnabled: false
+
+  ###*
     @type {(goog.History|goog.history.Html5History)}
     @private
   ###
@@ -68,7 +75,7 @@ class este.History extends goog.events.EventTarget
     @type {goog.events.EventHandler}
     @private
   ###
-  eventHandler_: null
+  handler_: null
 
   ###*
     @type {?string}
@@ -80,6 +87,7 @@ class este.History extends goog.events.EventTarget
     @param {string} token The history state identifier.
   ###
   setToken: (token) ->
+    token = @normalizeToken_ token
     @history_.setToken token
 
   ###*
@@ -99,9 +107,9 @@ class este.History extends goog.events.EventTarget
   ###
   setEnabled: (enable) ->
     if enable
-      @eventHandler_.listen @history_, 'navigate', @onNavigate_
+      @handler_.listen @history_, 'navigate', @onNavigate_
     else
-      @eventHandler_.unlisten @history_, 'navigate', @onNavigate_
+      @handler_.unlisten @history_, 'navigate', @onNavigate_
     @history_.setEnabled enable
 
   ###*
@@ -137,10 +145,22 @@ class este.History extends goog.events.EventTarget
     @dispatchEvent e
 
   ###*
+    Strip leading # for hashChange and / for pushState to prevent ## or // in
+    browser adress bar. But / for hashChange is actually allowed and recommended
+    to prevent accidental focus on element with the same id as hash.
+    @param {string} token
+    @return {string}
+    @private
+  ###
+  normalizeToken_: (token) ->
+    regex = if @hashChangeEnabled then /^#+/ else /^\/+/
+    token.replace regex, ''
+
+  ###*
     @override
   ###
   disposeInternal: ->
     @history_.dispose()
-    @eventHandler_.dispose()
+    @handler_.dispose()
     super()
     return

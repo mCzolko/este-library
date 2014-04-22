@@ -46,25 +46,28 @@
   </div>
   <script>
     var esteHistory = new este.History({forceHash: true});
-    var cur = 'kittens';
+    var cur = null;
 
     var updateUI = function(e) {
-      // strip /
-      var token = (e.token || '/kittens').slice(1);
-      console.log('token: ' + token);
+      // e.token is an empty string for url without hash.
+      // For hashChange it never starts with #.
+      var token = e.token || '/kittens';
+      console.log(token);
 
-      var id = token;
+      // Strip '/' to get element id.
+      var id = token.slice(1);
       var next = document.getElementById(id);
       if (!next) return;
 
-      document.getElementById(cur).className = 'section';
+      if (cur)
+        document.getElementById(cur).className = 'section';
       next.className = 'section active';
       cur = id;
 
       var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
         anchors[i].className = '';
-      el = document.querySelector('*[href="#/' + id + '"]');
+      var el = document.querySelector('*[href="#/' + id + '"]');
       el.className = 'shown';
     }
 
@@ -77,9 +80,7 @@
         return;
       e.preventDefault();
       var href = e.target.getAttribute('href');
-      // strip #
-      var token = href.slice(1);
-      esteHistory.setToken(token);
+      esteHistory.setToken(href);
     });
   </script>
 </body>

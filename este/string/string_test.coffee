@@ -68,7 +68,13 @@ suite 'este.string', ->
 
   suite 'stripSlashHashPrefixes', ->
     test 'should strip slashes and hashes on string start', ->
-      assert.equal '', string.stripSlashHashPrefixes ''
-      assert.equal 'foo', string.stripSlashHashPrefixes 'foo'
-      assert.equal 'foo', string.stripSlashHashPrefixes '//foo'
-      assert.equal 'foo', string.stripSlashHashPrefixes '##foo'
+      data =
+        '': ''
+        'foo': 'foo'
+        '//foo': 'foo'
+        '##foo': 'foo'
+        '#/foo': 'foo'
+
+      for path, token of data
+        assert.equal string.stripSlashHashPrefixes(path), token
+      return

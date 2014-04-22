@@ -99,3 +99,17 @@ suite 'este.Route', ->
       route = new Route '/drug/:name/:condition?/:question?'
       url = route.createUrl 'name': 'name'
       assert.equal url, '/drug/name'
+
+  suite 'redirect', ->
+    test 'should throw if route was not added to router', ->
+      route = new Route '/'
+      assert.throw ->
+        route.redirect()
+      , 'Can\'t redirect. Route was not added to router.'
+
+    test 'should call load on router', (done) ->
+      route = new Route '/:id'
+      route.router = load: (url) ->
+        assert.equal url, '/1'
+        done()
+      route.redirect id: 1

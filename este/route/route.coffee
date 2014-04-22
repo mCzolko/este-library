@@ -4,6 +4,8 @@
 
 goog.provide 'este.Route'
 
+goog.require 'goog.asserts'
+
 class este.Route
 
   ###*
@@ -14,6 +16,16 @@ class este.Route
   constructor: (@path) ->
     @keys = []
     @createRegExp_()
+
+  ###*
+    @type {string}
+  ###
+  path: ''
+
+  ###*
+    @type {este.Router}
+  ###
+  router: null
 
   ###*
     @type {Array.<Object>}
@@ -75,6 +87,13 @@ class este.Route
       path.replace /\:[^\/]*/g, ''
 
     @ensureUrlHasNoTrailingSlashOrDot_ url
+
+  ###*
+    @param {(Object|Array)} params
+  ###
+  redirect: (params) ->
+    goog.asserts.assert !!@router, 'Can\'t redirect. Route was not added to router.'
+    @router.load @createUrl params
 
   ###*
     @param {string} url

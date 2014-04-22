@@ -12,6 +12,7 @@
 goog.provide 'este.events.RoutingClickHandler'
 
 goog.require 'este.dom'
+goog.require 'goog.events.BrowserEvent'
 goog.require 'goog.events.EventHandler'
 goog.require 'goog.events.EventTarget'
 
@@ -64,7 +65,7 @@ class este.events.RoutingClickHandler extends goog.events.EventTarget
     @pointerEventsSupported_ = true
     anchor = @tryGetRoutingAnchor e
     return if !anchor
-    @dispatchClick anchor
+    @dispatchClick anchor, e
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -76,7 +77,7 @@ class este.events.RoutingClickHandler extends goog.events.EventTarget
     # Prevent default anchor action (redirection).
     e.preventDefault()
     return if @pointerEventsSupported_
-    @dispatchClick anchor
+    @dispatchClick anchor, e
 
   ###*
     @param {goog.events.BrowserEvent} e
@@ -91,12 +92,14 @@ class este.events.RoutingClickHandler extends goog.events.EventTarget
 
   ###*
     @param {Element} anchor
+    @param {goog.events.BrowserEvent} e
     @protected
   ###
-  dispatchClick: (anchor) ->
-    @dispatchEvent
-      target: anchor
-      type: goog.events.EventType.CLICK
+  dispatchClick: (anchor, e) ->
+    clickEvent = new goog.events.BrowserEvent e.getBrowserEvent()
+    clickEvent.target = anchor
+    clickEvent.type = goog.events.EventType.CLICK
+    @dispatchEvent clickEvent
 
   ###*
     @override

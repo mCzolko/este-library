@@ -2,8 +2,7 @@
   @fileoverview Client-side router.
 
   Features:
-  - Path are without slash, base path is added automatically.
-  - Sync/async(todo) routing.
+    - Sync/async(todo) routing.
 
 ###
 
@@ -83,7 +82,9 @@ class este.Router extends goog.Disposable
   start: ->
     @registerEvents_()
     @history_.setEnabled true
-    @load @history_.getToken()
+    token = @history_.getToken()
+    token = @ensureSlashForHashChange_ token
+    @load token
 
   ###*
     @param {string} path
@@ -134,14 +135,14 @@ class este.Router extends goog.Disposable
   onHistoryNavigate_: (e) ->
     # Handle only browser navigation aka back/forward buttons.
     return if !e.isNavigation
-    @load @removeSlashForHashChange_ e.token
+    @load e.token
 
   ###*
     @param {goog.events.BrowserEvent} e
     @private
   ###
   onRoutingClickHandlerClick_: (e) ->
-    @load e.target.getAttribute 'href'
+    @load @ensureSlashForHashChange_ e.target.getAttribute 'href'
 
   ###*
     Ensure #/ pattern for hashchange. Slash is must for hash to prevent
@@ -152,16 +153,6 @@ class este.Router extends goog.Disposable
   ensureSlashForHashChange_: (path) ->
     return path if !@history_.hashChangeEnabled || path.charAt(0) == '/'
     '/' + path
-
-  ###*
-    Ensure #/ pattern for hashchange. Slash is must for hash to prevent
-    accidental focus on element with the same id as url is.
-    @param {string} path
-    @return {string}
-  ###
-  removeSlashForHashChange_: (path) ->
-    return path if !@history_.hashChangeEnabled || path.charAt(0) != '/'
-    path.slice 1
 
   ###*
     @override

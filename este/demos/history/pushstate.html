@@ -22,11 +22,13 @@
   <script src='../../../tmp/deps.js'></script>
   <script>
     goog.require('este.History');
+    goog.require('goog.Uri');
   </script>
 </head>
 <body>
   <h1>este.History - pushState</h1>
   <p id='links'>
+    <!-- Relative paths for demo. For app use absolute. -->
     <a href='kittens' title='Kittens'>Kittens</a> |
     <a href='puppies' title='Puppies'>Puppies</a> |
     <a href='pandas' title='Pandas'>Pandas</a> |
@@ -45,7 +47,10 @@
     <img src='http://farm1.static.flickr.com/146/421093356_6bbefa304e.jpg'>
   </div>
   <script>
-    var esteHistory = new este.History;
+    var esteHistory = new este.History({
+      // Use pathPrefix only when app is not running in root.
+      pathPrefix: new goog.Uri(document.location.href).getPath() + '/'
+    });
     var cur = null;
 
     var updateUI = function(e) {

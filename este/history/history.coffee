@@ -40,8 +40,8 @@ class este.History extends goog.events.EventTarget
 
   ###*
    Configuration options for a History.
-     - forceHash: force hashchange instead of autodetection
-     - pathPrefix: path prefix
+     - forceHash: Force hashchange instead of autodetection.
+     - pathPrefix: Path prefix for pushState.
    @typedef {{
      forceHash: (boolean|undefined),
      pathPrefix: (string|undefined)
@@ -87,13 +87,14 @@ class este.History extends goog.events.EventTarget
     @param {string} token The history state identifier.
   ###
   setToken: (token) ->
-    token = @normalizeToken_ token
+    token = @ensureHashchangeTokenIsNotHashPrefixed token
     @history_.setToken token
 
   ###*
     @param {string} token
   ###
   replaceToken: (token) ->
+    token = @ensureHashchangeTokenIsNotHashPrefixed token
     @history_.replaceToken token
 
   ###*
@@ -116,11 +117,7 @@ class este.History extends goog.events.EventTarget
     @param {string|undefined} pathPrefix
     @private
   ###
-  createHtml5History_: (pathPrefix) ->
-    if !pathPrefix
-      pathPrefix = new goog.Uri(document.location.href).getPath()
-      pathPrefix += '/' if !goog.string.endsWith pathPrefix, '/'
-
+  createHtml5History_: (pathPrefix = '') ->
     transformer = new este.history.TokenTransformer()
     @history_ = new goog.history.Html5History undefined, transformer
     @history_.setUseFragment false
@@ -133,7 +130,7 @@ class este.History extends goog.events.EventTarget
     @history_ = new goog.History
 
   ###*
-    Remember to listen navigate _before_ setEnabled call.
+    Remember to listen navigate before setEnabled call.
     @param {goog.history.Event} e
     @private
   ###
@@ -145,16 +142,14 @@ class este.History extends goog.events.EventTarget
     @dispatchEvent e
 
   ###*
-    Strip leading # for hashChange and / for pushState to prevent ## or // in
-    browser adress bar. But / for hashChange is actually allowed and recommended
-    to prevent accidental focus on element with the same id as hash.
+    Strip leading # for hashChange to prevent ## in url.
     @param {string} token
     @return {string}
     @private
   ###
-  normalizeToken_: (token) ->
-    regex = if @hashChangeEnabled then /^#+/ else /^\/+/
-    token.replace regex, ''
+  ensureHashchangeTokenIsNotHashPrefixed: (token) ->
+    return token if not @hashChangeEnabled
+    token.replace /^#+/, ''
 
   ###*
     @override

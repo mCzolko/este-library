@@ -27,10 +27,10 @@
 <body>
   <h1>este.Router - pushState</h1>
   <p id='links'>
-    <a href='kittens' title='Kittens'>Kittens</a> |
-    <a href='puppies' title='Puppies'>Puppies</a> |
-    <a href='pandas' title='Pandas'>Pandas</a> |
-    <a href='bucket' title='Bucket'>Bucket</a>
+    <a href='/este/demos/router-pushstate/kittens' title='Kittens'>Kittens</a> |
+    <a href='/este/demos/router-pushstate/puppies' title='Puppies'>Puppies</a> |
+    <a href='/este/demos/router-pushstate/pandas' title='Pandas'>Pandas</a> |
+    <a href='/este/demos/router-pushstate/bucket' title='Bucket'>Bucket</a>
   </p>
   <div id='kittens' class='section'>
     <img src='http://farm4.static.flickr.com/3045/2481490798_bba0c585b4.jpg'>
@@ -65,15 +65,15 @@
       var anchors = document.getElementsByTagName('a');
       for (var i = 0, l = anchors.length; i < l; i++)
         anchors[i].className = '';
-      el = document.querySelector('*[href="' + id + '"]');
+      var el = document.querySelector('*[href$="' + id + '"]');
       el.className = 'shown';
 
     };
 
-    router.add('', function(params) {
+    router.add('/este/demos/router-pushstate/', function(params) {
       updateUi('kittens');
     });
-    router.add(':token', function(params) {
+    router.add('/este/demos/router-pushstate/:token?', function(params) {
       updateUi(params.token);
     });
     router.start();

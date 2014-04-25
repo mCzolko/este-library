@@ -6,11 +6,10 @@ goog.require 'este.events.RoutingClickHandler'
 
 ###*
   @param {boolean=} forceHash
-  @param {string=} pathPrefix
   @return {este.Router}
 ###
-este.router.create = (forceHash, pathPrefix) ->
-  history = new este.History forceHash: forceHash, pathPrefix: pathPrefix
+este.router.create = (forceHash) ->
+  history = new este.History forceHash: forceHash
   routingClickHandler = new este.events.RoutingClickHandler
 
   new este.Router history, routingClickHandler

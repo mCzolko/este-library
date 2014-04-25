@@ -49,8 +49,6 @@
     var cur = null;
 
     var updateUI = function(e) {
-      // e.token is an empty string for url without hash.
-      // For hashChange it never starts with #.
       var token = e.token || '/kittens';
       console.log(token);
 

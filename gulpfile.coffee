@@ -30,6 +30,7 @@ dirs =
   googBaseJs: 'bower_components/closure-library/closure/goog'
   watch: [
     'este'
+    'server'
   ]
 
 gulp.task 'stylus', ->

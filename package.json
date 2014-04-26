@@ -22,7 +22,7 @@
     "express": "^4.0.0"
   },
   "devDependencies": {
-    "gulp-este": "^0.2.0",
+    "gulp-este": "^0.3.3",
     "run-sequence": "^0.3.6",
     "yargs": "^1.2.1"
   },

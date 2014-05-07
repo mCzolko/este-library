@@ -7,7 +7,6 @@
     "closure-compiler-externs": "https://github.com/dcodeIO/node.js-closure-compiler-externs.git",
     "closure-library": "https://github.com/google/closure-library.git",
     "normalize-css": "~3.0.1",
-    "observe-js": "~0.2.2",
     "pointerevents-polyfill": "~0.2.0",
     "react": "~0.10.0"
   }

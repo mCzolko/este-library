@@ -2,6 +2,25 @@
 
 Library for [Este](https://github.com/steida/este) dev stack.
 
+## Prerequisites
+
+  [Java 1.7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) and [Node.js](http://nodejs.org) are required.
+  
+  ```shell
+  npm install -g gulp
+  npm install -g bower
+  ```
+
+## Show Demos
+
+  - ```bower install```
+  - ```npm install```
+  - ```gulp```
+  
+## Documentation
+
+Take a look at source code.
+
 ## License
 Copyright (c) 2013 Daniel Steigerwald
 

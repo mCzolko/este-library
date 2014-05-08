@@ -11,12 +11,14 @@ Library for [Este](https://github.com/steida/este) dev stack.
   npm install -g bower
   ```
 
-## Show Demos
+## Install
 
-  - ```bower install```
-  - ```npm install```
-  - ```gulp```
-  
+  ```shell
+  bower install
+  npm install
+  gulp
+  ```
+
 ## Documentation
 
 Take a look at source code.

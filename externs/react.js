@@ -670,6 +670,14 @@ React.DOM.hr = function(props, children) {};
  * @return {React.ReactComponent}
  * @protected
  */
+React.DOM.html = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
 React.DOM.i = function(props, children) {};
 
 /**
@@ -719,6 +727,14 @@ React.DOM.legend = function(props, children) {};
  * @protected
  */
 React.DOM.li = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.DOM.meta = function(props, children) {};
 
 /**
  * @param {Object=} props
@@ -783,6 +799,14 @@ React.DOM.param = function(props, children) {};
  * @protected
  */
 React.DOM.pre = function(props, children) {};
+
+/**
+ * @param {Object=} props
+ * @param {...string|React.ReactComponent|Array.<React.ReactComponent>|boolean} children
+ * @return {React.ReactComponent}
+ * @protected
+ */
+React.DOM.script = function(props, children) {};
 
 /**
  * @param {Object=} props

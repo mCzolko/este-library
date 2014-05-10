@@ -21,7 +21,7 @@ paths =
   ]
   compiler: 'bower_components/closure-compiler/compiler.jar'
   externs: [
-    'externs/react.js'
+    'bower_components/react-externs/externs.js'
   ]
   open: 'http://localhost:8000/este/demos'
   packages: './*.json'

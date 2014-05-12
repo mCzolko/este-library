@@ -71,7 +71,7 @@ class este.Route
     params
 
   ###*
-    @param {(Object|Array)} params
+    @param {(Object|Array)=} params
     @return {string}
   ###
   createUrl: (params) ->
@@ -80,7 +80,7 @@ class este.Route
       @path.replace /\*/g, -> params[index++]
     else
       path = @path
-      for key, value of params
+      for key, value of params || {}
         value = '' if value == undefined
         regex = new RegExp "\\:#{key}\\??"
         path = path.replace regex, value

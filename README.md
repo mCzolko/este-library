@@ -19,9 +19,13 @@ Library for [Este](https://github.com/steida/este) dev stack.
   gulp
   ```
 
-## Documentation
+## API reference
 
-Take a look at source code.
+Take a look at the source code, read documentation comments.
+
+## Demos
+
+Run dev stack. Type ```gulp``` on command line, open browser, click to link to Closure or Este demos.
 
 ## License
 Copyright (c) 2013 Daniel Steigerwald

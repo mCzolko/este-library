@@ -9,6 +9,6 @@
     "normalize-css": "~3.0.1",
     "pointerevents-polyfill": "~0.2.0",
     "react": "~0.10.0",
-    "react-externs": "https://github.com/steida/react-externs.git#0.10.2"
+    "react-externs": "~0.10.2"
   }
 }
